@@ -1,0 +1,148 @@
+{
+    "header":  {
+                   "menu":  "MENU",
+                   "gallery":  "GALLERY"
+               },
+    "hero":  {
+                 "tagline":  "ANNA PARIS EXPERIENCE",
+                 "headline":  "Express your unique self<br>through the jewelry you choose",
+                 "videoUrl":  "/assets/videos/hero-jewelry.mp4"
+             },
+    "brandStoryTeaser":  {
+                             "heading":  "The Art of Timeless Elegance",
+                             "description":  "For over 20 years, Anna Paris has been crafting pearl jewelry that whispers sophistication. Each piece embodies our philosophy of Quiet Luxury—where understated beauty meets exceptional craftsmanship. We believe true elegance needs no announcement."
+                         },
+    "featuredCollections":  {
+                                "heading":  "Featured Collections",
+                                "description":  "Explore our curated pearl jewelry collections, each designed to complement your unique style.",
+                                "videoUrl":  "/assets/videos/hero-jewelry.mp4",
+                                "collections":  [
+                                                    {
+                                                        "id":  1,
+                                                        "name":  "Classic Pearl Necklaces",
+                                                        "slug":  "classic-pearls",
+                                                        "image":  "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&h=1000&fit=crop&q=80"
+                                                    },
+                                                    {
+                                                        "id":  2,
+                                                        "name":  "Baroque Pearl Collection",
+                                                        "slug":  "baroque-pearls",
+                                                        "image":  "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&h=1000&fit=crop&q=80"
+                                                    },
+                                                    {
+                                                        "id":  3,
+                                                        "name":  "South Sea Luxury",
+                                                        "slug":  "south-sea-pearls",
+                                                        "image":  "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&h=1000&fit=crop&q=80"
+                                                    },
+                                                    {
+                                                        "id":  4,
+                                                        "name":  "Tahitian Black Pearls",
+                                                        "slug":  "tahitian-pearls",
+                                                        "image":  "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&h=1000&fit=crop&q=80"
+                                                    },
+                                                    {
+                                                        "id":  5,
+                                                        "name":  "Freshwater Elegance",
+                                                        "slug":  "freshwater-pearls",
+                                                        "image":  "https://images.unsplash.com/photo-1603561596112-0a132b757442?w=800&h=1000&fit=crop&q=80"
+                                                    },
+                                                    {
+                                                        "id":  6,
+                                                        "name":  "Pearl Earrings",
+                                                        "slug":  "pearl-earrings",
+                                                        "image":  "https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=800&h=1000&fit=crop&q=80"
+                                                    },
+                                                    {
+                                                        "id":  7,
+                                                        "name":  "Bridal Collection",
+                                                        "slug":  "bridal-pearls",
+                                                        "image":  "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=1000&fit=crop&q=80"
+                                                    },
+                                                    {
+                                                        "id":  8,
+                                                        "name":  "Pearl Bracelets",
+                                                        "slug":  "pearl-bracelets",
+                                                        "image":  "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&h=1000&fit=crop&q=80"
+                                                    },
+                                                    {
+                                                        "id":  9,
+                                                        "name":  "Contemporary Designs",
+                                                        "slug":  "contemporary-pearls",
+                                                        "image":  "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=800&h=1000&fit=crop&q=80"
+                                                    },
+                                                    {
+                                                        "id":  10,
+                                                        "name":  "Vintage Inspired",
+                                                        "slug":  "vintage-pearls",
+                                                        "image":  "https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?w=800&h=1000&fit=crop&q=80"
+                                                    }
+                                                ]
+                            },
+    "featuredEditorial":  {
+                              "label":  "Discover",
+                              "title":  "Featured Collections",
+                              "promos":  [
+                                             {
+                                                 "id":  1,
+                                                 "heading":  "Signature Pearls",
+                                                 "subheading":  "Timeless pieces for everyday elegance",
+                                                 "image":  "https://images.unsplash.com/photo-1611591437013-42a2776c4c6a?w=1500&q=80&auto=format&fit=crop",
+                                                 "href":  "/collections/signature-pearls"
+                                             },
+                                             {
+                                                 "id":  2,
+                                                 "heading":  "Evening Edit",
+                                                 "subheading":  "Statement designs for special moments",
+                                                 "image":  "https://images.unsplash.com/photo-1603561596112-0a132b757442?w=1500&q=80&auto=format&fit=crop",
+                                                 "href":  "/collections/evening-edit"
+                                             }
+                                         ],
+                              "families":  [
+                                               {
+                                                   "id":  1,
+                                                   "name":  "Necklaces",
+                                                   "image":  "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80&auto=format&fit=crop",
+                                                   "href":  "/collections/necklaces"
+                                               },
+                                               {
+                                                   "id":  2,
+                                                   "name":  "Earrings",
+                                                   "image":  "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&q=80&auto=format&fit=crop",
+                                                   "href":  "/collections/earrings"
+                                               },
+                                               {
+                                                   "id":  3,
+                                                   "name":  "Bracelets",
+                                                   "image":  "https://images.unsplash.com/photo-1612810806695-30f7a8258391?w=800&q=80&auto=format&fit=crop",
+                                                   "href":  "/collections/bracelets"
+                                               },
+                                               {
+                                                   "id":  4,
+                                                   "name":  "Rings",
+                                                   "image":  "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80&auto=format&fit=crop",
+                                                   "href":  "/collections/rings"
+                                               },
+                                               {
+                                                   "id":  5,
+                                                   "name":  "Bridal",
+                                                   "image":  "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=800&q=80&auto=format&fit=crop",
+                                                   "href":  "/collections/bridal"
+                                               }
+                                           ]
+                          },
+    "categories":  {
+      "eyebrow": "Shop by Category",
+      "title": "Explore Our Categories",
+      "description": "Curated categories for effortless discovery — find your style in a few elegant taps.",
+      "ctaLabel": "Explore All",
+      "ctaHref": "/collections",
+      "items": [
+        { "id": 1, "name": "Necklaces",  "image": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1200&q=80&auto=format&fit=crop", "href": "/collections/necklaces",  "subtitle": "Signature" },
+        { "id": 2, "name": "Earrings",   "image": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1200&q=80&auto=format&fit=crop", "href": "/collections/earrings",   "subtitle": "Everyday" },
+        { "id": 3, "name": "Rings",      "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1200&q=80&auto=format&fit=crop", "href": "/collections/rings",      "subtitle": "Elegance" },
+        { "id": 4, "name": "Bracelets",  "image": "https://images.unsplash.com/photo-1612810806695-30f7a8258391?w=1200&q=80&auto=format&fit=crop", "href": "/collections/bracelets",  "subtitle": "Classic" },
+        { "id": 5, "name": "Curated Sets", "image": "https://images.unsplash.com/photo-1603561596112-0a132b757442?w=1200&q=80&auto=format&fit=crop", "href": "/collections/sets",      "subtitle": "Perfectly Paired" }
+      ]
+    }
+}

@@ -1,0 +1,131 @@
+.testimonials {
+  width: 100%;
+  padding: 80px 20px;
+  background: var(--bg);
+}
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 95%;
+    margin: 0 2.5%;
+    padding: 0;
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.label {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.6;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 2.5rem;
+  }
+}
+
+.swiperWrapper {
+  width: 100%;
+}
+
+.swiper {
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.card {
+  background: var(--bg);
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  padding: 32px 28px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(15, 26, 36, 0.08);
+}
+
+.stars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  color: var(--ink);
+}
+
+.quote {
+  font-family: 'Lato', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ink);
+  margin-bottom: 24px;
+  flex: 1;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hairline);
+}
+
+.authorImage {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.authorImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.authorInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.authorName {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.authorLocation {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.85rem;
+  color: var(--ink);
+  opacity: 0.6;
+}

@@ -1,26 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Lato:wght@100;400&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ANNA PARIS Color System (Quiet Luxury) */
+  --ink: #0F1A24;
+  --ink-2: #26313B;
+  --bg: #FCFCFD;
+  --platinum: #EDEFF5;
+  --hairline: #E6EAF0;
+  --champagne: #D9C6A6;
+
+  /* Dimensions */
+  --announce-h: 40px;
+  --header-height: 70px;
+  --header-padding-x: 20px;
+  --logo-size: 120px;
+  --logo-offset-y: 0px;
+
+  /* Effects */
+  --shadow-2: 0 8px 24px rgba(15, 26, 36, 0.06);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Map to Tailwind utilities */
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-bg: var(--bg);
+  --color-platinum: var(--platinum);
+  --color-hairline: var(--hairline);
+  --color-champagne: var(--champagne);
+
+  /* Fonts */
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Lato', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Noto Sans Thai', sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
+/* Responsive Variables */
+@media (min-width: 768px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --announce-h: 42px;
+    --header-height: 80px;
+    --header-padding-x: 40px;
+    --logo-size: 140px;
+    --logo-offset-y: 0px;
   }
 }
 
+@media (min-width: 1024px) {
+  :root {
+    --announce-h: 44px;
+    --header-height: 88px;
+    --header-padding-x: 50px;
+    --logo-size: 160px;
+    --logo-offset-y: 0px;
+  }
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent body scroll when modals are open */
+body.nav-open,
+body.cart-open,
+body.search-open {
+  overflow: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--platinum);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--hairline);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-2);
+}
+
+/* Selection */
+::selection {
+  background: var(--champagne);
+  color: var(--ink);
+}
+
+/* Focus Visible */
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Images */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

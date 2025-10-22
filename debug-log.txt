@@ -1,0 +1,280 @@
+'use client'
+
+import Link from 'next/link'
+import Image from 'next/image'
+import { motion, useMotionValue } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+
+type CategoryItem = {
+  id: number
+  name: string
+  slug: string
+  href?: string
+  image?: string
+}
+
+interface CategoriesV2Props {
+  heading?: string
+  description?: string
+  items?: CategoryItem[]
+}
+
+const DEFAULT_ITEMS: CategoryItem[] = [
+  { id: 1, name: 'Necklaces', slug: 'necklaces' },
+  { id: 2, name: 'Earrings', slug: 'earrings' },
+  { id: 3, name: 'Bracelets', slug: 'bracelets' },
+  { id: 4, name: 'Rings', slug: 'rings' },
+  { id: 5, name: 'Sets', slug: 'sets' },
+  { id: 6, name: 'Others', slug: 'others' },
+]
+
+export default function CategoriesV2({
+  heading = 'Shop by Category',
+  description = 'Explore curated categories designed to elevate your style.',
+  items = DEFAULT_ITEMS,
+}: CategoriesV2Props) {
+  const list = items.map((it) => ({ ...it, href: it.href || `/collections/${it.slug}` }))
+
+  // Refs for scroll-linked horizontal reveal (desktop only)
+  const sectionRef = useRef<HTMLElement | null>(null)
+  const wrapperRef = useRef<HTMLDivElement | null>(null)
+  const innerRef = useRef<HTMLDivElement | null>(null)
+  const leftRef = useRef<HTMLDivElement | null>(null)
+  const rightRef = useRef<HTMLDivElement | null>(null)
+  const trackRef = useRef<HTMLDivElement | null>(null)
+
+  const [distance, setDistance] = useState(0)
+  const [stickyHeight, setStickyHeight] = useState(0)
+  const [scrollStart, setScrollStart] = useState(0)
+
+  // Measure sizes to compute horizontal distance and wrapper height
+  useEffect(() => {
+    const mql = window.matchMedia('(min-width: 768px)')
+
+    const measure = () => {
+      if (!mql.matches) {
+        setDistance(0)
+        setStickyHeight(0)
+        setScrollStart(0)
+        if (wrapperRef.current) {
+          wrapperRef.current.style.minHeight = ''
+          wrapperRef.current.style.height = ''
+        }
+        if (innerRef.current) {
+          innerRef.current.style.height = ''
+        }
+        return
+      }
+      const leftW = leftRef.current?.getBoundingClientRect().width ?? 0
+      const rightW = rightRef.current?.getBoundingClientRect().width ?? 0
+      let trackW = trackRef.current?.scrollWidth ?? 0
+
+      // Fallback: compute track width from children to be robust
+      if (!trackW && trackRef.current) {
+        const children = Array.from(trackRef.current.children) as HTMLElement[]
+        const gap = 5 // px (gap-[5px])
+        const childW = children[0]?.getBoundingClientRect().width ?? 0
+        trackW = children.length * childW + Math.max(0, children.length - 1) * gap
+      }
+
+      const headerVar = getComputedStyle(document.documentElement).getPropertyValue('--header-height')
+      const headerH = parseFloat(headerVar) || 88
+      const vh = window.innerHeight
+      const stickyH = Math.max(300, vh - headerH) // ensure sensible min height
+
+      // distance needed so last card becomes fully visible within right column
+      let dist = Math.max(0, trackW - rightW)
+
+      // enforce minimal distance so animation always occurs (approx 1.5 cards)
+      const minimum = (trackRef.current?.children[0]?.getBoundingClientRect().width ?? 280) * 1.5
+      if (dist < minimum && trackW > 0) {
+        dist = minimum
+      }
+
+      setDistance(dist)
+      setStickyHeight(stickyH)
+
+      // Set wrapper height to sticky segment + horizontal distance so we can consume vertical scroll naturally
+      if (wrapperRef.current) {
+        const total = stickyH + dist
+        wrapperRef.current.style.minHeight = `${total}px`
+        wrapperRef.current.style.height = `${total}px`
+      }
+      // set a fixed height for the sticky inner area so it pins predictably
+      if (innerRef.current) {
+        innerRef.current.style.height = `${stickyH}px`
+      }
+
+      if (wrapperRef.current) {
+        const top = wrapperRef.current.getBoundingClientRect().top
+        const scrollY = window.scrollY || window.pageYOffset
+        setScrollStart(scrollY + top - headerH)
+      }
+
+      if (process.env.NODE_ENV !== 'production') {
+        console.debug('[CategoriesV2] measure', {
+          leftW,
+          rightW,
+          trackW,
+          stickyH,
+          headerH,
+          distance: dist,
+          scrollStart: scrollY + top - headerH,
+        })
+      }
+    }
+
+    // Initial + on resize
+    const ro = new ResizeObserver(() => measure())
+    if (sectionRef.current) ro.observe(sectionRef.current)
+    if (leftRef.current) ro.observe(leftRef.current)
+    if (rightRef.current) ro.observe(rightRef.current)
+    if (trackRef.current) ro.observe(trackRef.current)
+    window.addEventListener('resize', measure)
+    // Run ASAP and after next paint to ensure DOM sizes are ready
+    setTimeout(measure, 0)
+    requestAnimationFrame(measure)
+
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('resize', measure)
+    }
+  }, [])
+
+  // Scroll progress across wrapper (desktop only)
+  const x = useMotionValue(0)
+
+  // Drive x from scroll manually for deterministic, natural mapping
+  useEffect(() => {
+    const handle = () => {
+      if (!wrapperRef.current || distance <= 0) {
+        x.set(0)
+        return
+      }
+      const scrollY = window.scrollY || window.pageYOffset
+      const start = scrollStart
+      const end = start + distance
+
+      if (scrollY <= start) {
+        x.set(0)
+      } else if (scrollY >= end) {
+        x.set(-distance)
+      } else {
+        x.set(-(scrollY - start))
+      }
+    }
+    handle()
+    window.addEventListener('scroll', handle, { passive: true })
+    window.addEventListener('resize', handle)
+    return () => {
+      window.removeEventListener('scroll', handle)
+      window.removeEventListener('resize', handle)
+    }
+  }, [distance, scrollStart, x])
+
+  return (
+    <section ref={sectionRef} id="categories" className="relative w-full py-10 md:py-12 lg:py-14" style={{ scrollMarginTop: '88px' }}>
+      <div ref={wrapperRef} className="w-full px-4 md:px-0 md:mx-[2.5%] md:w-[95%] md:overflow-hidden">
+        {/* Heading for mobile */}
+        <div className="mb-6 md:hidden">
+          <h2 className="font-serif text-[1.75rem] text-ink font-medium tracking-tight">
+            {heading}
+          </h2>
+          <p className="mt-2 text-[0.95rem] text-ink/80 max-w-[62ch]">
+            {description}
+          </p>
+        </div>
+
+        {/* Sticky inner when desktop: left 30% (centered), right 70% */}
+        <div ref={innerRef} className="md:sticky md:top-[88px] md:grid md:grid-cols-[30%_1fr] md:items-center md:gap-8 lg:gap-10">
+          {/* Left column (desktop only) */}
+          <div ref={leftRef} className="relative z-10 hidden md:flex md:flex-col md:justify-center">
+            <div className="mb-8 lg:mb-10">
+              <h2 className="font-serif text-[2.25rem] lg:text-[2.5rem] text-ink font-medium tracking-tight">
+                {heading}
+              </h2>
+              <p className="mt-2 text-[1rem] text-ink/80 max-w-[62ch]">
+                {description}
+              </p>
+            </div>
+          </div>
+
+          {/* Right column: lists */}
+          <div ref={rightRef} className="relative overflow-visible md:flex md:h-full md:items-center">
+            {/* Mobile: horizontal scroll */}
+            <div className="block md:hidden -mx-4 px-4 overflow-x-auto scrollbar-hide">
+              <div className="flex gap-[5px]">
+                {list.map((cat) => (
+                  <Link
+                    key={cat.id}
+                    href={cat.href!}
+                    aria-label={cat.name}
+                    className="group relative shrink-0 w-[64vw] max-w-[360px] aspect-[3/4] rounded-none overflow-hidden border border-[var(--hairline)]"
+                  >
+                    <CardVisual name={cat.name} image={cat.image} />
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Desktop: horizontal track (scroll-linked), overlaps left column */}
+            <div className="hidden md:block relative z-20">
+              <motion.div
+                ref={trackRef}
+                style={{ x }}
+                className="flex gap-[5px] will-change-transform"
+              >
+                {list.map((cat) => (
+                  <Link
+                    key={cat.id}
+                    href={cat.href!}
+                    aria-label={cat.name}
+                    className="group relative block shrink-0 w-[18rem] lg:w-[20rem] aspect-[3/4] rounded-none overflow-hidden border border-[var(--hairline)] transition-transform duration-300 ease-out hover:-translate-y-0.5"
+                  >
+                    <CardVisual name={cat.name} image={cat.image} />
+                  </Link>
+                ))}
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function CardVisual({ name, image }: { name: string; image?: string }) {
+  return (
+    <div className="relative w-full h-full">
+      {image ? (
+        <Image
+          src={image}
+          alt={name}
+          fill
+          sizes="(max-width: 768px) 72vw, (max-width: 1200px) 33vw, 400px"
+          className="object-cover"
+          unoptimized
+        />
+      ) : (
+        <div className="absolute inset-0 bg-gradient-to-br from-[#f4efe5] via-[#eceff5] to-white" />
+      )}
+
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-90" />
+
+      <div className="absolute left-0 bottom-0 p-4 md:p-5 lg:p-6">
+        <h3 className="font-serif text-[1.15rem] md:text-[1.25rem] lg:text-[1.35rem] text-bg font-medium tracking-tight translate-y-0 group-hover:-translate-y-0.5 transition-transform duration-300">
+          {name}
+        </h3>
+        <span className="mt-1 inline-flex items-center text-[0.8rem] uppercase tracking-[0.12em] text-bg/90">
+          View more
+          <svg className="ml-2 h-[1em] w-[1em] opacity-90 group-hover:translate-x-0.5 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 11-1.414-1.414L13.586 10H4a1 1 0 110-2h9.586l-3.293-3.293a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+        </span>
+      </div>
+
+      <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-black/5 group-hover:ring-black/10 transition-colors duration-300" />
+    </div>
+  )
+}
+

@@ -1,0 +1,363 @@
+/* ===== Instagram Gallery Section ===== */
+.instagram {
+  width: 100%;
+  height: 800px;
+  padding: 100px 20px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ===== Bento Grid Wrapper ===== */
+.bentoWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  align-items: center;
+  height: 600px;
+}
+
+@media (min-width: 1024px) {
+  .bentoWrapper {
+    flex-direction: row;
+    gap: 0;
+    height: 600px;
+    position: relative;
+  }
+}
+
+/* ===== Staggered Image Grid (Left Side) ===== */
+.bentoGrid {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+}
+
+@media (min-width: 1024px) {
+  .bentoGrid {
+    width: 100%;
+    height: 600px;
+  }
+}
+
+/* ===== Individual Bento Cards ===== */
+.bentoCard {
+  position: absolute;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 4px solid #000;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+}
+
+.bentoCard:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+/* Card Positioning - Staggered Overlapping Layout */
+/* Card 1 - Left (Short) */
+.card1 {
+  width: 200px;
+  height: 300px;
+  left: 0;
+  top: 115px;
+  z-index: 2;
+}
+
+/* Card 2 - Second (9:16 Portrait) */
+.card2 {
+  width: 250px;
+  height: 450px;
+  left: 140px;
+  top: 50px;
+  z-index: 3;
+}
+
+/* Card 3 - Center (9:16 Portrait, Focal Point) */
+.card3 {
+  width: 250px;
+  height: 450px;
+  left: 320px;
+  top: 120px;
+  z-index: 5;
+}
+
+/* Card 4 - Fourth (9:16 Portrait) */
+.card4 {
+  width: 250px;
+  height: 450px;
+  left: 500px;
+  top: 80px;
+  z-index: 4;
+}
+
+/* Card 5 - Right (Short) */
+.card5 {
+  width: 200px;
+  height: 300px;
+  left: 680px;
+  top: 180px;
+  z-index: 2;
+}
+
+/* Responsive - Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .bentoGrid {
+    height: 500px;
+  }
+
+  .card1 {
+    width: 140px;
+    height: 210px;
+    left: 0;
+    top: 80px;
+  }
+
+  .card2 {
+    width: 175px;
+    height: 315px;
+    left: 100px;
+    top: 35px;
+  }
+
+  .card3 {
+    width: 175px;
+    height: 315px;
+    left: 230px;
+    top: 85px;
+  }
+
+  .card4 {
+    width: 175px;
+    height: 315px;
+    left: 360px;
+    top: 55px;
+  }
+
+  .card5 {
+    width: 140px;
+    height: 210px;
+    left: 490px;
+    top: 125px;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 767px) {
+  .instagram {
+    height: auto;
+    min-height: 800px;
+  }
+
+  .bentoWrapper {
+    height: auto;
+  }
+
+  .bentoGrid {
+    height: 350px;
+  }
+
+  .card1 {
+    width: 85px;
+    height: 130px;
+    left: 0;
+    top: 60px;
+  }
+
+  .card2 {
+    width: 110px;
+    height: 200px;
+    left: 60px;
+    top: 25px;
+  }
+
+  .card3 {
+    width: 110px;
+    height: 200px;
+    left: 140px;
+    top: 65px;
+  }
+
+  .card4 {
+    width: 110px;
+    height: 200px;
+    left: 220px;
+    top: 40px;
+  }
+
+  .card5 {
+    width: 85px;
+    height: 130px;
+    left: 300px;
+    top: 95px;
+  }
+}
+
+/* ===== Image Wrapper ===== */
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.imageWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 26, 36, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.bentoCard:hover .overlay {
+  opacity: 1;
+}
+
+.bentoCard:hover .imageWrapper img {
+  transform: scale(1.15);
+}
+
+/* ===== Right Side Branding ===== */
+.branding {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+}
+
+@media (min-width: 1024px) {
+  .branding {
+    text-align: center;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 50px 0 0 0;
+    position: absolute;
+    right: -40px;
+    width: 45%;
+    height: 100%;
+    display: flex;
+    z-index: 20;
+  }
+}
+
+.brandingContent {
+  max-width: 360px;
+  width: 100%;
+}
+
+.hashtag {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .hashtag {
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hashtag {
+    font-size: 2.75rem;
+  }
+}
+
+.tagline {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--ink);
+  opacity: 0.7;
+  margin-bottom: 32px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .tagline {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tagline {
+    font-size: 1.05rem;
+  }
+}
+
+.instagramLogo {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.logoScript {
+  font-family: 'Dancing Script', cursive, 'Brush Script MT', cursive;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+  letter-spacing: 0.02em;
+}
+
+@media (min-width: 768px) {
+  .logoScript {
+    font-size: 3rem;
+  }
+}
+
+.followButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 36px;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: 'Lato', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(15, 26, 36, 0.2);
+  margin: 0 auto;
+}
+
+.followButton:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(240, 148, 51, 0.4);
+}
