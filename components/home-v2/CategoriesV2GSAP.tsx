@@ -28,7 +28,10 @@ export default function CategoriesV2GSAP({
   description = 'Explore curated categories designed to elevate your style.',
   items = DEFAULT_ITEMS,
 }: Props) {
-  const list = items.map((it) => ({ ...it, href: it.href || `/collections/${it.slug}` }))
+  const list = items.map((it) => ({
+    ...it,
+    href: it.href || `/products?category=${encodeURIComponent(it.slug)}`,
+  }))
 
   const wrapperRef = useRef<HTMLDivElement | null>(null)
   const stickyRef = useRef<HTMLDivElement | null>(null)

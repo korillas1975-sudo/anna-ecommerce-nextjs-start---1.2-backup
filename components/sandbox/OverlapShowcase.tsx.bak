@@ -1,0 +1,146 @@
+﻿'use client'
+
+import Link from 'next/link'
+import Image from 'next/image'
+import { motion } from 'framer-motion'
+import { useState } from 'react'
+
+type Card = {
+  title: string
+  description: string
+  image: string
+  href?: string
+  textClass?: string
+}
+
+const defaultCards: [Card, Card] = [
+  {
+    title: 'Timeless Elegance',
+    description:
+      'Each piece in our curated collection tells a story of craftsmanship and refined beauty.',
+    image:
+      'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=1400&auto=format&fit=crop&q=85',
+    href: '#',
+    textClass: 'text-ink/25',
+  },
+  {
+    title: 'Handcrafted Excellence',
+    description:
+      'Every piece is meticulously crafted by master artisans, blending tradition with innovation.',
+    image:
+      'https://images.unsplash.com/photo-1543294001-f7cd5d7fb516?w=1400&auto=format&fit=crop&q=85',
+    href: '#',
+    textClass: 'text-white/25',
+  },
+]
+
+export default function OverlapShowcase({ cards = defaultCards }: { cards?: [Card, Card] }) {
+  const [leftHover, setLeftHover] = useState(false)
+  return (
+    <section className="relative w-full h-[700px] bg-bg">
+      <div
+        className="relative h-full max-w-[1400px] mx-auto px-5 md:px-10"
+        style={{
+          ['--card-w' as any]: '584px', // fixed width per card
+          ['--card-h' as any]: '383px', // fixed height per card
+          ['--overlap' as any]: '40px', // half of the visual overlap
+          ['--textL-top' as any]: '12%', // left text top offset
+          ['--textR-top' as any]: '16%', // right text top offset (lower than left for balance)
+          ['--textR-shift' as any]: '50%', // keep right text at 50% intrude
+          ['--text-max' as any]: '420px',
+          ['--gutter' as any]: 'min(6vw, 64px)', // keep text away from viewport edges
+          ['--hover-x' as any]: '16px', // nudge on hover
+        }}
+      >
+        {cards.map((card, index) => {
+          // Center the whole block vertically without changing relative offsets
+          const SECTION_H = 700
+          const CARD_H = 383
+          const LEFT_TEXT_TOP_PCT = 0.12
+          const leftTopPx = 0 // was 0%
+          const rightTopPx = Math.round(0.22 * SECTION_H) // was 22% of section height
+          const minTop = Math.min(leftTopPx, rightTopPx)
+          const delta = Math.abs(rightTopPx - leftTopPx)
+          const groupHeight = CARD_H + delta
+          const baseTop = (SECTION_H - groupHeight) / 2 - minTop
+          const finalLeftTop = baseTop + leftTopPx
+          const finalRightTop = baseTop + rightTopPx
+          const isRight = index === 1
+          const rightTextBottom = Math.round(CARD_H * LEFT_TEXT_TOP_PCT)
+
+          const wrapperStyle = isRight
+            ? {
+                left: 'calc(50% - var(--overlap))', // right card starts slightly left of center for overlap
+                top: `${finalRightTop}px`,
+                width: 'var(--card-w)',
+                height: 'var(--card-h)'
+              }
+            : {
+                left: 'calc(50% - var(--card-w) + var(--overlap))', // left card intrudes into center
+                top: `${finalLeftTop}px`,
+                width: 'var(--card-w)',
+                height: 'var(--card-h)'
+              }
+
+          const textStyle = isRight
+            ? {
+                right: 0,
+                transform: 'translateX(50%)', // anchor at right edge, put 50% inside card
+                bottom: `${rightTextBottom}px`,
+                maxWidth: 'var(--text-max)',
+              }
+            : {
+                left: 0,
+                transform: 'translateX(-50%)', // anchor at left edge, put 50% inside card
+                top: 'var(--textL-top)',
+                maxWidth: 'var(--text-max)',
+              }
+
+          return (
+            <div
+              key={card.title}
+              className={`absolute ${isRight ? 'z-20' : leftHover ? 'z-30' : 'z-10'}`}
+              style={wrapperStyle as any}
+              onMouseEnter={() => !isRight && setLeftHover(true)}
+              onMouseLeave={() => !isRight && setLeftHover(false)}
+            >
+              <motion.div
+                animate={!isRight && leftHover ? { x: 16, scale: 1.02 } : { x: 0, scale: 1 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+                className="relative w-full h-full"
+              >
+                <Link
+                  href={card.href || '#'}
+                  aria-label={`${card.title} collection`}
+                  className="block relative w-full h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/30"
+                >
+                  <Image
+                    src={card.image}
+                    alt={card.title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                    priority={index === 0}
+                  />
+                </Link>
+              </motion.div>
+
+              <div
+                className={`absolute pointer-events-none z-30 ${isRight ? 'text-right' : 'text-left'}`}
+                style={textStyle as any}
+              >
+                <h3 className={`font-serif text-[3.6rem] leading-[1.05] font-medium ${card.textClass ?? ''}`}>
+                  {card.title}
+                </h3>
+                <p className={`mt-6 font-serif text-lg leading-relaxed ${card.textClass ?? ''}`}>
+                  {card.description}
+                </p>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+

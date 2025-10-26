@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type { CartItem, Product } from '@/lib/types'
 
 interface CartState {
@@ -6,31 +7,34 @@ interface CartState {
   subtotal: number
   shipping: number
   total: number
-  addItem: (product: Product) => void
+  addItem: (product: Product, quantity?: number) => void
   removeItem: (id: string | number) => void
   updateQuantity: (id: string | number, change: number) => void
+  clearCart: () => void
   calculateTotals: () => void
   initCart: () => void
 }
 
-export const useCartStore = create<CartState>((set, get) => ({
-  items: [],
-  subtotal: 0,
-  shipping: 0,
-  total: 0,
+export const useCartStore = create<CartState>()(
+  persist(
+    (set, get) => ({
+      items: [],
+      subtotal: 0,
+      shipping: 0,
+      total: 0,
 
-  addItem: (product) => {
+  addItem: (product, quantity = 1) => {
     const { items } = get()
     const existingItem = items.find((i) => i.id === product.id)
 
     if (existingItem) {
       set({
         items: items.map((i) =>
-          i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i
+          i.id === product.id ? { ...i, quantity: i.quantity + quantity } : i
         ),
       })
     } else {
-      set({ items: [...items, { ...product, quantity: 1 }] })
+      set({ items: [...items, { ...product, quantity }] })
     }
     get().calculateTotals()
   },
@@ -54,6 +58,10 @@ export const useCartStore = create<CartState>((set, get) => ({
     }
   },
 
+  clearCart: () => {
+    set({ items: [], subtotal: 0, shipping: 0, total: 0 })
+  },
+
   calculateTotals: () => {
     const { items } = get()
     const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
@@ -64,27 +72,33 @@ export const useCartStore = create<CartState>((set, get) => ({
   },
 
   initCart: () => {
-    // Demo items (same as original)
-    set({
-      items: [
-        {
-          id: 1,
-          name: 'Diamond Solitaire Ring',
-          price: 2850.0,
-          quantity: 1,
-          image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400',
-          variant: '18K White Gold, Size 6',
-        },
-        {
-          id: 2,
-          name: 'Pearl Drop Earrings',
-          price: 1250.0,
-          quantity: 1,
-          image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400',
-          variant: '14K Yellow Gold',
-        },
-      ],
-    })
+    const { items } = get()
+    if (items.length === 0) {
+      set({ subtotal: 0, shipping: 0, total: 0 })
+      return
+    }
     get().calculateTotals()
   },
-}))
+    }),
+    {
+      name: 'cart-storage',
+      skipHydration: false,
+      version: 2,
+      migrate: (persistedState, version) => {
+        const state = (persistedState as Partial<CartState>) ?? {}
+
+        if (version < 2) {
+          return {
+            ...state,
+            items: [],
+            subtotal: 0,
+            shipping: 0,
+            total: 0,
+          }
+        }
+
+        return state
+      },
+    }
+  )
+)

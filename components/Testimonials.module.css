@@ -1,6 +1,7 @@
 .testimonials {
   width: 100%;
-  padding: 80px 20px;
+  /* Reduce top padding to pull section up while keeping bottom spacing */
+  padding: 56px 20px 80px;
   background: var(--bg);
 }
 

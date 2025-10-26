@@ -9,7 +9,7 @@ import { useUIStore } from '@/lib/stores/ui-store'
 
 export function Header() {
   const { items } = useCartStore()
-  const { count: wishlistCount } = useWishlistStore()
+  const wishlistCount = useWishlistStore((state) => state.items.length)
   const { openNav, openSearch, openCart } = useUIStore()
 
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0)
@@ -51,7 +51,7 @@ export function Header() {
                 alt="ANNA PARIS"
                 width={137}
                 height={44}
-                style={{ height: '137px', width: 'auto' }}
+                style={{ width: '137px', height: 'auto' }}
                 priority
               />
             </Link>

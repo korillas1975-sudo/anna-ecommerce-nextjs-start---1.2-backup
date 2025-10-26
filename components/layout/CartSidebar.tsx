@@ -166,23 +166,27 @@ export function CartSidebar() {
             <div className="flex flex-col gap-3 mb-6">
               <div className="flex justify-between items-center text-[0.95rem] text-ink-2">
                 <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>THB {subtotal.toLocaleString()}</span>
               </div>
               <div className="flex justify-between items-center text-[0.95rem] text-ink-2">
                 <span>Shipping</span>
-                <span>{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span>
+                <span>{shipping === 0 ? 'Free' : `THB ${shipping.toLocaleString()}`}</span>
               </div>
               <div className="flex justify-between items-center pt-3 border-t border-hairline text-[1.1rem] font-medium text-ink mt-2">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>THB {total.toLocaleString()}</span>
               </div>
             </div>
 
             {/* Actions */}
             <div className="flex flex-col gap-3">
-              <button className="inline-flex items-center justify-center py-4 px-8 font-sans text-[0.95rem] tracking-[0.08em] bg-ink text-white border border-ink cursor-pointer transition-all hover:bg-ink-2">
+              <Link
+                href="/checkout"
+                onClick={closeCart}
+                className="inline-flex items-center justify-center py-4 px-8 font-sans text-[0.95rem] tracking-[0.08em] bg-ink text-white border border-ink cursor-pointer transition-all hover:bg-ink-2 no-underline text-center"
+              >
                 Proceed to Checkout
-              </button>
+              </Link>
               <Link
                 href="/cart"
                 onClick={closeCart}

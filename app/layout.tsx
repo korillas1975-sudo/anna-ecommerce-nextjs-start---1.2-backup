@@ -5,6 +5,7 @@ import { NavDrawer } from "@/components/layout/NavDrawer";
 import { SearchOverlay } from "@/components/layout/SearchOverlay";
 import { CartSidebar } from "@/components/layout/CartSidebar";
 import { CartInitializer } from "@/components/CartInitializer";
+import SessionProvider from "@/components/providers/SessionProvider";
 
 export const metadata: Metadata = {
   title: "ANNA PARIS – Quiet Luxury",
@@ -20,12 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <CartInitializer />
-        <Header />
-        <NavDrawer />
-        <SearchOverlay />
-        <CartSidebar />
-        {children}
+        <SessionProvider>
+          <CartInitializer />
+          <Header />
+          <NavDrawer />
+          <SearchOverlay />
+          <CartSidebar />
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );
