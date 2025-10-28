@@ -54,8 +54,26 @@ export default function CheckoutPage() {
 
       if (response.ok) {
         const order = await response.json()
-        clearCart()
-        router.push(`/checkout/success?orderNumber=${order.orderNumber}`)
+        if (paymentData.method === 'credit_card') {
+          // Create Stripe Checkout session and redirect
+          const res = await fetch('/api/payments/stripe/create-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId: order.orderId }),
+          })
+          if (!res.ok) throw new Error('Failed to start payment')
+          const data = await res.json()
+          if (data.url) {
+            // Do not clear cart yet; clear after success
+            window.location.href = data.url as string
+            return
+          }
+          throw new Error('Payment URL missing')
+        } else {
+          // Non-card method: finish order locally
+          clearCart()
+          router.push(`/checkout/success?orderNumber=${order.orderNumber}`)
+        }
       } else {
         alert('Failed to create order. Please try again.')
       }

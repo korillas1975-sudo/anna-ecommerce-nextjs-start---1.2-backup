@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { auth } from '@/lib/auth'
+import { ProductUpdateSchema, zodErrorToFields } from '@/lib/validation'
 
 export async function GET(
   request: Request,
@@ -107,6 +108,10 @@ export async function PATCH(
     }
 
     const body = await request.json()
+    const parsed = ProductUpdateSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Validation failed', errors: zodErrorToFields(parsed.error) }, { status: 400 })
+    }
     const {
       name,
       slug,
@@ -117,7 +122,7 @@ export async function PATCH(
       categoryId,
       published,
       featured,
-    } = body
+    } = parsed.data
 
     const product = await db.product.update({
       where: { slug: slugParam },

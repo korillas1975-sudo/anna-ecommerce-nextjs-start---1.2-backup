@@ -37,27 +37,59 @@ const defaultCards: [Card, Card] = [
 export default function OverlapShowcase({ cards = defaultCards }: { cards?: [Card, Card] }) {
   const [front, setFront] = useState<'left' | 'right'>(() => 'right')
   return (
-    <section className="relative w-full h-[700px] bg-bg">
-      <div
-        className="relative h-full max-w-[1400px] mx-auto px-5 md:px-10"
-        style={{
-          '--card-w': '584px',
-          '--card-h': '383px',
-          '--overlap': '40px',
-          '--textL-top': '12%',
-          '--textR-top': '16%',
-          '--textR-shift': '50%',
-          '--text-max': '420px',
-          '--gutter': 'min(6vw, 64px)',
-          '--hover-x': '16px',
-        } as React.CSSProperties}
-      >
-        {cards.map((card, index) => {
-          // Center the whole block vertically without changing relative offsets
-          const SECTION_H = 700
-          const CARD_H = 383
-          const LEFT_TEXT_TOP_PCT = 0.12
-          const leftTopPx = 0 // was 0%
+    <section className="relative w-full bg-bg py-8 md:py-10">
+      <div className="relative max-w-[1400px] mx-auto px-5 md:px-10">
+        {/* Mobile-first: stacked cards (no absolute positioning) */}
+        <div className="grid gap-4 md:hidden">
+          {cards.map((card, index) => (
+            <div key={card.title} className="border border-[var(--hairline)] overflow-hidden">
+              <Link
+                href={card.href || '#'}
+                aria-label={`${card.title} collection`}
+                className="group block relative aspect-[3/4] w-full"
+              >
+                <Image
+                  src={card.image}
+                  alt={card.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
+                  priority={index === 0}
+                />
+              </Link>
+              <div className="px-4 py-3">
+                <h3 className="font-serif text-[1.5rem] text-ink font-medium leading-snug">
+                  {card.title}
+                </h3>
+                <p className="mt-2 font-serif text-[0.95rem] text-ink/75 leading-relaxed">
+                  {card.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop: overlapped showcase (kept, but gated behind md) */}
+        <div
+          className="relative hidden md:block md:h-[700px]"
+          style={{
+            '--card-w': '584px',
+            '--card-h': '383px',
+            '--overlap': '40px',
+            '--textL-top': '12%',
+            '--textR-top': '16%',
+            '--textR-shift': '50%',
+            '--text-max': '420px',
+            '--gutter': 'min(6vw, 64px)',
+            '--hover-x': '16px',
+          } as React.CSSProperties}
+        >
+          {cards.map((card, index) => {
+            // Center the whole block vertically without changing relative offsets
+            const SECTION_H = 700
+            const CARD_H = 383
+            const LEFT_TEXT_TOP_PCT = 0.12
+            const leftTopPx = 0 // was 0%
           const rightTopPx = Math.round(0.22 * SECTION_H) // was 22% of section height
           const minTop = Math.min(leftTopPx, rightTopPx)
           const delta = Math.abs(rightTopPx - leftTopPx)
@@ -97,48 +129,49 @@ export default function OverlapShowcase({ cards = defaultCards }: { cards?: [Car
                 maxWidth: 'var(--text-max)',
               }
 
-          return (
-            <div
-              key={card.title}
-              className="absolute"
-              style={{ ...(wrapperStyle as React.CSSProperties), zIndex: isFront ? 30 : isRight ? 20 : 10 }}
-              onMouseEnter={() => setFront(isRight ? 'right' : 'left')}
-            >
-              <motion.div
-                animate={isFront ? { x: isRight ? -10 : 10, scale: 1.02 } : { x: 0, scale: 1 }}
-                transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-                className="relative w-full h-full"
-              >
-                <Link
-                  href={card.href || '#'}
-                  aria-label={`${card.title} collection`}
-                  className="block relative w-full h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/30"
-                >
-                  <Image
-                    src={card.image}
-                    alt={card.title}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover"
-                    priority={index === 0}
-                  />
-                </Link>
-              </motion.div>
-
+            return (
               <div
-                className={`absolute pointer-events-none z-30 ${isRight ? 'text-right' : 'text-left'}`}
-                style={textStyle as React.CSSProperties}
+                key={card.title}
+                className="absolute"
+                style={{ ...(wrapperStyle as React.CSSProperties), zIndex: isFront ? 30 : isRight ? 20 : 10 }}
+                onMouseEnter={() => setFront(isRight ? 'right' : 'left')}
               >
-                <h3 className="font-serif text-[3.6rem] leading-[1.05] font-medium text-[#0F1A24]">
-                  {card.title}
-                </h3>
-                <p className="mt-6 font-serif text-lg leading-relaxed text-[#0F1A24]">
-                  {card.description}
-                </p>
+                <motion.div
+                  animate={isFront ? { x: isRight ? -10 : 10, scale: 1.02 } : { x: 0, scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+                  className="relative w-full h-full"
+                >
+                  <Link
+                    href={card.href || '#'}
+                    aria-label={`${card.title} collection`}
+                    className="block relative w-full h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/30"
+                  >
+                    <Image
+                      src={card.image}
+                      alt={card.title}
+                      fill
+                      sizes="(max-width: 1280px) 80vw, 50vw"
+                      className="object-cover"
+                      priority={index === 0}
+                    />
+                  </Link>
+                </motion.div>
+
+                <div
+                  className={`absolute pointer-events-none z-30 ${isRight ? 'text-right' : 'text-left'}`}
+                  style={textStyle as React.CSSProperties}
+                >
+                  <h3 className="font-serif text-[3.6rem] leading-[1.05] font-medium text-[#0F1A24]">
+                    {card.title}
+                  </h3>
+                  <p className="mt-6 font-serif text-lg leading-relaxed text-[#0F1A24]">
+                    {card.description}
+                  </p>
+                </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
     </section>
   )

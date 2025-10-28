@@ -3,10 +3,21 @@
 import Link from 'next/link'
 import { CheckCircle } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
+import { useCartStore } from '@/lib/stores/cart-store'
 
 export default function CheckoutSuccessPage() {
   const searchParams = useSearchParams()
   const orderNumber = searchParams.get('orderNumber') || 'N/A'
+  const sessionId = searchParams.get('session_id')
+  const clearCart = useCartStore((s) => s.clearCart)
+
+  useEffect(() => {
+    // If returning from Stripe success, clear the cart once
+    if (sessionId) {
+      clearCart()
+    }
+  }, [sessionId, clearCart])
 
   return (
     <main className="min-h-screen bg-bg flex items-center justify-center">

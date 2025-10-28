@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client'
+﻿import { PrismaClient } from '@prisma/client'
 import { hash } from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌱 Starting seed...')
+  console.log('ðŸŒ± Starting seed...')
 
   // Create Admin User
   const adminPassword = await hash('admin123', 12)
@@ -18,7 +18,7 @@ async function main() {
       role: 'admin',
     },
   })
-  console.log('✅ Admin user created')
+  console.log('âœ… Admin user created')
 
   // Create Demo Customer
   const customerPassword = await hash('customer123', 12)
@@ -32,7 +32,7 @@ async function main() {
       role: 'customer',
     },
   })
-  console.log('✅ Demo customer created')
+  console.log('âœ… Demo customer created')
 
   // Create Categories
   const categories = [
@@ -65,11 +65,18 @@ async function main() {
       sortOrder: 4,
     },
     {
-      name: 'Bridal',
-      slug: 'bridal',
-      description: 'Perfect jewelry for your special day',
+      name: 'Sets',
+      slug: 'sets',
+      description: 'Curated jewelry sets and matching pieces',
       image: 'https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=800&fit=crop&q=85',
       sortOrder: 5,
+    },
+    {
+      name: 'Others',
+      slug: 'others',
+      description: 'Accessories and miscellaneous jewelry items',
+      image: 'https://images.unsplash.com/photo-1612810806695-30f7a8258391?w=800&fit=crop&q=85',
+      sortOrder: 6,
     },
   ]
 
@@ -82,7 +89,23 @@ async function main() {
     })
     createdCategories.push(category)
   }
-  console.log('✅ Categories created')
+  console.log('âœ… Categories created')
+
+  // Data mapping: migrate legacy 'bridal' category to 'sets'
+  try {
+    const legacyBridal = await prisma.category.findUnique({ where: { slug: 'bridal' } })
+    const setsCategory = createdCategories.find((c) => c.slug === 'sets')
+    if (legacyBridal && setsCategory) {
+      const moved = await prisma.product.updateMany({
+        where: { categoryId: legacyBridal.id },
+        data: { categoryId: setsCategory.id },
+      })
+      await prisma.category.delete({ where: { id: legacyBridal.id } }).catch(() => null)
+      console.log(`Migrated ${moved.count} products from 'bridal' to 'sets' and removed legacy category`)
+    }
+  } catch (e) {
+    console.warn('Data mapping (bridal->sets) skipped:', e)
+  }
 
   // Create Products
   const products = [
@@ -341,7 +364,7 @@ async function main() {
       tags: JSON.stringify(['statement', 'cocktail', 'gemstone']),
     },
 
-    // Bridal (10 products)
+    // Sets (10 products)
     {
       name: 'Bridal Pearl Set',
       slug: 'bridal-pearl-set',
@@ -396,9 +419,31 @@ async function main() {
       price: 14800,
       stock: 12,
       sku: 'BRID-005',
-      images: JSON.stringify(['https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&fit=crop&q=85']),
+      images: JSON.stringify([
+        'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1500&h=1875&fit=crop&q=85',
+        'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1500&h=1875&fit=crop&q=85&crop=focalpoint&fp-x=0.3&fp-y=0.35',
+        'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1500&h=1875&fit=crop&q=85&crop=focalpoint&fp-x=0.7&fp-y=0.4',
+        'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1500&h=1875&fit=crop&q=85&crop=focalpoint&fp-x=0.5&fp-y=0.2',
+        'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1500&h=1875&fit=crop&q=85&crop=edges',
+        'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1500&h=1875&fit=crop&q=85&sat=-15',
+        'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1500&h=1875&fit=crop&q=85&blur=5&sharp=5',
+        'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1500&h=1875&fit=crop&q=85&exp=5'
+      ]),
       categoryId: createdCategories[4].id,
       tags: JSON.stringify(['bridal', 'bracelet', 'elegant']),
+    },
+
+    // Others (at least 1 product)
+    {
+      name: 'Premium Jewelry Care Kit',
+      slug: 'premium-jewelry-care-kit',
+      description: 'Keep your pieces pristine: cleaning solution, soft cloth, and brush.',
+      price: 1500,
+      stock: 50,
+      sku: 'OTH-001',
+      images: JSON.stringify(['https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&fit=crop&q=85']),
+      categoryId: createdCategories[5].id,
+      tags: JSON.stringify(['care', 'accessory']),
     },
   ]
 
@@ -411,7 +456,7 @@ async function main() {
     })
     createdProducts.push(product)
   }
-  console.log(`✅ ${products.length} Products created`)
+  console.log(`âœ… ${products.length} Products created`)
 
   // Create demo order for customer
   const demoOrder = await prisma.order.create({
@@ -445,15 +490,15 @@ async function main() {
       },
     },
   })
-  console.log('✅ Demo order created')
+  console.log('âœ… Demo order created')
 
-  console.log('✨ Seed completed successfully!')
+  console.log('âœ¨ Seed completed successfully!')
   console.log('')
-  console.log('📧 Admin Login:')
+  console.log('ðŸ“§ Admin Login:')
   console.log('   Email: admin@annaparis.com')
   console.log('   Password: admin123')
   console.log('')
-  console.log('📧 Customer Login:')
+  console.log('ðŸ“§ Customer Login:')
   console.log('   Email: customer@example.com')
   console.log('   Password: customer123')
 }
@@ -466,3 +511,4 @@ main()
   .finally(async () => {
     await prisma.$disconnect()
   })
+

@@ -160,7 +160,8 @@ export default function AdminOrdersPage() {
           </div>
         ) : (
           <div className="bg-white border border-hairline overflow-hidden">
-            <table className="w-full">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[720px]">
               <thead className="bg-platinum/30 border-b border-hairline">
                 <tr>
                   {cols.orderNumber && <th className="text-left px-6 py-4 text-sm font-medium text-ink">Order Number</th>}
@@ -216,6 +217,7 @@ export default function AdminOrdersPage() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         )}
       </div>

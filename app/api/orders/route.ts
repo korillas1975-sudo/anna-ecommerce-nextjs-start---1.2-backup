@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { auth } from '@/lib/auth'
 import { z } from 'zod'
+import { rateLimit } from '@/lib/rate-limit'
 
 const FREE_SHIPPING_THRESHOLD = 3000
 const FLAT_SHIPPING_FEE = 50
@@ -61,6 +62,8 @@ function parseJSON<T>(value: string | null, fallback: T): T {
 
 export async function POST(request: Request) {
   try {
+    const limited = rateLimit(request, 'orders:create', 10, 60 * 1000)
+    if (!limited.ok) return limited.response
     const session = await auth()
     const body = await request.json()
 

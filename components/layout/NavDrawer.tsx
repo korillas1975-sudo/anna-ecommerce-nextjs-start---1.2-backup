@@ -2,25 +2,25 @@
 
 import { useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, User, LogOut } from 'lucide-react'
+import { useSession, signOut } from 'next-auth/react'
 import { useUIStore } from '@/lib/stores/ui-store'
 import { cn } from '@/lib/utils/cn'
 
 const navLinks = [
+  { href: '/products', label: 'All Products' },
   { href: '/#categories', label: 'Categories' },
   { href: '#', label: 'Best Sellers' },
   { href: '#', label: 'Collection' },
-  { href: '#', label: 'Sets & Matching' },
   { type: 'separator' },
   { href: '#', label: 'Gallery / Lookbook' },
-  { href: '#', label: 'Customize & Engraving' },
   { href: '#', label: 'Size Guide' },
-  { href: '#', label: 'Contact' },
-  { href: '#', label: 'About Anna Paris' },
-  { href: '#', label: 'Stories' },
+  { href: '/contact', label: 'Contact' },
+  { href: '/about', label: 'About Anna Paris' },
 ]
 
 export function NavDrawer() {
+  const { data: session } = useSession()
   const { isNavOpen, closeNav } = useUIStore()
 
   // Handle body scroll lock
@@ -44,6 +44,11 @@ export function NavDrawer() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isNavOpen, closeNav])
 
+  const handleLogout = async () => {
+    closeNav()
+    await signOut({ callbackUrl: '/' })
+  }
+
   return (
     <>
       {/* Backdrop */}
@@ -65,6 +70,60 @@ export function NavDrawer() {
         aria-hidden={!isNavOpen}
       >
         <nav className="relative h-full px-5 pt-[calc(16px+env(safe-area-inset-top))] pb-[calc(20px+env(safe-area-inset-bottom))] flex flex-col">
+          {/* Account Section */}
+          {session?.user ? (
+            <div className="mb-6 pb-6 border-b border-white/[0.18]">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                  <User className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-white font-medium text-sm">
+                    {(session.user as { name?: string }).name || 'Customer'}
+                  </p>
+                  <p className="text-white/60 text-xs">
+                    {(session.user as { email?: string }).email}
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <Link
+                  href="/account"
+                  onClick={closeNav}
+                  className="flex-1 text-center py-2 px-3 bg-white/10 hover:bg-white/20 text-white text-sm transition-colors"
+                >
+                  My Account
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center justify-center gap-2 py-2 px-3 bg-red-500/20 hover:bg-red-500/30 text-white text-sm transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Logout</span>
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="mb-6 pb-6 border-b border-white/[0.18]">
+              <div className="flex gap-2">
+                <Link
+                  href="/auth/login"
+                  onClick={closeNav}
+                  className="flex-1 text-center py-3 px-4 bg-white/10 hover:bg-white/20 text-white text-sm font-medium transition-colors"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/auth/register"
+                  onClick={closeNav}
+                  className="flex-1 text-center py-3 px-4 bg-white hover:bg-white/90 text-ink text-sm font-medium transition-colors"
+                >
+                  Register
+                </Link>
+              </div>
+            </div>
+          )}
+
           {/* Navigation Links */}
           <ul className="list-none m-0 p-0 flex flex-col gap-3.5 overflow-auto scrollbar-hide">
             {navLinks.map((link, index) => {
@@ -81,7 +140,7 @@ export function NavDrawer() {
                   <Link
                     href={link.href || '#'}
                     onClick={closeNav}
-                    className="block py-2.5 px-0.5 text-white opacity-92 tracking-[0.04em] transition-all duration-200 ease-out hover:tracking-[0.06em] hover:opacity-100 focus-visible:tracking-[0.06em] focus-visible:opacity-100"
+                    className="block w-full text-left bg-transparent border-0 text-[1.05rem] tracking-[0.025em] text-white hover:text-white/70 transition-colors py-1.5"
                   >
                     {link.label}
                   </Link>
@@ -93,11 +152,11 @@ export function NavDrawer() {
           {/* Close Button */}
           <button
             onClick={closeNav}
-            className="absolute top-[calc(12px+env(safe-area-inset-top))] right-3 border border-white/[0.36] bg-ink/[0.22] backdrop-blur-md text-white py-1.5 px-2.5 leading-none cursor-pointer transition-colors hover:bg-ink/[0.35]"
-            type="button"
+            className="mt-auto flex items-center justify-center gap-2.5 w-full min-h-[52px] bg-white/[0.11] border border-white/[0.28] text-white hover:bg-white/[0.18] transition-colors"
             aria-label="Close menu"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-5 h-5" />
+            <span className="text-sm tracking-[0.12em] font-medium">CLOSE</span>
           </button>
         </nav>
       </aside>

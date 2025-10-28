@@ -18,6 +18,48 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
+  // S3/CloudFront images domain (optional via env)
+  // Will be appended below if configured
+  async headers() {
+    const isDev = process.env.NODE_ENV !== 'production'
+    const csp = [
+      "default-src 'self'",
+      "script-src 'self'" + (isDev ? " 'unsafe-eval' 'unsafe-inline'" : ""),
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: blob: https://images.unsplash.com https://upload.wikimedia.org",
+      "font-src 'self' data:",
+      "connect-src 'self'",
+      "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+    ].join('; ')
+
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'Content-Security-Policy', value: csp },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Permissions-Policy', value: 'geolocation=(), camera=(), microphone=(), payment=()' },
+        ],
+      },
+    ]
+  },
 };
+
+// Optionally allow S3/CloudFront domain for product images from env
+const s3Domain = process.env.NEXT_PUBLIC_S3_PUBLIC_DOMAIN || process.env.NEXT_PUBLIC_S3_BASE_URL
+if (s3Domain) {
+  try {
+    const url = new URL(s3Domain.startsWith('http') ? s3Domain : `https://${s3Domain}`)
+    ;(nextConfig.images!.remotePatterns as any[]).push({
+      protocol: url.protocol.replace(':', ''),
+      hostname: url.hostname,
+      pathname: '/**',
+    })
+  } catch {}
+}
 
 export default nextConfig;

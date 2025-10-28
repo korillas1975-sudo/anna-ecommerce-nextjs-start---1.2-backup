@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { auth } from '@/lib/auth'
+import { OrderStatusSchema, zodErrorToFields } from '@/lib/validation'
+import { sendMail } from '@/lib/email/mailer'
+import { renderOrderShipped } from '@/lib/email/templates'
 import type { Order, OrderItem, Product, Address } from '@prisma/client'
 
 function parseJSON<T>(value: string | null, fallback: T): T {
@@ -110,7 +113,11 @@ export async function PATCH(
     }
 
     const body = await request.json()
-    const { status } = body
+    const parsed = OrderStatusSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Validation failed', errors: zodErrorToFields(parsed.error) }, { status: 400 })
+    }
+    const { status } = parsed.data
 
     const order = await db.order.update({
       where: { id },
@@ -122,8 +129,20 @@ export async function PATCH(
           },
         },
         shippingAddress: true,
+        user: { select: { email: true } },
       },
     })
+
+    // If status moved to shipped, send notification (best-effort)
+    if (status === 'shipped') {
+      try {
+        const { subject, html, text } = renderOrderShipped(order as any)
+        const to = order.user?.email || 'customer@example.com'
+        await sendMail({ to, subject, html, text })
+      } catch (e) {
+        console.error('Order shipped email error:', e)
+      }
+    }
 
     return NextResponse.json(serializeOrder(order))
   } catch (error) {

@@ -1,236 +1,101 @@
-# ANNA PARIS – Quiet Luxury E-Commerce
+# ANNA PARIS — Quiet Luxury E‑Commerce
 
-🎯 **Next.js 15 + App Router + Headless Commerce Migration**
+**Next.js 15 • App Router • React 19 • TypeScript • Tailwind v4 • Prisma • NextAuth • Stripe (Test Mode)**
 
-Migrated from vanilla HTML/CSS/JS to modern Next.js stack while preserving 100% of the original UI/UX.
-
----
-
-## 🚀 Tech Stack
-
-- **Next.js 15** (App Router + Turbopack)
-- **React 19**
-- **TypeScript**
-- **Tailwind CSS v4**
-- **Framer Motion** (Parallax Effects)
-- **Zustand** (State Management)
-- **Lucide React** (Icons)
+Migrated from vanilla HTML/CSS/JS to a modern Next.js stack while preserving the original UI/UX and hardening for production.
 
 ---
 
-## ✨ Features
-
-### ✅ Migrated Features
-- ✨ Hero Section with Video Background + Parallax Effect
-- 🎨 Glassmorphism UI (Quiet Luxury Design)
-- 📱 Mobile-First Responsive Design
-- 🔍 Search Overlay (Cmd/Ctrl+K Support)
-- 🛒 Shopping Cart Sidebar with Real-time Updates
-- ❤️ Wishlist System
-- 🎯 Navigation Drawer
-- 🎭 Smooth Animations & Transitions
-- ⌨️ Keyboard Shortcuts (ESC, Cmd+K)
-
-### 🎨 Design System
-- **Colors**: Quiet Luxury Palette (Ink, Platinum, Champagne)
-- **Typography**: Playfair Display (Serif) + Lato (Sans)
-- **Layout**: CSS Variables + Tailwind Utilities
-- **Animations**: Framer Motion + CSS Keyframes
+## Tech Stack
+- Next.js 15 (App Router), React 19, TypeScript
+- Tailwind CSS v4, Framer Motion, GSAP
+- Prisma ORM (SQLite for dev, Postgres for prod)
+- NextAuth v5 (JWT + Prisma Adapter)
+- Zustand (localStorage persistence)
+- Stripe (Test Mode) + Webhooks
 
 ---
 
-## 📂 Project Structure
+## Features
+- Hero with video background + parallax
+- Quiet Luxury design system; mobile‑first responsive
+- Search overlay (Cmd/Ctrl+K), cart sidebar, wishlist
+- Product listing, filters/search, detail with gallery
+- Checkout (Shipping → Payment → Review), stock updates
+- Admin dashboard, products, orders, customers, content
+- SEO (OG/Twitter), sitemap.xml, robots.txt
+- Security headers (CSP, referrer‑policy, etc.)
 
+---
+
+## Project Structure
 ```
-anna-ecommerce-nextjs/
-├── app/
-│   ├── layout.tsx              # Root Layout
-│   ├── page.tsx                # Home Page (Hero Section)
-│   └── globals.css             # Global Styles
-├── components/
-│   ├── layout/
-│   │   ├── Header.tsx
-│   │   ├── NavDrawer.tsx
-│   │   ├── SearchOverlay.tsx
-│   │   └── CartSidebar.tsx
-│   ├── hero/
-│   │   └── HeroSection.tsx
-│   └── CartInitializer.tsx
-├── lib/
-│   ├── stores/                 # Zustand State Management
-│   │   ├── cart-store.ts
-│   │   ├── wishlist-store.ts
-│   │   └── ui-store.ts
-│   ├── types/
-│   │   └── index.ts
-│   └── utils/
-│       └── cn.ts
-└── public/
-    └── assets/
-        ├── img/
-        ├── videos/
-        └── data/
-            └── content.json
+app/                # App Router pages, API routes
+components/         # UI components
+lib/                # Auth, DB, state, utils, email
+prisma/             # Prisma schema(s), seed
+public/             # Static assets
 ```
 
 ---
 
-## 🛠️ Development
-
-### Install Dependencies
-```bash
+## Getting Started
+1) Install
+```
 npm install
 ```
 
-### Run Development Server
-```bash
+2) Environment
+```
+cp .env.example .env.local
+```
+Fill:
+- Dev DB (SQLite): `DATABASE_URL="file:./prisma/dev.db"`
+- Auth: `NEXTAUTH_URL`, `NEXTAUTH_SECRET`
+- Stripe (test): `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`
+- SMTP (optional): `SMTP_HOST/SMTP_PORT/SMTP_USER/SMTP_PASS/SMTP_FROM`
+
+3) Database (dev)
+```
+npx prisma generate
+npm run db:push
+npm run seed   # optional
+```
+
+4) Run
+```
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
+---
 
-### Build for Production
-```bash
-npm run build
-```
-
-### Start Production Server
-```bash
-npm start
-```
+## Production Database (Postgres)
+- Use `PRISMA_SCHEMA=prisma/schema.postgres.prisma`
+- `npx prisma migrate deploy` during deploy/CI
+- See `DEPLOYMENT.md` for details
 
 ---
 
-## 🎯 Migration Highlights
-
-### Before (Vanilla)
-- Manual DOM manipulation
-- jQuery-style selectors
-- Imperative state management
-- No type safety
-- Manual bundling
-
-### After (Next.js)
-- ✅ React Components (Reusable)
-- ✅ TypeScript (Type-safe)
-- ✅ Zustand (Declarative State)
-- ✅ Automatic Code Splitting
-- ✅ SSR/SSG Ready
-- ✅ Built-in Image Optimization
-- ✅ 5-10x Faster Development
+## Recent Highlights
+- Stripe (Test Mode) checkout + webhook status update
+- Order confirmation + shipped emails (SMTP)
+- Wishlist API + client sync on login
+- Admin Customers/Content pages
+- Security: guards, validation, rate limiting, headers
+- SEO: metadata, sitemap/robots
 
 ---
 
-## 🔧 Configuration
-
-### Environment Variables
-Create a `.env.local` file:
-```env
-NEXT_PUBLIC_BASE_URL=http://localhost:3000
-```
-
-### Tailwind CSS v4
-Uses CSS variables in `app/globals.css`:
-```css
-:root {
-  --ink: #0F1A24;
-  --bg: #FCFCFD;
-  --platinum: #EDEFF5;
-  /* ... */
-}
-```
+## Scripts
+- `npm run dev` — start dev server
+- `npm run build` — production build
+- `npm start` — start production server
+- `npm test` — run unit tests (Vitest)
+- `npm run db:push` — push dev schema (SQLite)
+- `npx prisma migrate deploy` — apply migrations (Postgres)
 
 ---
 
-## 📝 State Management
-
-### Cart Store
-```typescript
-import { useCartStore } from '@/lib/stores/cart-store'
-
-const { items, addItem, removeItem, updateQuantity } = useCartStore()
-```
-
-### UI Store
-```typescript
-import { useUIStore } from '@/lib/stores/ui-store'
-
-const { openCart, closeCart, openSearch } = useUIStore()
-```
-
-### Wishlist Store
-```typescript
-import { useWishlistStore } from '@/lib/stores/wishlist-store'
-
-const { count } = useWishlistStore()
-```
-
----
-
-## 🎨 Styling
-
-- **Tailwind Utilities**: Used for 90% of styling
-- **CSS Variables**: For design tokens
-- **Framer Motion**: For complex animations
-- **Global CSS**: For base styles & keyframes
-
----
-
-## 🚧 Next Steps (Headless Commerce)
-
-### Option 1: Shopify Storefront API
-```bash
-npm install @shopify/hydrogen-react
-```
-
-### Option 2: Medusa.js
-```bash
-npm install @medusajs/medusa-react
-```
-
-### Option 3: Commerce.js
-```bash
-npm install @chec/commerce.js
-```
-
----
-
-## 📊 Performance
-
-- **First Load JS**: ~178 kB
-- **Build Time**: ~1.2s (Turbopack)
-- **Dev Server**: ~900ms startup
-- ✅ Static Generation Ready
-- ✅ Image Optimization
-- ✅ Code Splitting
-
----
-
-## 🎯 Key Benefits
-
-1. **Type Safety**: TypeScript catches bugs before runtime
-2. **Component Reusability**: Easy to add new pages/features
-3. **SEO Ready**: Server-side rendering support
-4. **Performance**: Automatic optimizations
-5. **Developer Experience**: Hot reload, better debugging
-6. **Scalability**: Headless commerce integration ready
-
----
-
-## 📄 License
-
+## License
 MIT
 
----
-
-## 👨‍💻 Author
-
-Migrated by AI Assistant specialized in Next.js + Headless Commerce
-
----
-
-## 🙏 Credits
-
-- Original Design: ANNA PARIS
-- Fonts: Google Fonts (Playfair Display, Lato)
-- Icons: Lucide React

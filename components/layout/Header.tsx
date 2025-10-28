@@ -3,16 +3,19 @@
 import { Search, User, Heart } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useSession } from 'next-auth/react'
 import { useCartStore } from '@/lib/stores/cart-store'
 import { useWishlistStore } from '@/lib/stores/wishlist-store'
 import { useUIStore } from '@/lib/stores/ui-store'
 
 export function Header() {
+  const { data: session } = useSession()
   const { items } = useCartStore()
   const wishlistCount = useWishlistStore((state) => state.items.length)
   const { openNav, openSearch, openCart } = useUIStore()
 
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0)
+  const accountUrl = session?.user ? '/account' : '/auth/login'
 
   return (
     <>
@@ -69,11 +72,15 @@ export function Header() {
 
               {/* Account */}
               <Link
-                href="/account"
+                href={accountUrl}
                 className="relative inline-flex items-center justify-center w-10 h-10 bg-transparent border-0 text-ink cursor-pointer transition-colors hover:text-ink-2"
                 aria-label="Account"
+                title={session?.user ? 'My Account' : 'Sign In'}
               >
                 <User className="w-5 h-5" strokeWidth={1.5} />
+                {session?.user && (
+                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full border border-white" />
+                )}
               </Link>
 
               {/* Wishlist */}

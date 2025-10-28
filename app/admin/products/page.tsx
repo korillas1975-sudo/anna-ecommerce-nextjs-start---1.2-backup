@@ -55,10 +55,10 @@ export default function AdminProductsPage() {
             <div className="flex gap-3">
               <Link href="/admin" className="text-sm hover:text-champagne transition-colors">Back to Dashboard</Link>
               <button onClick={() => signOut({ callbackUrl: '/auth/login' })} className="border border-white/30 text-white/90 px-3 py-2 text-sm hover:bg-white/10">Sign out</button>
-              <button className="flex items-center gap-2 bg-champagne text-ink px-4 py-2 text-sm font-medium hover:bg-champagne/90 transition-colors">
+              <Link href="/admin/products/new" className="flex items-center gap-2 bg-champagne text-ink px-4 py-2 text-sm font-medium hover:bg-champagne/90 transition-colors">
                 <Plus className="w-4 h-4" />
                 Add Product
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -69,7 +69,8 @@ export default function AdminProductsPage() {
           <div className="text-center py-20">Loading...</div>
         ) : (
           <div className="bg-white admin-card border border-hairline overflow-hidden">
-            <table className="w-full">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[720px]">
               <thead className="bg-platinum/30 border-b border-hairline">
                 <tr>
                   <th className="text-left px-6 py-4 text-sm font-medium text-ink">Product</th>
@@ -116,10 +117,10 @@ export default function AdminProductsPage() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         )}
       </div>
     </main>
   )
 }
-
