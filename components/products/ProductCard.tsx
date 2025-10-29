@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { type MouseEvent } from 'react'
 import { motion } from 'framer-motion'
@@ -46,7 +46,17 @@ export default function ProductCard({ product, index }: { product: Product; inde
       transition={{ duration: 0.5, delay: index * 0.05 }}
       className="group"
     >
-      <Link href={`/products/${product.slug}`} className="block">
+      <Link
+        href={`/products/${product.slug}`}
+        className="block"
+        onClick={() => {
+          try {
+            const ret = window.location.pathname + window.location.search
+            sessionStorage.setItem('plp:return', ret)
+            sessionStorage.setItem(`plp:scroll:${window.location.search}`, String(window.scrollY))
+          } catch {}
+        }}
+      >
         <div className="relative aspect-[3/4] overflow-hidden bg-platinum/20 mb-3 md:mb-4">
           <Image
             src={product.images[0]}
@@ -94,11 +104,11 @@ export default function ProductCard({ product, index }: { product: Product; inde
           </h3>
           <div className="flex items-center gap-2">
             <p className="font-sans text-[0.9rem] md:text-[0.95rem] text-ink font-medium">
-              ฿{product.price.toLocaleString()}
+              à¸¿{product.price.toLocaleString()}
             </p>
             {hasDiscount && (
               <p className="font-sans text-[0.8rem] text-ink-2/40 line-through">
-                ฿{product.compareAtPrice!.toLocaleString()}
+                à¸¿{product.compareAtPrice!.toLocaleString()}
               </p>
             )}
           </div>
@@ -107,3 +117,4 @@ export default function ProductCard({ product, index }: { product: Product; inde
     </motion.div>
   )
 }
+

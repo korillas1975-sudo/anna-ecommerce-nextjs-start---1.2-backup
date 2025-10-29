@@ -1,10 +1,10 @@
 ﻿'use client'
 
-
 import { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Heart, Truck, RefreshCw, Shield, X, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Share2 } from 'lucide-react'
+import { Heart, Truck, RefreshCw, Shield, Share2 } from 'lucide-react'
+import GalleryUnified from './GalleryUnified'
+import FullscreenViewer from './FullscreenViewer'
 import { useCartStore } from '@/lib/stores/cart-store'
 import { useWishlistStore } from '@/lib/stores/wishlist-store'
 
@@ -18,134 +18,27 @@ interface Product {
   images: string[]
   category: { name: string }
   stock: number
-}
-
-function ZoomableImage({ src, alt }: { src: string; alt: string }) {
-  const [zoomActive, setZoomActive] = useState(false)
-  const [origin, setOrigin] = useState<{ x: number; y: number }>({ x: 50, y: 50 })
-
-  const onMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
-    const x = ((e.clientX - rect.left) / rect.width) * 100
-    const y = ((e.clientY - rect.top) / rect.height) * 100
-    setOrigin({ x, y })
-  }
-
-  return (
-    <div
-      className="absolute inset-0"
-      onMouseEnter={() => setZoomActive(true)}
-      onMouseLeave={() => setZoomActive(false)}
-      onMouseMove={onMove}
-    >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes="(max-width: 1024px) 100vw, 600px"
-        className="object-cover transition-transform duration-200 ease-out"
-        style={{
-          transform: zoomActive ? 'scale(1.75)' : 'scale(1)',
-          transformOrigin: `${origin.x}% ${origin.y}%`,
-        }}
-        priority
-      />
-    </div>
-  )
-}
-
-function VerticalThumbnails({
-  images,
-  productName,
-  selectedIndex,
-  onHover,
-  onClick,
-}: {
-  images: string[]
-  productName: string
-  selectedIndex: number
-  onHover: (i: number) => void
-  onClick: (i: number) => void
-}) {
-  const ref = useRef<HTMLDivElement | null>(null)
-  const scrollByAmount = 190
-
-  const scrollUp = () => {
-    if (ref.current) ref.current.scrollBy({ top: -scrollByAmount, behavior: 'smooth' })
-  }
-  const scrollDown = () => {
-    if (ref.current) ref.current.scrollBy({ top: scrollByAmount, behavior: 'smooth' })
-  }
-
-  return (
-    <div className="relative hidden lg:block">
-      {/* Scroll buttons */}
-      <button
-        onClick={scrollUp}
-        aria-label="Scroll thumbnails up"
-        className="absolute -top-3 left-0 right-0 z-10 h-6 flex items-center justify-center text-ink/70 hover:text-ink"
-      >
-        <ChevronUp className="w-4 h-4" />
-      </button>
-      <button
-        onClick={scrollDown}
-        aria-label="Scroll thumbnails down"
-        className="absolute -bottom-3 left-0 right-0 z-10 h-6 flex items-center justify-center text-ink/70 hover:text-ink"
-      >
-        <ChevronDown className="w-4 h-4" />
-      </button>
-
-      <div ref={ref} className="w-[112px] h-[750px] overflow-y-auto pr-1 scroll-smooth">
-        <div className="flex flex-col gap-2 h-full">
-          {images.slice(0, 8).map((img, idx) => (
-            <button
-              key={idx}
-              type="button"
-              onMouseEnter={() => onHover(idx)}
-              onClick={() => onClick(idx)}
-              className={`relative w-full h-[calc((100%-24px)/4)] overflow-hidden transition-all flex-none ${
-                selectedIndex === idx
-                  ? 'ring-2 ring-ink'
-                  : 'ring-1 ring-hairline/40 opacity-80 hover:opacity-100'
-              }`}
-            >
-              <Image
-                src={img}
-                alt={`${productName} - View ${idx + 1}`}
-                fill
-                className="object-cover"
-                sizes="120px"
-              />
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
+  details?: unknown
 }
 
 export default function ProductDetailClient({ product }: { product: Product }) {
-  const [selectedImage, setSelectedImage] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [quantity, setQuantity] = useState(1)
-  const [isLightboxOpen, setIsLightboxOpen] = useState(false)
-  const [lightboxIndex, setLightboxIndex] = useState(0)
+  const [isFullscreen, setIsFullscreen] = useState(false)
+  const [fullscreenIndex, setFullscreenIndex] = useState(0)
   const [showAddedToCart, setShowAddedToCart] = useState(false)
-  
+  const [showStickyCta, setShowStickyCta] = useState(false)
+  const ctaMainRef = useRef<HTMLDivElement | null>(null)
+
   const { addItem } = useCartStore()
   const { toggleItem, isInWishlist } = useWishlistStore()
 
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price
-  // Ensure we have multiple images to drive the gallery; if not, duplicate the primary as a lightweight demo fallback.
-  const sourceImages = Array.isArray(product.images) && product.images.length > 0
-    ? product.images
-    : ['/assets/img/logo-anna-paris.png']
-  const images = sourceImages.length >= 5
-    ? sourceImages
-    : Array.from({ length: Math.max(5, sourceImages.length) }, (_, i) => sourceImages[i % sourceImages.length])
-  const primaryImage = images?.[selectedImage] ?? images?.[0] ?? '/assets/img/logo-anna-paris.png'
+  const sourceImages = Array.isArray(product.images) && product.images.length > 0 ? product.images : ['/assets/img/logo-anna-paris.png']
+  const images = sourceImages
+  const primaryImage = images[currentIndex] ?? images[0]
   const inWishlist = isInWishlist(product.id)
 
-  // Build hi-res URL for providers that support query transforms (e.g., Unsplash)
   const getHiResUrl = (src: string) => {
     try {
       const u = new URL(src, typeof window !== 'undefined' ? window.location.origin : 'http://localhost')
@@ -162,17 +55,25 @@ export default function ProductDetailClient({ product }: { product: Product }) {
     }
   }
 
-  // Preload neighbor images for smoother UX
   useEffect(() => {
-    if (!images?.length) return
-    const next = images[(selectedImage + 1) % images.length]
-    const prev = images[(selectedImage - 1 + images.length) % images.length]
-    ;[next, prev].forEach((src) => {
-      if (!src) return
-      const imgEl = typeof window !== 'undefined' ? new window.Image() : null
-      if (imgEl) imgEl.src = src
-    })
-  }, [selectedImage, images])
+    const next = images[(currentIndex + 1) % images.length]
+    const prev = images[(currentIndex - 1 + images.length) % images.length]
+    for (const src of [next, prev]) {
+      if (!src) continue
+      const img = typeof window !== 'undefined' ? new window.Image() : null
+      if (img) img.src = src
+    }
+  }, [currentIndex, images])
+
+  useEffect(() => {
+    const el = ctaMainRef.current
+    if (!el) return
+    const observer = new IntersectionObserver((entries) => {
+      setShowStickyCta(!entries[0].isIntersecting)
+    }, { threshold: 0.4 })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   const handleAddToCart = () => {
     if (product.stock === 0) return
@@ -190,70 +91,31 @@ export default function ProductDetailClient({ product }: { product: Product }) {
     setTimeout(() => setShowAddedToCart(false), 2000)
   }
 
-  const openLightbox = (index: number) => {
-    setLightboxIndex(index)
-    setIsLightboxOpen(true)
+  const openFullscreen = (index: number) => {
+    setFullscreenIndex(index)
+    setIsFullscreen(true)
   }
 
-  const nextImage = () => {
-    setLightboxIndex((prev) => (prev + 1) % images.length)
-  }
-
-  const prevImage = () => {
-    setLightboxIndex((prev) => (prev - 1 + images.length) % images.length)
-  }
+  const closeFullscreen = () => setIsFullscreen(false)
 
   return (
     <>
       <div className="fixed inset-0 -z-10 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] opacity-[0.08] blur-[120px]"
-          style={{ background: 'radial-gradient(circle, rgba(244,239,229,0.4) 0%, transparent 70%)' }} />
+        <div
+          className="absolute top-0 right-0 w-[800px] h-[800px] opacity-[0.08] blur-[120px]"
+          style={{ background: 'radial-gradient(circle, rgba(244,239,229,0.4) 0%, transparent 70%)' }}
+        />
       </div>
 
       <div className="max-w-[1400px] mx-auto px-5 md:px-10 lg:px-[54px] py-10 md:py-16">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20">
-
-          {/* LEFT: Gallery */}
-          <div className="lg:grid lg:grid-cols-[112px_minmax(0,600px)] lg:gap-4 lg:items-start">
-            {/* Vertical Thumbnails (desktop) */}
-            <VerticalThumbnails
+          <div>
+            <GalleryUnified
               images={images}
               productName={product.name}
-              selectedIndex={selectedImage}
-              onHover={(i) => setSelectedImage(i)}
-              onClick={(i) => openLightbox(i)}
+              onOpenFullscreen={openFullscreen}
+              onSlideChange={setCurrentIndex}
             />
-
-            {/* Main Image 4:5 */}
-            <div
-              onClick={() => openLightbox(selectedImage)}
-              className="relative w-full mx-auto max-w-[600px] aspect-[4/5] overflow-hidden bg-platinum/10 cursor-pointer hover:opacity-95 transition-opacity"
-            >
-              {/* Desktop hover zoom */}
-              <ZoomableImage src={primaryImage} alt={`${product.name} - Main`} />
-              {hasDiscount && product.compareAtPrice && (
-                <div className="absolute top-4 left-4 px-4 py-1.5 bg-ink text-white text-[0.7rem] font-medium uppercase tracking-wider">
-                  Save {'\u0E3F'}{(product.compareAtPrice - product.price).toLocaleString()}
-                </div>
-              )}
-            </div>
-
-            {/* Horizontal Thumbnails (mobile/tablet) */}
-            <div className="mt-3 flex gap-2.5 max-w-[600px] mx-auto lg:hidden overflow-x-auto">
-              {images.slice(0, 8).map((img, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onMouseEnter={() => setSelectedImage(idx)}
-                  onClick={() => openLightbox(idx)}
-                  className={`relative w-20 flex-none aspect-[4/5] overflow-hidden transition-all ${
-                    selectedImage === idx ? 'ring-2 ring-ink ring-offset-2' : 'ring-1 ring-hairline/40 opacity-80 hover:opacity-100'
-                  }`}
-                >
-                  <Image src={img} alt={`${product.name} - View ${idx + 1}`} fill className="object-cover" sizes="100px" />
-                </button>
-              ))}
-            </div>
           </div>
 
           <div className="space-y-6 lg:pt-2">
@@ -274,17 +136,21 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               <div className="flex gap-0.5">
                 {[...Array(5)].map((_, i) => (
                   <svg key={i} className="w-4 h-4 text-champagne fill-current" viewBox="0 0 20 20">
-                    <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                    <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
                   </svg>
                 ))}
               </div>
               <span className="text-sm text-ink-2/60">4.7</span>
             </div>
 
-                        <div className="flex items-baseline gap-3 pt-2">
-              <p className="font-sans text-[1.65rem] md:text-[1.85rem] text-ink font-semibold">{'\u0E3F'}{product.price.toLocaleString()}</p>
+            <div className="flex items-baseline gap-3 pt-2">
+              <p className="font-sans text-[1.65rem] md:text-[1.85rem] text-ink font-semibold">
+                {'\u0E3F'}{product.price.toLocaleString()}
+              </p>
               {hasDiscount && product.compareAtPrice && (
-                <p className="font-sans text-[1rem] text-ink-2/35 line-through">{'\u0E3F'}{product.compareAtPrice.toLocaleString()}</p>
+                <p className="font-sans text-[1rem] text-ink-2/35 line-through">
+                  {'\u0E3F'}{product.compareAtPrice.toLocaleString()}
+                </p>
               )}
             </div>
 
@@ -292,17 +158,51 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               {product.description}
             </p>
 
-            <div className="space-y-4 pt-4">
+            <div className="lg:hidden divide-y divide-hairline/70 border-t border-b border-hairline/70 mt-3">
+              <details>
+                <summary className="flex items-center justify-between py-3 cursor-pointer text-ink">
+                  <span className="font-medium">Details</span>
+                  <span className="text-ink-2/60">+</span>
+                </summary>
+                <div className="pb-3 text-[0.95rem] text-ink-2/80">
+                  {product.details ? JSON.stringify(product.details) : 'Premium materials. See full specs on desktop.'}
+                </div>
+              </details>
+              <details>
+                <summary className="flex items-center justify-between py-3 cursor-pointer text-ink">
+                  <span className="font-medium">Care</span>
+                  <span className="text-ink-2/60">+</span>
+                </summary>
+                <div className="pb-3 text-[0.95rem] text-ink-2/80">Avoid chemicals and store separately in a soft pouch.</div>
+              </details>
+              <details>
+                <summary className="flex items-center justify-between py-3 cursor-pointer text-ink">
+                  <span className="font-medium">Shipping & Returns</span>
+                  <span className="text-ink-2/60">+</span>
+                </summary>
+                <div className="pb-3 text-[0.95rem] text-ink-2/80">Free shipping · 30-day returns · Secure payments.</div>
+              </details>
+            </div>
+
+            <div className="space-y-4 pt-4" ref={ctaMainRef}>
               <div className="flex items-center gap-4">
                 <span className="text-sm font-medium text-ink">Quantity</span>
                 <div className="flex items-center border border-hairline">
-                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-10 h-10 flex items-center justify-center hover:bg-platinum/50">-</button>
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="w-10 h-10 flex items-center justify-center hover:bg-platinum/50"
+                  >
+                    -
+                  </button>
                   <span className="w-12 h-10 flex items-center justify-center border-x border-hairline text-sm font-medium">
                     {quantity}
                   </span>
-                  <button onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                    className="w-10 h-10 flex items-center justify-center hover:bg-platinum/50">+</button>
+                  <button
+                    onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                    className="w-10 h-10 flex items-center justify-center hover:bg-platinum/50"
+                  >
+                    +
+                  </button>
                 </div>
               </div>
 
@@ -318,9 +218,15 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                 </button>
 
                 <button
-                  onClick={() => toggleItem({
-                    id: product.id, name: product.name, slug: product.slug, price: product.price, image: primaryImage
-                  })}
+                  onClick={() =>
+                    toggleItem({
+                      id: product.id,
+                      name: product.name,
+                      slug: product.slug,
+                      price: product.price,
+                      image: primaryImage,
+                    })
+                  }
                   className={`w-12 h-12 flex items-center justify-center border transition-all ${
                     inWishlist ? 'bg-champagne border-champagne' : 'bg-white border-hairline hover:border-ink'
                   }`}
@@ -347,70 +253,14 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         </div>
       </div>
 
-      {/* Lightbox */}
-      <AnimatePresence>
-        {isLightboxOpen && (
-          <div className="fixed inset-0 z-[100] bg-black/95" onClick={() => setIsLightboxOpen(false)}>
-            <button onClick={() => setIsLightboxOpen(false)}
-              className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20">
-              <X className="w-6 h-6 text-white" />
-            </button>
+      {isFullscreen && (
+        <FullscreenViewer
+          images={images.map(getHiResUrl)}
+          startIndex={fullscreenIndex}
+          onClose={closeFullscreen}
+        />
+      )}
 
-            <div className="absolute inset-0 flex items-center justify-center p-6 md:p-10" onClick={(e) => e.stopPropagation()}>
-              <div className="w-full max-w-6xl h-full max-h-[90vh] grid md:grid-cols-[1fr_180px] gap-6">
-                
-                <div className="relative flex items-center justify-center">
-                  <div className="relative w-full h-[80vh]">
-                    <Image src={getHiResUrl(images[lightboxIndex])} alt={`${product.name} - Lightbox ${lightboxIndex + 1}`} fill className="object-contain" sizes="90vw" priority />
-                  </div>
-
-                  {images.length > 1 && (
-                    <>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          prevImage();
-                        }}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20"
-                      >
-                        <ChevronLeft className="w-6 h-6 text-white" />
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          nextImage();
-                        }}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20"
-                      >
-                        <ChevronRight className="w-6 h-6 text-white" />
-                      </button>
-                    </>
-                  )}
-                </div>
-
-                <div className="hidden md:flex flex-col gap-3 overflow-y-auto">
-                  {images.map((img, idx) => (
-                    <button
-                      key={idx}
-                      onClick={(e) => { e.stopPropagation(); setLightboxIndex(idx); }}
-                      className={`relative aspect-square overflow-hidden transition-all ${
-                        lightboxIndex === idx ? 'ring-2 ring-white ring-offset-2 ring-offset-black' : 'opacity-50 hover:opacity-100'
-                      }`}
-                    >
-                      <Image src={img} alt={`${product.name} - View ${idx + 1}`} fill className="object-cover" sizes="180px" />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-white/10 text-white text-sm">
-              {lightboxIndex + 1} / {images.length}
-            </div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* Toast */}
       <AnimatePresence>
         {showAddedToCart && (
           <motion.div
@@ -426,10 +276,39 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <div className={`lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur border-t border-hairline ${showStickyCta && !isFullscreen ? '' : 'hidden'}`}>
+        <div className="max-w-[1700px] mx-auto px-5 py-3 flex items-center gap-3">
+          <div className="text-ink font-semibold">{'\u0E3F'}{product.price.toLocaleString()}</div>
+          <button
+            onClick={handleAddToCart}
+            disabled={product.stock === 0}
+            className={`flex-1 h-11 px-5 text-[0.8rem] uppercase tracking-[0.12em] font-medium rounded-full transition-colors ${
+              product.stock > 0 ? 'bg-ink text-white' : 'bg-platinum/70 text-ink-2/40 cursor-not-allowed'
+            }`}
+          >
+            {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+          </button>
+          <button
+            onClick={() =>
+              toggleItem({
+                id: product.id,
+                name: product.name,
+                slug: product.slug,
+                price: product.price,
+                image: primaryImage,
+              })
+            }
+            className={`w-11 h-11 flex items-center justify-center rounded-full border ${
+              inWishlist ? 'bg-champagne border-champagne' : 'bg-white border-hairline'
+            }`}
+            aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+          >
+            <Heart className={`w-5 h-5 ${inWishlist ? 'fill-ink text-ink' : 'text-ink-2/70'}`} />
+          </button>
+        </div>
+        <div style={{ paddingBottom: 'env(safe-area-inset-bottom)' }} />
+      </div>
     </>
   )
 }
-
-
-
-

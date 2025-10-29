@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
@@ -33,7 +33,7 @@ export default function NewProductPage() {
     if (!form.slug && form.name) {
       setForm((f) => ({ ...f, slug: form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') }))
     }
-  }, [form.name])
+  }, [form.name, form.slug])
 
   const canSave = useMemo(() => form.name && form.slug && form.price > 0 && form.categoryId && images.length > 0, [form, images])
 
@@ -53,8 +53,9 @@ export default function NewProductPage() {
         uploaded.push(publicUrl)
       }
       setImages((prev) => [...prev, ...uploaded])
-    } catch (e: any) {
-      setError(e?.message || 'Upload error')
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : 'Upload error'
+      setError(message)
     } finally { setUploading(false) }
   }
 
@@ -79,8 +80,9 @@ export default function NewProductPage() {
       })
       if (!res.ok) throw new Error('Failed to create product')
       router.push('/admin/products')
-    } catch (e: any) {
-      setError(e?.message || 'Save failed')
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : 'Save failed'
+      setError(message)
     } finally { setSaving(false) }
   }
 
@@ -169,4 +171,5 @@ export default function NewProductPage() {
     </main>
   )
 }
+
 

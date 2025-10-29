@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import ProductGrid from '@/components/products/ProductGrid'
 import ProductFilters from '@/components/products/ProductFilters'
+import MobileProductsControls from '@/components/products/MobileProductsControls'
 
 export const metadata = {
   title: 'All Products | ANNA PARIS',
@@ -14,7 +15,7 @@ export default async function ProductsPage({
 }) {
   const params = await searchParams
   return (
-    <main className="min-h-screen bg-bg">
+    <main className="min-h-screen bg-bg overflow-x-hidden">
       {/* Header */}
       <div className="border-b border-hairline bg-white">
         <div className="max-w-[1700px] mx-auto px-5 md:px-10 lg:px-[54px] py-12 md:py-16">
@@ -29,6 +30,8 @@ export default async function ProductsPage({
 
       {/* Content */}
       <div className="max-w-[1700px] mx-auto px-5 md:px-10 lg:px-[54px] py-10 md:py-14">
+        {/* Mobile controls bar */}
+        <MobileProductsControls />
         <div className="grid lg:grid-cols-[240px_1fr] gap-8 lg:gap-12">
           {/* Filters Sidebar */}
           <aside className="hidden lg:block">

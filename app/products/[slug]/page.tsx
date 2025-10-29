@@ -1,6 +1,7 @@
 ﻿import { notFound } from 'next/navigation'
 import { db } from '@/lib/db'
 import ProductDetailClient from '@/components/products/ProductDetailClient'
+import BackToResults from '@/components/products/BackToResults'
 import RelatedProducts from '@/components/products/RelatedProducts'
 import type { Metadata } from 'next'
 
@@ -55,7 +56,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const { product, relatedProducts } = data
 
   return (
-    <main className="min-h-screen bg-bg">
+    <main className="min-h-screen bg-bg overflow-x-hidden">
+      <BackToResults fallbackCategory={product.category.slug} />
       <ProductDetailClient product={product} />
       {relatedProducts.length > 0 && <RelatedProducts products={relatedProducts} />}
     </main>

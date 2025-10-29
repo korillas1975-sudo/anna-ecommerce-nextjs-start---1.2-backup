@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -35,7 +35,7 @@ export default function SettingsPage() {
         {/* Header */}
         <div className="mb-8">
           <Link href="/account" className="text-ink-2 text-sm hover:text-ink mb-4 inline-block">
-            ← Back to Account
+            â† Back to Account
           </Link>
           <h1 className="font-serif text-3xl text-ink">Account Settings</h1>
         </div>
@@ -63,7 +63,7 @@ export default function SettingsPage() {
         <div className="bg-white border border-hairline p-6">
           <h2 className="font-serif text-xl text-ink mb-4">Sign Out</h2>
           <p className="text-ink-2 mb-4">
-            Sign out of your account. You'll need to sign in again to access your orders and settings.
+            Sign out of your account. You&apos;ll need to sign in again to access your orders and settings.
           </p>
           <button
             onClick={handleLogout}
@@ -76,3 +76,5 @@ export default function SettingsPage() {
     </main>
   )
 }
+
+

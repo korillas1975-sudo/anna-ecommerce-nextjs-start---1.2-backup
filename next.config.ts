@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
+import type { RemotePattern } from 'next/dist/shared/lib/image-config'
+import path from 'path'
 
 const nextConfig: NextConfig = {
+  // Force Next.js to treat this folder as the workspace root
+  // to avoid picking up parent lockfiles and building the wrong tree.
+  outputFileTracingRoot: path.join(__dirname),
   images: {
     remotePatterns: [
       {
@@ -54,11 +59,19 @@ const s3Domain = process.env.NEXT_PUBLIC_S3_PUBLIC_DOMAIN || process.env.NEXT_PU
 if (s3Domain) {
   try {
     const url = new URL(s3Domain.startsWith('http') ? s3Domain : `https://${s3Domain}`)
-    ;(nextConfig.images!.remotePatterns as any[]).push({
-      protocol: url.protocol.replace(':', ''),
+    const proto = url.protocol === 'https:' ? 'https' : 'http'
+    const newPattern: RemotePattern = {
+      protocol: proto,
       hostname: url.hostname,
       pathname: '/**',
-    })
+    }
+    nextConfig.images = {
+      ...(nextConfig.images ?? {}),
+      remotePatterns: [
+        ...((nextConfig.images?.remotePatterns ?? []) as RemotePattern[]),
+        newPattern as RemotePattern,
+      ],
+    }
   } catch {}
 }
 

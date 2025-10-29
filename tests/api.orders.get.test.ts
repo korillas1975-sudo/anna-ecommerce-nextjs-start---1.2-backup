@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, type MockedFunction } from 'vitest'
 
 vi.mock('../lib/auth', () => ({ auth: vi.fn() }))
 vi.mock('../lib/db', () => ({
@@ -15,10 +15,11 @@ describe('GET /api/orders/[id]', () => {
   beforeEach(() => vi.resetAllMocks())
 
   it('denies access if not owner or admin', async () => {
-    ;(auth as any).mockResolvedValue({ user: { id: 'u2', role: 'customer' } })
-    ;(db.order.findUnique as any).mockResolvedValue({ id: 'o1', userId: 'u1', items: [], shippingAddress: null })
-    const res = await GET(new Request('http://localhost'), { params: Promise.resolve({ id: 'o1' }) } as any)
+    const mockedAuth = auth as unknown as MockedFunction<typeof auth>
+    const mockedFind = db.order.findUnique as unknown as MockedFunction<typeof db.order.findUnique>
+    mockedAuth.mockResolvedValue({ user: { id: 'u2', role: 'customer' } } as Awaited<ReturnType<typeof auth>>)
+    mockedFind.mockResolvedValue({ id: 'o1', userId: 'u1', items: [], shippingAddress: null } as Awaited<ReturnType<typeof db.order.findUnique>>)
+    const res = await GET(new Request('http://localhost'), { params: Promise.resolve({ id: 'o1' }) })
     expect(res.status).toBe(403)
   })
 })
-

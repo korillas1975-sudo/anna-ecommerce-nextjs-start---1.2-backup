@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, PutObjectCommand, type ObjectCannedACL } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 const region = process.env.AWS_REGION
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
     const key = `uploads/products/${crypto.randomUUID()}-${filename}`
     const client = new S3Client({ region })
-    const command = new PutObjectCommand({ Bucket: bucket, Key: key, ContentType: contentType, ACL: 'public-read' as any })
+    const command = new PutObjectCommand({ Bucket: bucket, Key: key, ContentType: contentType, ACL: 'public-read' as ObjectCannedACL })
     const uploadUrl = await getSignedUrl(client, command, { expiresIn: 60 })
 
     const publicUrl = baseUrl
@@ -31,4 +31,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Failed to create presigned URL' }, { status: 500 })
   }
 }
-

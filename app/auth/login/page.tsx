@@ -1,6 +1,6 @@
-"use client"
+﻿"use client"
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -58,6 +58,7 @@ export default function LoginPage() {
   }, [session, params, router])
 
   return (
+    <Suspense fallback={<div className="text-ink-2">Loading...</div>}>
     <main className="min-h-screen bg-bg flex items-center justify-center px-5 py-14">
       <div className="w-full max-w-[480px] bg-white border border-hairline p-6 md:p-8">
         <div className="text-center mb-8">
@@ -147,7 +148,7 @@ export default function LoginPage() {
         </form>
 
         <p className="mt-6 text-center text-sm text-ink-2">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/auth/register" className="text-ink font-medium hover:underline">
             Create Account
           </Link>
@@ -161,5 +162,11 @@ export default function LoginPage() {
         </div>
       </div>
     </main>
+    </Suspense>
   )
 }
+
+
+
+
+

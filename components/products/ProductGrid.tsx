@@ -39,6 +39,23 @@ export default function ProductGrid({
     fetchProducts()
   }, [searchParams])
 
+  // Restore scroll position when returning from PDP
+  useEffect(() => {
+    if (loading) return
+    try {
+      const current = window.location.pathname + window.location.search
+      const expected = sessionStorage.getItem('plp:return')
+      if (expected && expected === current) {
+        const key = `plp:scroll:${window.location.search}`
+        const y = Number(sessionStorage.getItem(key) || 0)
+        if (!Number.isNaN(y) && y > 0) {
+          window.scrollTo(0, y)
+        }
+        sessionStorage.removeItem('plp:return')
+      }
+    } catch {}
+  }, [loading, products])
+
   if (loading) {
     return (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">

@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 })
   }
 
-  const stripe = new Stripe(stripeSecret, { apiVersion: '2024-06-20' })
+  const stripe = new Stripe(stripeSecret, { apiVersion: '2025-09-30.clover' })
 
   const sig = request.headers.get('stripe-signature')
   if (!sig) return NextResponse.json({ error: 'Missing signature' }, { status: 400 })
@@ -48,7 +48,8 @@ export async function POST(request: Request) {
           // Send confirmation email (best-effort)
           const to = updated.user?.email || 'customer@example.com'
           try {
-            const { subject, html, text } = renderOrderConfirmation(updated as any)
+            const typed = updated as Parameters<typeof renderOrderConfirmation>[0]
+            const { subject, html, text } = renderOrderConfirmation(typed)
             await sendMail({ to, subject, html, text })
           } catch (e) {
             console.error('Email send error:', e)

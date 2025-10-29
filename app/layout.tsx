@@ -52,7 +52,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className="antialiased overflow-x-hidden bg-bg">
         <SessionProvider>
           <CartInitializer />
           <Header />
@@ -65,4 +65,3 @@ export default function RootLayout({
     </html>
   )
 }
-

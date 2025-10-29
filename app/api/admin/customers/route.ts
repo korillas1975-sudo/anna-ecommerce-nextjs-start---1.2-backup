@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { auth } from '@/lib/auth'
+import type { Prisma } from '@prisma/client'
 
 export async function GET(request: Request) {
   const session = await auth()
@@ -11,11 +12,11 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const q = searchParams.get('q')?.trim() || ''
 
-  const where: any = { role: 'customer' }
+  const where: Prisma.UserWhereInput = { role: 'customer' }
   if (q) {
     where.OR = [
-      { email: { contains: q, mode: 'insensitive' } },
-      { name: { contains: q, mode: 'insensitive' } },
+      { email: { contains: q } },
+      { name: { contains: q } },
     ]
   }
 
@@ -33,4 +34,3 @@ export async function GET(request: Request) {
 
   return NextResponse.json(customers)
 }
-

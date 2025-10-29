@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { signOut } from 'next-auth/react'
 
@@ -17,9 +17,7 @@ export default function AdminCustomersPage() {
   const [loading, setLoading] = useState(true)
   const [q, setQ] = useState('')
 
-  useEffect(() => { fetchCustomers() }, [])
-
-  async function fetchCustomers() {
+  const fetchCustomers = useCallback(async () => {
     try {
       setLoading(true)
       const params = new URLSearchParams()
@@ -32,7 +30,9 @@ export default function AdminCustomersPage() {
       console.error(e)
       alert('Failed to load customers')
     } finally { setLoading(false) }
-  }
+  }, [q])
+
+  useEffect(() => { fetchCustomers() }, [fetchCustomers])
 
   return (
     <main className="min-h-screen bg-platinum/20 admin-surface">
@@ -88,4 +88,3 @@ export default function AdminCustomersPage() {
     </main>
   )
 }
-

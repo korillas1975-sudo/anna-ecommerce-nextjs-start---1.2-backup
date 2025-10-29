@@ -67,7 +67,7 @@ export const AdminNoteSchema = z.object({
 })
 
 export function zodErrorToFields(error: z.ZodError) {
-  return error.errors.map((err) => ({
+  return error.issues.map((err) => ({
     field: err.path[0],
     message: err.message,
   }))

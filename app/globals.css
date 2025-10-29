@@ -91,6 +91,10 @@ body.search-open {
   height: 8px;
 }
 
+/* Utility: hide scrollbars but keep scrolling (used for thumbnails column) */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
 ::-webkit-scrollbar-track {
   background: var(--platinum);
 }

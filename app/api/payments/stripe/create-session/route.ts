@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 })
     }
 
-    const stripe = new Stripe(stripeSecret, { apiVersion: '2024-06-20' })
+    const stripe = new Stripe(stripeSecret, { apiVersion: '2025-09-30.clover' })
 
     const origin = new URL(request.url).origin
     const successUrl = `${origin}/checkout/success?orderId=${order.id}&orderNumber=${encodeURIComponent(order.orderNumber)}&session_id={CHECKOUT_SESSION_ID}`

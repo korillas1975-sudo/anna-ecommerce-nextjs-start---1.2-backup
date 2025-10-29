@@ -136,7 +136,8 @@ export async function PATCH(
     // If status moved to shipped, send notification (best-effort)
     if (status === 'shipped') {
       try {
-        const { subject, html, text } = renderOrderShipped(order as any)
+        const typed = order as Parameters<typeof renderOrderShipped>[0]
+        const { subject, html, text } = renderOrderShipped(typed)
         const to = order.user?.email || 'customer@example.com'
         await sendMail({ to, subject, html, text })
       } catch (e) {
