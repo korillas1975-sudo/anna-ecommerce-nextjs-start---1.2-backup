@@ -1,4 +1,4 @@
-import { HeroSection } from '@/components/hero/HeroSection'
+import { HeroSection } from '@/components/hero/HeroSection' 
 import { BrandStoryTeaser } from '@/components/BrandStoryTeaser'
 import { CraftsmanshipSection } from '@/components/home-v2/CraftsmanshipSection'
 import CategoriesV2GSAP from '@/components/home-v2/CategoriesV2GSAP'
@@ -9,14 +9,14 @@ import InstagramGallery from '@/components/InstagramGallery'
 import Newsletter from '@/components/Newsletter'
 import Footer from '@/components/Footer'
 
+import fs from 'node:fs/promises'
+import path from 'node:path'
+
 async function getContent() {
   try {
-    const response = await fetch('/assets/data/content.json', {
-      next: { revalidate: 3600 },
-      cache: 'force-cache',
-    })
-    if (!response.ok) throw new Error('Failed to fetch')
-    const data = await response.json()
+    const filePath = path.join(process.cwd(), 'public', 'assets', 'data', 'content.json')
+    const json = await fs.readFile(filePath, 'utf-8')
+    const data = JSON.parse(json)
     return data
   } catch (error) {
     console.error('Failed to load content:', error)
