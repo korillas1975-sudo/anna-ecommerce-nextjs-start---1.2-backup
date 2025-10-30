@@ -1,115 +1,130 @@
+
+2025-10-30T08:35:01.013Z [INFO]: # Build environment configured with Standard build compute type: 8GiB Memory, 4vCPUs, 128GB Disk Space
+
+1
+
+2025-10-30T08:35:02.006Z [INFO]: # Cloning repository: git@github.com:korillas1975-sudo/anna-ecommerce-nextjs-start---1.2-backup.git
+
+2
+
+2025-10-30T08:35:05.590Z [INFO]: 
+
+3
+
+2025-10-30T08:35:05.687Z [INFO]: Cloning into 'anna-ecommerce-nextjs-start---1.2-backup'...
+
+4
+
+2025-10-30T08:35:05.687Z [INFO]: # Switching to commit: cbf4c5946e4d2379adeec1a7ca69b91a8d2bcf90
+
+5
+
+2025-10-30T08:35:05.777Z [INFO]: Note: switching to 'cbf4c5946e4d2379adeec1a7ca69b91a8d2bcf90'.
+
+6
+
+                                 You are in 'detached HEAD' state. You can look around, make experimental
+
+7
+
+                                 changes and commit them, and you can discard any commits you make in this
+
+8
+
+                                 state without impacting any branches by switching back to a branch.
+
+9
+
+                                 If you want to create a new branch to retain commits you create, you may
+
+10
+
+                                 do so (now or later) by using -c with the switch command. Example:
+
+11
+
+                                 git switch -c <new-branch-name>
+
+12
+
+                                 Or undo this operation with:
+
+13
+
+                                 git switch -
+
+14
+
+                                 Turn off this advice by setting config variable advice.detachedHead to false
+
+15
+
+                                 HEAD is now at cbf4c59 update all file
+
+16
+
+2025-10-30T08:35:05.828Z [INFO]: Successfully cleaned up Git credentials
+
+17
+
+2025-10-30T08:35:05.829Z [INFO]: # Checking for Git submodules at: /codebuild/output/src2222146807/src/anna-ecommerce-nextjs-start---1.2-backup/.gitmodules
+
+18
+
+2025-10-30T08:35:05.837Z [INFO]: # Retrieving environment cache...
+
+19
+
+2025-10-30T08:35:05.881Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
+
+20
+
+2025-10-30T08:35:05.881Z [INFO]: ---- Setting Up SSM Secrets ----
+
+21
+
+2025-10-30T08:35:05.881Z [INFO]: SSM params {"Path":"/amplify/dcoyi3vhn16cz/master/","WithDecryption":true}
+
+22
+
+2025-10-30T08:35:05.928Z [WARNING]: !Failed to set up process.env.secrets
+
+23
+
+2025-10-30T08:35:06.821Z [INFO]: # No package override configuration found.
+
+24
+
+2025-10-30T08:35:06.824Z [INFO]: # Retrieving cache...
+
+25
+
+2025-10-30T08:35:06.873Z [INFO]: # Retrieved cache
+
+26
+
+2025-10-30T08:35:11.720Z [INFO]: ## Starting Backend Build
+
+27
+
+                                 ## Checking for associated backend environment...
+
+28
+
+                                 ## No backend environment association found, continuing...
+
+29
+
+                                 ## Completed Backend Build
+
+30
+
+2025-10-30T08:35:11.726Z [INFO]: {"backendDuration": 0}
+
+31
+
+                                 ## Starting Frontend Build
+
 32
 
-2025-10-30T05:57:20.985Z [INFO]: # Executing command: npm run build
-
-33
-
-2025-10-30T05:57:21.120Z [INFO]: > anna-ecommerce-nextjs@0.1.0 build
-
-34
-
-                                 > next build
-
-35
-
-2025-10-30T05:57:21.894Z [INFO]: ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
-
-36
-
-2025-10-30T05:57:21.900Z [INFO]: Attention: Next.js now collects completely anonymous telemetry regarding usage.
-
-37
-
-2025-10-30T05:57:21.900Z [INFO]: This information is used to shape Next.js' roadmap and prioritize features.
-
-38
-
-                                 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-
-39
-
-                                 https://nextjs.org/telemetry
-
-40
-
-2025-10-30T05:57:21.952Z [INFO]: ▲ Next.js 15.5.4
-
-41
-
-2025-10-30T05:57:21.952Z [INFO]: 
-
-42
-
-2025-10-30T05:57:22.051Z [INFO]: Creating an optimized production build ...
-
-43
-
-2025-10-30T05:57:43.677Z [INFO]: ✓ Compiled successfully in 19.0s
-
-44
-
-2025-10-30T05:57:43.683Z [INFO]: Linting and checking validity of types ...
-
-45
-
-2025-10-30T05:57:52.775Z [WARNING]: Failed to compile.
-
-46
-
-2025-10-30T05:57:52.780Z [WARNING]: ./app/api/admin/customers/route.ts:15:23
-
-47
-
-                                    Type error: Namespace '"/codebuild/output/src238188826/src/anna-ecommerce-nextjs-start---1.2-backup/node_modules/.prisma/client/default".Prisma' has no exported member 'UserWhereInput'.
-
-48
-
-                                    [0m [90m 13 |[39m   [36mconst[39m q [33m=[39m searchParams[33m.[39m[36mget[39m([32m'q'[39m)[33m?[39m[33m.[39mtrim() [33m||[39m [32m''[39m
-
-49
-
-                                    [90m 14 |[39m
-
-50
-
-                                    [31m[1m>[22m[39m[90m 15 |[39m   [36mconst[39m where[33m:[39m [33mPrisma[39m[33m.[39m[33mUserWhereInput[39m [33m=[39m { role[33m:[39m [32m'customer'[39m }
-
-51
-
-                                    [90m    |[39m                       [31m[1m^[22m[39m
-
-52
-
-                                    [90m 16 |[39m   [36mif[39m (q) {
-
-53
-
-                                    [90m 17 |[39m     where[33m.[39m[33mOR[39m [33m=[39m [
-
-54
-
-                                    [90m 18 |[39m       { email[33m:[39m { contains[33m:[39m q } }[33m,[39m[0m
-
-55
-
-2025-10-30T05:57:52.805Z [WARNING]: Next.js build worker exited with code: 1 and signal: null
-
-56
-
-2025-10-30T05:57:52.852Z [ERROR]: !!! Build failed
-
-57
-
-2025-10-30T05:57:52.852Z [INFO]: Please read more about Amplify Hosting's support for SSR frameworks to find if your build failure is related to an unsupported feature: https://docs.aws.amazon.com/amplify/latest/userguide/amplify-ssr-framework-support.html. You may also find this troubleshooting guide useful: https://docs.aws.amazon.com/amplify/latest/userguide/troubleshooting-ssr-deployment.html
-
-58
-
-2025-10-30T05:57:52.852Z [ERROR]: !!! Error: Command failed with exit code 1
-
-59
-
-2025-10-30T05:57:52.853Z [INFO]: # Starting environment caching...
-
-60
-
-2025-10-30T05:57:52.853Z [INFO]: # Environment caching completed
+                                 # Starting phase: preBuild
