@@ -12,7 +12,12 @@ export async function GET(request: Request) {
   const q = searchParams.get('q')?.trim() || ''
 
   // Avoid hard dependency on generated Prisma types during cloud builds
-  const where: any = { role: 'customer' }
+  // Use a narrow structural type instead of `any` to satisfy lint rules
+  type UserWhereSubset = {
+    role?: string
+    OR?: Array<{ email?: { contains: string } } | { name?: { contains: string } }>
+  }
+  const where: UserWhereSubset = { role: 'customer' }
   if (q) {
     where.OR = [
       { email: { contains: q } },

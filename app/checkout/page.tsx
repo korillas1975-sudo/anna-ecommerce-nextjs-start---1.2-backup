@@ -65,7 +65,11 @@ export default function CheckoutPage() {
           const data = await res.json()
           if (data.url) {
             // Do not clear cart yet; clear after success
-            (typeof window !== 'undefined' ? (window.location.href = data.url as string) : router.push(data.url as string))
+            if (typeof window !== 'undefined') {
+              window.location.href = data.url as string
+            } else {
+              router.push(data.url as string)
+            }
             return
           }
           throw new Error('Payment URL missing')
