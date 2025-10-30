@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Plus, Edit, Trash2 } from 'lucide-react'
+import { formatTHB } from '@/lib/utils/currency'
 import { signOut } from 'next-auth/react'
 
 interface AdminProduct {
@@ -96,7 +97,7 @@ export default function AdminProductsPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-sm text-ink-2/70">{product.category?.name ?? '-'}</td>
-                    <td className="px-6 py-4 text-sm text-ink font-medium">THB {product.price.toLocaleString()}</td>
+                    <td className="px-6 py-4 text-sm text-ink font-medium">{formatTHB(product.price)}</td>
                     <td className="px-6 py-4 text-sm text-ink-2/70">{product.stock}</td>
                     <td className="px-6 py-4">
                       <span className={`inline-block px-2 py-1 text-xs ${product.published ? 'bg-champagne/20 text-ink' : 'bg-ink-2/10 text-ink-2/60'}`}>

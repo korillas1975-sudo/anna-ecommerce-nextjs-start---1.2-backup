@@ -1,4 +1,5 @@
 import type { Order, OrderItem, Address } from '@prisma/client'
+import { formatTHB } from '../utils/currency'
 
 type OrderWithItems = Order & { items: (OrderItem & { product?: { name: string } | null })[]; shippingAddress: Address | null }
 
@@ -8,7 +9,7 @@ export function renderOrderConfirmation(order: OrderWithItems) {
   const rows = order.items
     .map((it) => {
       const name = it.productName || it.product?.name || 'Product'
-      const line = (it.price * it.quantity).toLocaleString()
+      const line = formatTHB(it.price * it.quantity)
       return `<tr><td style="padding:8px 0;">${name} × ${it.quantity}</td><td style="padding:8px 0; text-align:right;">THB ${line}</td></tr>`
     })
     .join('')

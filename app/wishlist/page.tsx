@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Heart, Trash2 } from 'lucide-react'
+import { formatTHB } from '@/lib/utils/currency'
 import { useWishlistStore } from '@/lib/stores/wishlist-store'
 
 export default function WishlistPage() {
@@ -65,7 +66,7 @@ export default function WishlistPage() {
                 <Link href={`/products/${item.slug}`} className="font-serif text-[0.95rem] text-ink block leading-snug hover:text-champagne transition-colors">
                   {item.name}
                 </Link>
-                <p className="text-sm text-ink font-medium">?{item.price.toLocaleString()}</p>
+                <p className="text-sm text-ink font-medium">{formatTHB(item.price)}</p>
                 <button
                   type="button"
                   onClick={() => removeItem(item.id)}

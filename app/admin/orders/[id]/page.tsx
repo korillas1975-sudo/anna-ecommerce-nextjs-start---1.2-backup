@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft } from 'lucide-react'
+import { formatTHB } from '@/lib/utils/currency'
 import { signOut } from 'next-auth/react'
 
 interface OrderItem {
@@ -174,7 +175,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                       <h3 className="font-medium text-ink">{item.product?.name ?? 'Unknown product'}</h3>
                       {item.variant && <p className="text-sm text-ink-2/60">Variant: {item.variant}</p>}
                       <p className="text-sm text-ink-2/60">Qty: {item.quantity}</p>
-                      <p className="text-ink font-medium mt-1">THB {(item.price * item.quantity).toLocaleString()}</p>
+                      <p className="text-ink font-medium mt-1">{formatTHB(item.price * item.quantity)}</p>
                     </div>
                   </div>
                 ))}
@@ -238,7 +239,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                 </div>
                 <div className="flex justify-between pt-4 border-t border-hairline text-lg font-medium">
                   <span className="text-ink">Total:</span>
-                  <span className="text-ink">THB {order.total.toLocaleString()}</span>
+                  <span className="text-ink">{formatTHB(order.total)}</span>
                 </div>
               </div>
             </div>

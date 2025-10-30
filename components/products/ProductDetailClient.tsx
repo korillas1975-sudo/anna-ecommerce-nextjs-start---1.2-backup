@@ -6,7 +6,9 @@ import { Heart, Truck, RefreshCw, Shield, Share2 } from 'lucide-react'
 import GalleryUnified from './GalleryUnified'
 import FullscreenViewer from './FullscreenViewer'
 import { useCartStore } from '@/lib/stores/cart-store'
+import { formatTHB } from '@/lib/utils/currency'
 import { useWishlistStore } from '@/lib/stores/wishlist-store'
+import { useUIStore } from '@/lib/stores/ui-store'
 
 interface Product {
   id: string
@@ -32,6 +34,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
   const { addItem } = useCartStore()
   const { toggleItem, isInWishlist } = useWishlistStore()
+  const { openCart } = useUIStore()
 
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price
   const sourceImages = Array.isArray(product.images) && product.images.length > 0 ? product.images : ['/assets/img/logo-anna-paris.png']
@@ -89,6 +92,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
     )
     setShowAddedToCart(true)
     setTimeout(() => setShowAddedToCart(false), 2000)
+    openCart()
   }
 
   const openFullscreen = (index: number) => {
@@ -145,11 +149,11 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
             <div className="flex items-baseline gap-3 pt-2">
               <p className="font-sans text-[1.65rem] md:text-[1.85rem] text-ink font-semibold">
-                {'\u0E3F'}{product.price.toLocaleString()}
+                {formatTHB(product.price)}
               </p>
               {hasDiscount && product.compareAtPrice && (
                 <p className="font-sans text-[1rem] text-ink-2/35 line-through">
-                  {'\u0E3F'}{product.compareAtPrice.toLocaleString()}
+                  {formatTHB(product.compareAtPrice!)}
                 </p>
               )}
             </div>
@@ -206,11 +210,11 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                 </div>
               </div>
 
-              <div className="flex gap-3">
+              <div className="grid grid-cols-[1fr_48px] gap-3">
                 <button
                   onClick={handleAddToCart}
                   disabled={product.stock === 0}
-                  className={`flex-1 h-12 px-8 text-[0.8rem] uppercase tracking-[0.15em] font-medium transition-all ${
+                  className={`h-12 w-full px-8 text-[0.8rem] uppercase tracking-[0.15em] font-medium transition-all ${
                     product.stock > 0 ? 'bg-ink text-white hover:bg-ink-2' : 'bg-platinum/50 text-ink-2/40 cursor-not-allowed'
                   }`}
                 >
@@ -279,7 +283,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
       <div className={`lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur border-t border-hairline ${showStickyCta && !isFullscreen ? '' : 'hidden'}`}>
         <div className="max-w-[1700px] mx-auto px-5 py-3 flex items-center gap-3">
-          <div className="text-ink font-semibold">{'\u0E3F'}{product.price.toLocaleString()}</div>
+          <div className="text-ink font-semibold">{formatTHB(product.price)}</div>
           <button
             onClick={handleAddToCart}
             disabled={product.stock === 0}
@@ -312,3 +316,6 @@ export default function ProductDetailClient({ product }: { product: Product }) {
     </>
   )
 }
+
+
+

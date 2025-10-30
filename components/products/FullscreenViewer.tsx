@@ -36,7 +36,11 @@ export default function FullscreenViewer({
 
   return (
     <div className="fixed inset-0 z-[200] bg-black/95" role="dialog" aria-modal="true" aria-label="Product images fullscreen">
-      <button onClick={onClose} aria-label="Close" className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center z-50">
+      <button
+        onClick={onClose}
+        aria-label="Close"
+        className="fixed top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center z-[9999] pointer-events-auto"
+      >
         <X className="w-6 h-6 text-white" />
       </button>
 

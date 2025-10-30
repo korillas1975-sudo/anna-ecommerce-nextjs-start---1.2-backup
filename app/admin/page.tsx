@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { signOut } from 'next-auth/react'
 import { Package, ShoppingCart, Users, FileText, Settings, BarChart3, Moon, Sun } from 'lucide-react'
+import { formatTHB } from '@/lib/utils/currency'
 
 type Metrics = { orders: number; products: number; customers: number; revenue: number }
 
@@ -74,7 +75,7 @@ export default function AdminDashboard() {
           <StatCard icon={ShoppingCart} label="Total Orders" value={metrics?.orders ?? 0} />
           <StatCard icon={Package} label="Total Products" value={metrics?.products ?? 0} />
           <StatCard icon={Users} label="Total Customers" value={metrics?.customers ?? 0} />
-          <StatCard icon={BarChart3} label="Revenue" value={`THB ${(metrics?.revenue ?? 0).toLocaleString()}`} />
+          <StatCard icon={BarChart3} label="Revenue" value={formatTHB(metrics?.revenue ?? 0)} />
         </div>
 
         {/* Menu */}

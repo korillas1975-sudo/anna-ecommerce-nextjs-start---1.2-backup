@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Heart } from 'lucide-react'
 import { useWishlistStore } from '@/lib/stores/wishlist-store'
+import { formatTHB } from '@/lib/utils/currency'
 
 interface Product {
   id: string
@@ -94,7 +95,6 @@ export default function ProductCard({ product, index }: { product: Product; inde
 
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
         </div>
-
         <div className="space-y-1">
           {product.category?.name && (
             <p className="text-xs text-ink-2/50 uppercase tracking-wider">{product.category.name}</p>
@@ -104,11 +104,11 @@ export default function ProductCard({ product, index }: { product: Product; inde
           </h3>
           <div className="flex items-center gap-2">
             <p className="font-sans text-[0.9rem] md:text-[0.95rem] text-ink font-medium">
-              à¸¿{product.price.toLocaleString()}
+              {formatTHB(product.price)}
             </p>
             {hasDiscount && (
               <p className="font-sans text-[0.8rem] text-ink-2/40 line-through">
-                à¸¿{product.compareAtPrice!.toLocaleString()}
+                {formatTHB(product.compareAtPrice!)}
               </p>
             )}
           </div>
@@ -117,4 +117,3 @@ export default function ProductCard({ product, index }: { product: Product; inde
     </motion.div>
   )
 }
-

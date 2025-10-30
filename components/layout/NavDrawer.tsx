@@ -2,12 +2,13 @@
 
 import { useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, User, LogOut } from 'lucide-react'
+import { User, LogOut } from 'lucide-react'
 import { useSession, signOut } from 'next-auth/react'
 import { useUIStore } from '@/lib/stores/ui-store'
 import { cn } from '@/lib/utils/cn'
 
 const navLinks = [
+  { href: '/', label: 'Home' },
   { href: '/products', label: 'All Products' },
   { href: '/#categories', label: 'Categories' },
   { href: '#', label: 'Best Sellers' },
@@ -54,7 +55,7 @@ export function NavDrawer() {
       {/* Backdrop */}
       <div
         className={cn(
-          'fixed inset-0 bg-black/55 transition-opacity duration-200 z-[70]',
+          "fixed inset-0 bg-black/55 transition-opacity duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] z-[70]",
           isNavOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         )}
         onClick={closeNav}
@@ -64,12 +65,31 @@ export function NavDrawer() {
       {/* Drawer */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 w-[min(440px,92vw)] h-screen transform transition-transform duration-300 ease-out z-[80] bg-white/[0.14] border border-white/[0.36] backdrop-blur-[10px]',
+          "fixed inset-y-0 left-0 w-[min(440px,92vw)] h-screen transform transform-gpu transition-transform motion-safe:duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform z-[80] bg-white/[0.14] border border-white/[0.36] backdrop-blur-[10px]",
           isNavOpen ? 'translate-x-0' : '-translate-x-full'
         )}
         aria-hidden={!isNavOpen}
       >
         <nav className="relative h-full px-5 pt-[calc(16px+env(safe-area-inset-top))] pb-[calc(20px+env(safe-area-inset-bottom))] flex flex-col">
+          {/* Top Close (arrow) */}
+          <button
+            onClick={closeNav}
+            className="absolute top-3 right-3 w-10 h-10 flex items-center justify-center text-white hover:text-white/70"
+            aria-label="Close menu"
+          >
+            <svg
+              className="w-5 h-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M20 12H9" />
+              <path d="M14 7l-5 5 5 5" />
+            </svg>
+          </button>
           {/* Account Section */}
           {session?.user ? (
             <div className="mb-6 pb-6 border-b border-white/[0.18]">
@@ -103,29 +123,10 @@ export function NavDrawer() {
                 </button>
               </div>
             </div>
-          ) : (
-            <div className="mb-6 pb-6 border-b border-white/[0.18]">
-              <div className="flex gap-2">
-                <Link
-                  href="/auth/login"
-                  onClick={closeNav}
-                  className="flex-1 text-center py-3 px-4 bg-white/10 hover:bg-white/20 text-white text-sm font-medium transition-colors"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/auth/register"
-                  onClick={closeNav}
-                  className="flex-1 text-center py-3 px-4 bg-white hover:bg-white/90 text-ink text-sm font-medium transition-colors"
-                >
-                  Register
-                </Link>
-              </div>
-            </div>
-          )}
+          ) : null}
 
           {/* Navigation Links */}
-          <ul className="list-none m-0 p-0 flex flex-col gap-3.5 overflow-auto scrollbar-hide">
+          <ul className="list-none m-0 p-0 mt-8 flex flex-col gap-3.5 overflow-auto scrollbar-hide">
             {navLinks.map((link, index) => {
               if (link.type === 'separator') {
                 return (
@@ -149,15 +150,8 @@ export function NavDrawer() {
             })}
           </ul>
 
-          {/* Close Button */}
-          <button
-            onClick={closeNav}
-            className="mt-auto flex items-center justify-center gap-2.5 w-full min-h-[52px] bg-white/[0.11] border border-white/[0.28] text-white hover:bg-white/[0.18] transition-colors"
-            aria-label="Close menu"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span className="text-sm tracking-[0.12em] font-medium">CLOSE</span>
-          </button>
+          {/* Bottom spacer to keep safe-area padding */}
+          <div className="mt-auto" />
         </nav>
       </aside>
     </>

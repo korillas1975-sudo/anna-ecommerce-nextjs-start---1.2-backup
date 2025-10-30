@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -65,7 +65,7 @@ export default function CheckoutPage() {
           const data = await res.json()
           if (data.url) {
             // Do not clear cart yet; clear after success
-            window.location.href = data.url as string
+            (typeof window !== 'undefined' ? (window.location.href = data.url as string) : router.push(data.url as string))
             return
           }
           throw new Error('Payment URL missing')
@@ -110,3 +110,4 @@ export default function CheckoutPage() {
     </main>
   )
 }
+

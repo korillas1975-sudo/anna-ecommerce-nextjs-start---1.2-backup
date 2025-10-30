@@ -27,17 +27,56 @@ const nextConfig: NextConfig = {
   // Will be appended below if configured
   async headers() {
     const isDev = process.env.NODE_ENV !== 'production'
-    const csp = [
-      "default-src 'self'",
-      "script-src 'self'" + (isDev ? " 'unsafe-eval' 'unsafe-inline'" : ""),
-      "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https://images.unsplash.com https://upload.wikimedia.org",
-      "font-src 'self' data:",
-      "connect-src 'self'",
-      "frame-ancestors 'none'",
-      "base-uri 'self'",
-      "form-action 'self'",
-    ].join('; ')
+    const s3Public = process.env.NEXT_PUBLIC_S3_PUBLIC_DOMAIN || process.env.NEXT_PUBLIC_S3_BASE_URL || ''
+    const s3Host = (() => {
+      try {
+        if (!s3Public) return ''
+        const u = new URL(s3Public.startsWith('http') ? s3Public : `https://${s3Public}`)
+        return `${u.protocol}//${u.hostname}`
+      } catch {
+        return ''
+      }
+    })()
+
+    const imgSrc = [
+      "'self'",
+      'data:',
+      'blob:',
+      'https://images.unsplash.com',
+      'https://upload.wikimedia.org',
+      ...(s3Host ? [s3Host] : []),
+    ]
+
+    const connectSrc = [
+      "'self'",
+      ...(s3Host ? [s3Host] : []),
+      'https://api.stripe.com',
+    ]
+
+    const scriptSrc = [
+      "'self'",
+      ...(isDev ? ["'unsafe-eval'", "'unsafe-inline'"] : []),
+      'https://js.stripe.com',
+    ]
+
+    const styleSrc = ["'self'", "'unsafe-inline'"]
+    const fontSrc = ["'self'", 'data:']
+    const frameSrc = ['https://js.stripe.com', 'https://hooks.stripe.com']
+
+    const directives = [
+      `default-src 'self'`,
+      `script-src ${scriptSrc.join(' ')}`,
+      `style-src ${styleSrc.join(' ')}`,
+      `img-src ${imgSrc.join(' ')}`,
+      `font-src ${fontSrc.join(' ')}`,
+      `connect-src ${connectSrc.join(' ')}`,
+      `frame-src ${frameSrc.join(' ')}`,
+      `frame-ancestors 'none'`,
+      `base-uri 'self'`,
+      `form-action 'self'`,
+    ]
+
+    const csp = directives.join('; ')
 
     return [
       {

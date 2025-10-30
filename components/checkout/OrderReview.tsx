@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useCartStore } from '@/lib/stores/cart-store'
 import type { ShippingFormValues } from '@/components/checkout/ShippingForm'
 import type { PaymentFormValues } from '@/components/checkout/PaymentForm'
+import { formatTHB } from '@/lib/utils/currency'
 
 interface OrderReviewProps {
   shippingData: ShippingFormValues
@@ -29,7 +30,7 @@ export default function OrderReview({ shippingData, paymentData, onSubmit, onBac
                 <h3 className="font-medium text-ink">{item.name}</h3>
                 {item.variant && <p className="text-sm text-ink-2/60">Variant: {item.variant}</p>}
                 <p className="text-sm text-ink-2/60">Qty: {item.quantity}</p>
-                <p className="text-ink font-medium mt-1">THB {(item.price * item.quantity).toLocaleString()}</p>
+                <p className="text-ink font-medium mt-1">{formatTHB(item.price * item.quantity)}</p>
               </div>
             </div>
           ))}
@@ -37,15 +38,15 @@ export default function OrderReview({ shippingData, paymentData, onSubmit, onBac
         <div className="border-t border-hairline mt-6 pt-4 space-y-2">
           <div className="flex justify-between text-ink-2/70">
             <span>Subtotal</span>
-            <span>THB {subtotal.toLocaleString()}</span>
+            <span>{formatTHB(subtotal)}</span>
           </div>
           <div className="flex justify-between text-ink-2/70">
             <span>Shipping</span>
-            <span>{shipping === 0 ? 'Free' : `THB ${shipping.toLocaleString()}`}</span>
+            <span>{shipping === 0 ? 'Free' : formatTHB(shipping)}</span>
           </div>
           <div className="flex justify-between text-[1.25rem] font-medium text-ink pt-2 border-t border-hairline">
             <span>Total</span>
-            <span>THB {total.toLocaleString()}</span>
+            <span>{formatTHB(total)}</span>
           </div>
         </div>
       </div>

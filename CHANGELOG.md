@@ -58,3 +58,9 @@ Update .env.example with SMTP settings.
   - Thumbnail alt/size improvements; fix THB currency rendering and quantity controls.
   - Preload neighbor images via `window.Image` to avoid `next/image` name clash.
 - Build/runtime: move `@aws-sdk/client-s3` and `@aws-sdk/s3-request-presigner` to dependencies; add Vitest alias via `vite.config.ts`.
+
+## 2025-10-30
+- UX: Ensure Fullscreen image viewer close button (X) is always clickable by raising z-index and explicitly enabling pointer events.
+- UI: Unify THB currency formatting via `formatTHB()` in Wishlist, Orders (account/admin), Admin products/orders pages, Cart sidebar, and Home New Arrivals; fix residual encoding artifacts in price strings.
+- Security: Expand Content-Security-Policy to include Stripe (`js.stripe.com`, `api.stripe.com`) and optional S3/CDN domain from env; add `frame-src` for Stripe.
+- Emails: Begin normalizing email templates to use `formatTHB()` and clean up address/encoding (follow-up to finalize rows/total formatting).

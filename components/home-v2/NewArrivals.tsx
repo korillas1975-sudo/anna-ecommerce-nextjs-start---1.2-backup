@@ -4,6 +4,7 @@ import { motion, useInView } from 'framer-motion'
 import { useRef, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { formatTHB } from '@/lib/utils/currency'
 
 interface Product {
   id: string
@@ -88,9 +89,7 @@ export function NewArrivals() {
                     <h3 className="font-serif text-[0.95rem] md:text-[1.02rem] text-ink font-normal leading-snug group-hover:text-champagne transition-colors duration-300">
                       {product.name}
                     </h3>
-                    <p className="font-sans text-[0.85rem] md:text-[0.9rem] text-ink-2/70">
-                      THB {product.price.toLocaleString()}
-                    </p>
+                    <p className="font-sans text-[0.85rem] md:text-[0.9rem] text-ink-2/70">{formatTHB(product.price)}</p>
                   </div>
                 </motion.div>
               </Link>

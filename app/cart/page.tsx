@@ -3,6 +3,7 @@
 import { useCartStore } from '@/lib/stores/cart-store'
 import Image from 'next/image'
 import Link from 'next/link'
+import { formatTHB } from '@/lib/utils/currency'
 import { Trash2, ShoppingBag } from 'lucide-react'
 
 export default function CartPage() {
@@ -16,13 +17,8 @@ export default function CartPage() {
           <h1 className="font-serif text-[2rem] md:text-[2.5rem] font-medium text-ink mb-4">
             Your cart is empty
           </h1>
-          <p className="text-ink-2/70 mb-8">
-            Discover our exquisite collection of luxury jewelry
-          </p>
-          <Link
-            href="/products"
-            className="inline-block bg-ink text-white py-3 px-8 uppercase tracking-wider text-sm hover:bg-ink-2 transition-colors"
-          >
+          <p className="text-ink-2/70 mb-8">Discover our exquisite collection of luxury jewelry</p>
+          <Link href="/products" className="inline-block bg-ink text-white py-3 px-8 uppercase tracking-wider text-sm hover:bg-ink-2 transition-colors">
             Shop Now
           </Link>
         </div>
@@ -49,24 +45,15 @@ export default function CartPage() {
               <div key={item.id} className="flex gap-4 md:gap-6 bg-white border border-hairline p-4 md:p-6">
                 {/* Image */}
                 <div className="relative w-24 h-32 md:w-32 md:h-40 flex-shrink-0 bg-platinum/20">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-cover"
-                  />
+                  <Image src={item.image} alt={item.name} fill className="object-cover" />
                 </div>
 
                 {/* Info */}
                 <div className="flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="font-serif text-[1.1rem] md:text-[1.25rem] text-ink mb-1">
-                      {item.name}
-                    </h3>
-                    {item.variant && (
-                      <p className="text-sm text-ink-2/60">Size: {item.variant}</p>
-                    )}
-                    <p className="text-ink font-medium mt-2">฿{item.price.toLocaleString()}</p>
+                    <h3 className="font-serif text-[1.1rem] md:text-[1.25rem] text-ink mb-1">{item.name}</h3>
+                    {item.variant && (<p className="text-sm text-ink-2/60">Size: {item.variant}</p>)}
+                    <p className="text-ink font-medium mt-2">{formatTHB(item.price)}</p>
                   </div>
 
                   <div className="flex items-center justify-between mt-4">
@@ -88,10 +75,7 @@ export default function CartPage() {
                     </div>
 
                     {/* Remove */}
-                    <button
-                      onClick={() => removeItem(item.id)}
-                      className="text-ink-2/60 hover:text-ink transition-colors"
-                    >
+                    <button onClick={() => removeItem(item.id)} className="text-ink-2/60 hover:text-ink transition-colors">
                       <Trash2 className="w-5 h-5" />
                     </button>
                   </div>
@@ -108,35 +92,27 @@ export default function CartPage() {
               <div className="space-y-3 pb-4 border-b border-hairline">
                 <div className="flex justify-between text-ink-2/70">
                   <span>Subtotal</span>
-                  <span>฿{subtotal.toLocaleString()}</span>
+                  <span>{formatTHB(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-ink-2/70">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? 'Free' : `฿${shipping.toLocaleString()}`}</span>
+                  <span>{shipping === 0 ? 'Free' : formatTHB(shipping)}</span>
                 </div>
                 {shipping === 0 && subtotal < 3000 && (
-                  <p className="text-xs text-champagne">
-                    Add ฿{(3000 - subtotal).toLocaleString()} more for free shipping
-                  </p>
+                  <p className="text-xs text-champagne">Add {formatTHB(3000 - subtotal)} more for free shipping</p>
                 )}
               </div>
 
               <div className="flex justify-between text-[1.25rem] font-medium text-ink pt-2">
                 <span>Total</span>
-                <span>฿{total.toLocaleString()}</span>
+                <span>{formatTHB(total)}</span>
               </div>
 
-              <Link
-                href="/checkout"
-                className="block w-full bg-ink text-white text-center py-4 uppercase tracking-wider text-sm hover:bg-ink-2 transition-colors mt-6"
-              >
-                Proceed to Checkout
+              <Link href="/checkout" className="block w-full bg-ink text-white text-center py-4 uppercase tracking-wider text-sm hover:bg-ink-2 transition-colors mt-6">
+                Buy Now
               </Link>
 
-              <Link
-                href="/products"
-                className="block text-center text-sm text-ink-2/70 hover:text-ink transition-colors mt-4"
-              >
+              <Link href="/products" className="block text-center text-sm text-ink-2/70 hover:text-ink transition-colors mt-4">
                 Continue Shopping
               </Link>
             </div>

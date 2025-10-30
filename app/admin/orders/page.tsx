@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { formatTHB } from '@/lib/utils/currency'
 import { ArrowLeft } from 'lucide-react'
 
 interface AdminOrder {
@@ -196,7 +197,7 @@ export default function AdminOrdersPage() {
                       <td className="px-6 py-4 text-sm text-ink-2/70">{order.items?.length || 0} items</td>
                     )}
                     {cols.total && (
-                      <td className="px-6 py-4 text-right text-sm text-ink font-medium">THB {order.total.toLocaleString()}</td>
+                      <td className="px-6 py-4 text-right text-sm text-ink font-medium">{formatTHB(order.total)}</td>
                     )}
                     <td className="px-6 py-4 text-right">
                       <select

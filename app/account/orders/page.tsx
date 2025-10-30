@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Heart } from 'lucide-react'
+import { formatTHB } from '@/lib/utils/currency'
 
 interface OrderItem {
   id: string
@@ -117,7 +118,7 @@ export default function OrdersPage() {
                 <span className="inline-block px-3 py-1 bg-champagne/20 text-ink text-sm capitalize">
                   {order.status.replace('_', ' ')}
                 </span>
-                <p className="font-medium text-ink">?{order.total.toLocaleString()}</p>
+                <p className="font-medium text-ink">{formatTHB(order.total)}</p>
               </div>
             </div>
 
@@ -135,7 +136,7 @@ export default function OrdersPage() {
                   <div>
                     <h3 className="font-medium text-ink">{item.product?.name ?? 'Unknown product'}</h3>
                     <p className="text-sm text-ink-2/60">Qty: {item.quantity}</p>
-                    <p className="text-ink mt-1">?{item.price.toLocaleString()}</p>
+                    <p className="text-ink mt-1">{formatTHB(item.price)}</p>
                   </div>
                 </div>
               ))}

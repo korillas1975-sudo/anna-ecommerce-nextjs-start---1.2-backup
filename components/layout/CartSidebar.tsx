@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useCartStore } from '@/lib/stores/cart-store'
 import { useUIStore } from '@/lib/stores/ui-store'
 import { cn } from '@/lib/utils/cn'
+import { formatTHB } from '@/lib/utils/currency'
 
 export function CartSidebar() {
   const { items, subtotal, shipping, total, updateQuantity, removeItem } = useCartStore()
@@ -140,9 +141,7 @@ export function CartSidebar() {
                       </div>
 
                       {/* Price */}
-                      <span className="text-base font-normal text-ink">
-                        ${(item.price * item.quantity).toFixed(2)}
-                      </span>
+                      <span className="text-base font-normal text-ink">{formatTHB(item.price * item.quantity)}</span>
                     </div>
 
                     {/* Remove */}
@@ -166,15 +165,15 @@ export function CartSidebar() {
             <div className="flex flex-col gap-3 mb-6">
               <div className="flex justify-between items-center text-[0.95rem] text-ink-2">
                 <span>Subtotal</span>
-                <span>THB {subtotal.toLocaleString()}</span>
+                <span>{formatTHB(subtotal)}</span>
               </div>
               <div className="flex justify-between items-center text-[0.95rem] text-ink-2">
                 <span>Shipping</span>
-                <span>{shipping === 0 ? 'Free' : `THB ${shipping.toLocaleString()}`}</span>
+                <span>{shipping === 0 ? 'Free' : formatTHB(shipping)}</span>
               </div>
               <div className="flex justify-between items-center pt-3 border-t border-hairline text-[1.1rem] font-medium text-ink mt-2">
                 <span>Total</span>
-                <span>THB {total.toLocaleString()}</span>
+                <span>{formatTHB(total)}</span>
               </div>
             </div>
 
@@ -185,7 +184,7 @@ export function CartSidebar() {
                 onClick={closeCart}
                 className="inline-flex items-center justify-center py-4 px-8 font-sans text-[0.95rem] tracking-[0.08em] bg-ink text-white border border-ink cursor-pointer transition-all hover:bg-ink-2 no-underline text-center"
               >
-                Proceed to Checkout
+                Buy Now
               </Link>
               <Link
                 href="/cart"
