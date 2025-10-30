@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { defineConfig, env } from "prisma/config";
 
-const schemaPath = process.env.PRISMA_SCHEMA || "prisma/schema.prisma";
+const schemaPath = (process.env.PRISMA_SCHEMA || "prisma/schema.prisma").trim();
 
 export default defineConfig({
   schema: schemaPath,
