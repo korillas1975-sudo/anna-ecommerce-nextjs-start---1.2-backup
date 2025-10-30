@@ -1,0 +1,115 @@
+32
+
+2025-10-30T05:57:20.985Z [INFO]: # Executing command: npm run build
+
+33
+
+2025-10-30T05:57:21.120Z [INFO]: > anna-ecommerce-nextjs@0.1.0 build
+
+34
+
+                                 > next build
+
+35
+
+2025-10-30T05:57:21.894Z [INFO]: ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+
+36
+
+2025-10-30T05:57:21.900Z [INFO]: Attention: Next.js now collects completely anonymous telemetry regarding usage.
+
+37
+
+2025-10-30T05:57:21.900Z [INFO]: This information is used to shape Next.js' roadmap and prioritize features.
+
+38
+
+                                 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+
+39
+
+                                 https://nextjs.org/telemetry
+
+40
+
+2025-10-30T05:57:21.952Z [INFO]: ▲ Next.js 15.5.4
+
+41
+
+2025-10-30T05:57:21.952Z [INFO]: 
+
+42
+
+2025-10-30T05:57:22.051Z [INFO]: Creating an optimized production build ...
+
+43
+
+2025-10-30T05:57:43.677Z [INFO]: ✓ Compiled successfully in 19.0s
+
+44
+
+2025-10-30T05:57:43.683Z [INFO]: Linting and checking validity of types ...
+
+45
+
+2025-10-30T05:57:52.775Z [WARNING]: Failed to compile.
+
+46
+
+2025-10-30T05:57:52.780Z [WARNING]: ./app/api/admin/customers/route.ts:15:23
+
+47
+
+                                    Type error: Namespace '"/codebuild/output/src238188826/src/anna-ecommerce-nextjs-start---1.2-backup/node_modules/.prisma/client/default".Prisma' has no exported member 'UserWhereInput'.
+
+48
+
+                                    [0m [90m 13 |[39m   [36mconst[39m q [33m=[39m searchParams[33m.[39m[36mget[39m([32m'q'[39m)[33m?[39m[33m.[39mtrim() [33m||[39m [32m''[39m
+
+49
+
+                                    [90m 14 |[39m
+
+50
+
+                                    [31m[1m>[22m[39m[90m 15 |[39m   [36mconst[39m where[33m:[39m [33mPrisma[39m[33m.[39m[33mUserWhereInput[39m [33m=[39m { role[33m:[39m [32m'customer'[39m }
+
+51
+
+                                    [90m    |[39m                       [31m[1m^[22m[39m
+
+52
+
+                                    [90m 16 |[39m   [36mif[39m (q) {
+
+53
+
+                                    [90m 17 |[39m     where[33m.[39m[33mOR[39m [33m=[39m [
+
+54
+
+                                    [90m 18 |[39m       { email[33m:[39m { contains[33m:[39m q } }[33m,[39m[0m
+
+55
+
+2025-10-30T05:57:52.805Z [WARNING]: Next.js build worker exited with code: 1 and signal: null
+
+56
+
+2025-10-30T05:57:52.852Z [ERROR]: !!! Build failed
+
+57
+
+2025-10-30T05:57:52.852Z [INFO]: Please read more about Amplify Hosting's support for SSR frameworks to find if your build failure is related to an unsupported feature: https://docs.aws.amazon.com/amplify/latest/userguide/amplify-ssr-framework-support.html. You may also find this troubleshooting guide useful: https://docs.aws.amazon.com/amplify/latest/userguide/troubleshooting-ssr-deployment.html
+
+58
+
+2025-10-30T05:57:52.852Z [ERROR]: !!! Error: Command failed with exit code 1
+
+59
+
+2025-10-30T05:57:52.853Z [INFO]: # Starting environment caching...
+
+60
+
+2025-10-30T05:57:52.853Z [INFO]: # Environment caching completed

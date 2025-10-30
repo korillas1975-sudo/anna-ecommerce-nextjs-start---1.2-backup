@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { auth } from '@/lib/auth'
-import type { Prisma } from '@prisma/client'
 
 export async function GET(request: Request) {
   const session = await auth()
@@ -12,7 +11,8 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const q = searchParams.get('q')?.trim() || ''
 
-  const where: Prisma.UserWhereInput = { role: 'customer' }
+  // Avoid hard dependency on generated Prisma types during cloud builds
+  const where: any = { role: 'customer' }
   if (q) {
     where.OR = [
       { email: { contains: q } },

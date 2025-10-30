@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
+    "postinstall": "prisma generate",
     "seed": "node --loader ts-node/esm prisma/seed.ts",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
