@@ -171,3 +171,8 @@ body.admin-dark .admin-card { background: #131C24; border-color: #1E2A35; }
 body.admin-dark .admin-surface .text-ink, body.admin-dark .admin-surface .text-ink-2\/60, body.admin-dark .admin-surface .text-ink-2\/70 { color: #E6EDF3 !important; }
 body.admin-dark .admin-surface .bg-white { background: #131C24 !important; }
 body.admin-dark .admin-surface .border-hairline { border-color: #1E2A35 !important; }
+
+/* Cross-browser scrollbar hide utility */
+.scrollbar-hide::-webkit-scrollbar{display:none}
+.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
+

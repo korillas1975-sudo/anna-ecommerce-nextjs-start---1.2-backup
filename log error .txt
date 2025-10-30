@@ -1,26 +1,26 @@
 0
 
-2025-10-30T10:02:43.035Z [INFO]: # Build environment configured with Standard build compute type: 8GiB Memory, 4vCPUs, 128GB Disk Space
+2025-10-30T10:42:14.079Z [INFO]: # Build environment configured with Standard build compute type: 8GiB Memory, 4vCPUs, 128GB Disk Space
 
 1
 
-2025-10-30T10:02:43.880Z [INFO]: # Cloning repository: git@github.com:korillas1975-sudo/anna-ecommerce-nextjs-start---1.2-backup.git
+2025-10-30T10:42:14.925Z [INFO]: # Cloning repository: git@github.com:korillas1975-sudo/anna-ecommerce-nextjs-start---1.2-backup.git
 
 2
 
-2025-10-30T10:02:46.446Z [INFO]: 
+2025-10-30T10:42:17.658Z [INFO]: 
 
 3
 
-2025-10-30T10:02:46.522Z [INFO]: Cloning into 'anna-ecommerce-nextjs-start---1.2-backup'...
+2025-10-30T10:42:17.737Z [INFO]: Cloning into 'anna-ecommerce-nextjs-start---1.2-backup'...
 
 4
 
-2025-10-30T10:02:46.523Z [INFO]: # Switching to commit: 2c4c163908ca50f8e34ea7ffe0561d4cc8bbbca6
+2025-10-30T10:42:17.737Z [INFO]: # Switching to commit: 4cf235035b9d624b824e3fc212a57ef3cb74bc1e
 
 5
 
-2025-10-30T10:02:46.608Z [INFO]: Note: switching to '2c4c163908ca50f8e34ea7ffe0561d4cc8bbbca6'.
+2025-10-30T10:42:17.826Z [INFO]: Note: switching to '4cf235035b9d624b824e3fc212a57ef3cb74bc1e'.
 
 6
 
@@ -60,247 +60,143 @@
 
 15
 
-                                 HEAD is now at 2c4c163 Create  rebuild.txt
+                                 HEAD is now at 4cf2350 Merge branch 'master' of https://github.com/korillas1975-sudo/anna-ecommerce-nextjs-start---1.2-backup
 
 16
 
-2025-10-30T10:02:46.662Z [INFO]: Successfully cleaned up Git credentials
+2025-10-30T10:42:17.880Z [INFO]: Successfully cleaned up Git credentials
 
 17
 
-2025-10-30T10:02:46.662Z [INFO]: # Checking for Git submodules at: /codebuild/output/src2381152449/src/anna-ecommerce-nextjs-start---1.2-backup/.gitmodules
+2025-10-30T10:42:17.881Z [INFO]: # Checking for Git submodules at: /codebuild/output/src538732629/src/anna-ecommerce-nextjs-start---1.2-backup/.gitmodules
 
 18
 
-2025-10-30T10:02:46.669Z [INFO]: # Retrieving environment cache...
+2025-10-30T10:42:17.889Z [INFO]: # Retrieving environment cache...
 
 19
 
-2025-10-30T10:02:46.717Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
+2025-10-30T10:42:17.933Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
 
 20
 
-2025-10-30T10:02:46.717Z [INFO]: ---- Setting Up SSM Secrets ----
+2025-10-30T10:42:17.934Z [INFO]: ---- Setting Up SSM Secrets ----
 
 21
 
-2025-10-30T10:02:46.717Z [INFO]: SSM params {"Path":"/amplify/dcoyi3vhn16cz/master/","WithDecryption":true}
+2025-10-30T10:42:17.934Z [INFO]: SSM params {"Path":"/amplify/dcoyi3vhn16cz/master/","WithDecryption":true}
 
 22
 
-2025-10-30T10:02:46.771Z [WARNING]: !Failed to set up process.env.secrets
+2025-10-30T10:42:17.980Z [WARNING]: !Failed to set up process.env.secrets
 
 23
 
-2025-10-30T10:02:47.683Z [INFO]: # No package override configuration found.
+2025-10-30T10:42:18.836Z [INFO]: # No package override configuration found.
 
 24
 
-2025-10-30T10:02:47.686Z [INFO]: # Retrieving cache...
+2025-10-30T10:42:18.838Z [INFO]: # Retrieving cache...
 
 25
 
-2025-10-30T10:02:47.718Z [INFO]: # Retrieved cache
+2025-10-30T10:42:21.514Z [INFO]: # Extracting cache...
 
 26
 
-2025-10-30T10:02:52.039Z [INFO]: ## Starting Backend Build
+2025-10-30T10:42:21.891Z [INFO]: # Extraction completed
 
 27
 
-                                 ## Checking for associated backend environment...
+2025-10-30T10:42:21.919Z [INFO]: # Retrieved cache
 
 28
 
-                                 ## No backend environment association found, continuing...
+2025-10-30T10:42:26.419Z [INFO]: ## Starting Backend Build
 
 29
 
-                                 ## Completed Backend Build
+                                 ## Checking for associated backend environment...
 
 30
 
-2025-10-30T10:02:52.046Z [INFO]: {"backendDuration": 0}
+                                 ## No backend environment association found, continuing...
 
 31
 
-                                 ## Starting Frontend Build
+                                 ## Completed Backend Build
 
 32
 
+2025-10-30T10:42:26.424Z [INFO]: {"backendDuration": 0}
 33
 
-                                 # Executing command: npm ci
+                                 ## Starting Frontend Build
 
 34
 
-2025-10-30T10:03:26.663Z [INFO]: > anna-ecommerce-nextjs@0.1.0 postinstall
+                                 # Starting phase: preBuild
 
 35
 
-                                 > prisma generate
+                                 # Executing command: npm ci
 
 36
 
-2025-10-30T10:03:27.673Z [WARNING]: Loaded Prisma config from prisma.config.ts.
+2025-10-30T10:43:00.691Z [INFO]: > anna-ecommerce-nextjs@0.1.0 postinstall
 
 37
 
-2025-10-30T10:03:27.929Z [WARNING]: Prisma config detected, skipping environment variable loading.
+                                 > prisma generate
 
 38
 
-2025-10-30T10:03:27.929Z [INFO]: Prisma schema loaded from prisma/schema.prisma
+2025-10-30T10:43:01.743Z [WARNING]: Loaded Prisma config from prisma.config.ts.
 
 39
 
-2025-10-30T10:03:28.299Z [INFO]: ✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 167ms
+2025-10-30T10:43:01.983Z [WARNING]: Prisma config detected, skipping environment variable loading.
 
 40
 
-                                 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+2025-10-30T10:43:01.983Z [WARNING]: Error: Could not load schema from `/codebuild/output/src538732629/src/anna-ecommerce-nextjs-start---1.2-backup/ prisma/schema.prisma` provided by "prisma.config.ts"`: file or directory not found
 
 41
 
-                                 Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+2025-10-30T10:43:01.995Z [WARNING]: npm error code 1
 
 42
 
-2025-10-30T10:03:28.323Z [INFO]: added 575 packages, and audited 576 packages in 32s
+2025-10-30T10:43:01.995Z [WARNING]: npm error path /codebuild/output/src538732629/src/anna-ecommerce-nextjs-start---1.2-backup
 
 43
 
-2025-10-30T10:03:28.324Z [INFO]: 177 packages are looking for funding
+                                    npm error command failed
 
 44
 
-                                 run `npm fund` for details
+                                    npm error command sh -c prisma generate
 
 45
 
-2025-10-30T10:03:28.352Z [INFO]: 8 moderate severity vulnerabilities
+2025-10-30T10:43:01.996Z [WARNING]: npm error A complete log of this run can be found in: /root/.npm/_logs/2025-10-30T10_42_30_089Z-debug-0.log
 
 46
 
-                                 To address issues that do not require attention, run:
+2025-10-30T10:43:02.017Z [ERROR]: !!! Build failed
 
 47
 
-                                 npm audit fix
+2025-10-30T10:43:02.017Z [INFO]: Please read more about Amplify Hosting's support for SSR frameworks to find if your build failure is related to an unsupported feature: https://docs.aws.amazon.com/amplify/latest/userguide/amplify-ssr-framework-support.html. You may also find this troubleshooting guide useful: https://docs.aws.amazon.com/amplify/latest/userguide/troubleshooting-ssr-deployment.html
 
 48
 
-                                 To address all issues (including breaking changes), run:
+2025-10-30T10:43:02.017Z [ERROR]: !!! Error: Command failed with exit code 1
 
-                                 # Starting phase: preBuild
 49
 
-                                 npm audit fix --force
+2025-10-30T10:43:02.017Z [INFO]: # Starting environment caching...
 
 50
 
-                                 Run `npm audit` for details.
-
-51
-
-2025-10-30T10:03:28.372Z [INFO]: # Completed phase: preBuild
-
-52
-
-                                 # Starting phase: build
-
-53
-
-                                 # Executing command: npm run build
-
-54
-
-2025-10-30T10:03:28.471Z [INFO]: > anna-ecommerce-nextjs@0.1.0 build
-
-55
-
-                                 > next build
-
-56
-
-2025-10-30T10:03:29.242Z [INFO]: ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
-
-57
-
-2025-10-30T10:03:29.247Z [INFO]: Attention: Next.js now collects completely anonymous telemetry regarding usage.
-
-58
-
-2025-10-30T10:03:29.248Z [INFO]: This information is used to shape Next.js' roadmap and prioritize features.
-
-59
-
-                                 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-
-60
-
-                                 https://nextjs.org/telemetry
-
-61
-
-2025-10-30T10:03:29.298Z [INFO]: ▲ Next.js 15.5.4
-
-62
-
-2025-10-30T10:03:29.299Z [INFO]: 
-
-63
-
-2025-10-30T10:03:29.395Z [INFO]: Creating an optimized production build ...
-
-64
-
-2025-10-30T10:03:49.586Z [INFO]: ✓ Compiled successfully in 17.6s
-
-65
-
-2025-10-30T10:03:49.591Z [INFO]: Linting and checking validity of types ...
-
-66
-
-2025-10-30T10:03:53.760Z [WARNING]: Failed to compile.
-
-67
-
-                                    ./app/api/admin/customers/route.ts
-
-68
-
-                                    15:16  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-69
-
-                                    ./app/checkout/page.tsx
-
-70
-
-                                    68:13  Warning: Expected an assignment or function call and instead saw an expression.  @typescript-eslint/no-unused-expressions
-
-71
-
-                                    info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
-
-72
-
-2025-10-30T10:03:53.856Z [ERROR]: !!! Build failed
-
-73
-
-2025-10-30T10:03:53.856Z [INFO]: Please read more about Amplify Hosting's support for SSR frameworks to find if your build failure is related to an unsupported feature: https://docs.aws.amazon.com/amplify/latest/userguide/amplify-ssr-framework-support.html. You may also find this troubleshooting guide useful: https://docs.aws.amazon.com/amplify/latest/userguide/troubleshooting-ssr-deployment.html
-
-74
-
-2025-10-30T10:03:53.857Z [ERROR]: !!! Error: Command failed with exit code 1
-
-75
-
-2025-10-30T10:03:53.857Z [INFO]: # Starting environment caching...
-
-76
-
-2025-10-30T10:03:53.857Z [INFO]: # Environment caching completed
+2025-10-30T10:43:02.018Z [INFO]: # Environment caching completed
