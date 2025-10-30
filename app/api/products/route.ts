@@ -89,6 +89,10 @@ export async function GET(request: Request) {
     return NextResponse.json(parsedProducts)
   } catch (error) {
     console.error('Error fetching products:', error)
+    // Fail-safe in production to keep UI rendering even if DB is unavailable
+    if (process.env.NODE_ENV === 'production') {
+      return NextResponse.json([])
+    }
     return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 })
   }
 }
