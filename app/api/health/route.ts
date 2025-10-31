@@ -6,8 +6,8 @@ export async function GET() {
     // Simple connectivity probe
     await db.$queryRawUnsafe('SELECT 1')
     return NextResponse.json({ ok: true })
-  } catch (e: any) {
-    const msg = e?.message || String(e)
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e)
     const url = process.env.DATABASE_URL || ''
     const masked = url ? url.replace(/:\\S+@/, '://***@') : 'EMPTY'
     let host = ''
@@ -15,4 +15,3 @@ export async function GET() {
     return NextResponse.json({ ok: false, error: msg, dbHost: host, dbUrlMasked: masked }, { status: 503 })
   }
 }
-
