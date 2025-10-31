@@ -55,7 +55,10 @@ const nextConfig: NextConfig = {
 
     const scriptSrc = [
       "'self'",
-      ...(isDev ? ["'unsafe-eval'", "'unsafe-inline'"] : []),
+      // Allow inline scripts so Next.js runtime can bootstrap/hydrate in production.
+      // We can tighten this later with nonces/strict-dynamic once stable.
+      "'unsafe-inline'",
+      ...(isDev ? ["'unsafe-eval'"] : []),
       'https://js.stripe.com',
     ]
 
