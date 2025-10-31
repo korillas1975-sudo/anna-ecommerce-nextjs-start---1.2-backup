@@ -1,0 +1,680 @@
+0
+
+2025-10-31T01:53:35.275Z [INFO]: # Build environment configured with Standard build compute type: 8GiB Memory, 4vCPUs, 128GB Disk Space
+
+1
+
+2025-10-31T01:53:36.088Z [INFO]: # Cloning repository: git@github.com:korillas1975-sudo/anna-ecommerce-nextjs-start---1.2-backup.git
+
+2
+
+2025-10-31T01:53:38.531Z [INFO]: 
+
+3
+
+2025-10-31T01:53:38.623Z [INFO]: Cloning into 'anna-ecommerce-nextjs-start---1.2-backup'...
+
+4
+
+2025-10-31T01:53:38.623Z [INFO]: # Switching to commit: 1d7e63e7f39faf59f96ed77869bbd6df01d88f43
+
+5
+
+2025-10-31T01:53:38.713Z [INFO]: Note: switching to '1d7e63e7f39faf59f96ed77869bbd6df01d88f43'.
+
+6
+
+                                 You are in 'detached HEAD' state. You can look around, make experimental
+
+7
+
+                                 changes and commit them, and you can discard any commits you make in this
+
+8
+
+                                 state without impacting any branches by switching back to a branch.
+
+9
+
+                                 If you want to create a new branch to retain commits you create, you may
+
+10
+
+                                 do so (now or later) by using -c with the switch command. Example:
+
+11
+
+                                 git switch -c <new-branch-name>
+
+12
+
+                                 Or undo this operation with:
+
+13
+
+                                 git switch -
+
+14
+
+                                 Turn off this advice by setting config variable advice.detachedHead to false
+
+15
+
+                                 HEAD is now at 1d7e63e Create rebuild2.txt
+
+16
+
+2025-10-31T01:53:38.759Z [INFO]: Successfully cleaned up Git credentials
+
+17
+
+2025-10-31T01:53:38.760Z [INFO]: # Checking for Git submodules at: /codebuild/output/src3775833861/src/anna-ecommerce-nextjs-start---1.2-backup/.gitmodules
+
+18
+
+2025-10-31T01:53:38.768Z [INFO]: # Retrieving environment cache...
+
+19
+
+2025-10-31T01:53:38.816Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
+
+20
+
+2025-10-31T01:53:38.816Z [INFO]: ---- Setting Up SSM Secrets ----
+
+21
+
+2025-10-31T01:53:38.817Z [INFO]: SSM params {"Path":"/amplify/dcoyi3vhn16cz/master/","WithDecryption":true}
+
+22
+
+2025-10-31T01:53:38.865Z [WARNING]: !Failed to set up process.env.secrets
+
+23
+
+2025-10-31T01:53:39.719Z [INFO]: # No package override configuration found.
+
+24
+
+2025-10-31T01:53:39.722Z [INFO]: # Retrieving cache...
+
+25
+
+2025-10-31T01:53:56.649Z [INFO]: # Extracting cache...
+
+26
+
+2025-10-31T01:54:08.855Z [INFO]: # Extraction completed
+
+27
+
+2025-10-31T01:54:09.053Z [INFO]: # Retrieved cache
+
+28
+
+2025-10-31T01:54:14.305Z [INFO]: ## Starting Backend Build
+
+29
+
+                                 ## Checking for associated backend environment...
+
+30
+
+                                 ## No backend environment association found, continuing...
+
+31
+
+                                 ## Completed Backend Build
+
+32
+
+2025-10-31T01:54:14.311Z [INFO]: {"backendDuration": 0}
+
+33
+
+                                 ## Starting Frontend Build
+
+34
+
+                                 # Starting phase: preBuild
+39
+
+2025-10-31T01:54:53.782Z [WARNING]: Prisma config detected, skipping environment variable loading.
+
+40
+
+2025-10-31T01:54:53.783Z [INFO]: Prisma schema loaded from prisma/schema.postgres.prisma
+
+41
+
+2025-10-31T01:54:54.135Z [INFO]: ✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 140ms
+
+42
+
+                                 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+43
+
+                                 Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+
+44
+
+2025-10-31T01:54:54.162Z [INFO]: added 575 packages, and audited 576 packages in 35s
+
+45
+
+2025-10-31T01:54:54.163Z [INFO]: 177 packages are looking for funding
+
+46
+
+                                 run `npm fund` for details
+
+47
+
+2025-10-31T01:54:54.195Z [INFO]: 9 moderate severity vulnerabilities
+
+48
+
+                                 To address issues that do not require attention, run:
+
+49
+
+                                 npm audit fix
+
+50
+
+                                 To address all issues (including breaking changes), run:
+
+51
+
+                                 npm audit fix --force
+
+52
+
+                                 Run `npm audit` for details.
+
+53
+
+2025-10-31T01:54:54.220Z [INFO]: # Executing command: npx prisma generate
+
+54
+
+2025-10-31T01:54:55.798Z [WARNING]: Loaded Prisma config from prisma.config.ts.
+
+55
+
+2025-10-31T01:54:56.100Z [WARNING]: Prisma config detected, skipping environment variable loading.
+
+56
+
+2025-10-31T01:54:56.101Z [INFO]: Prisma schema loaded from prisma/schema.postgres.prisma
+
+57
+
+2025-10-31T01:54:56.470Z [INFO]: ✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 151ms
+
+58
+
+                                 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+59
+
+                                 Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+
+60
+
+2025-10-31T01:54:56.490Z [INFO]: # Executing command: npx prisma migrate deploy || npx prisma db push
+
+61
+
+2025-10-31T01:54:57.834Z [WARNING]: Loaded Prisma config from prisma.config.ts.
+
+62
+
+2025-10-31T01:54:58.127Z [WARNING]: Prisma config detected, skipping environment variable loading.
+
+63
+
+2025-10-31T01:54:58.127Z [INFO]: Prisma schema loaded from prisma/schema.postgres.prisma
+
+64
+
+2025-10-31T01:54:58.132Z [INFO]: Datasource "db": PostgreSQL database "neondb", schema "public" at "ep-orange-pond-a4bcqyho.us-east-1.aws.neon.tech"
+
+65
+
+2025-10-31T01:55:00.707Z [INFO]: No migration found in prisma/migrations
+
+66
+
+2025-10-31T01:55:00.713Z [INFO]: 
+
+67
+
+2025-10-31T01:55:03.739Z [INFO]: 
+
+68
+
+2025-10-31T01:55:03.739Z [INFO]: No pending migrations to apply.
+
+69
+
+2025-10-31T01:55:03.954Z [INFO]: # Completed phase: preBuild
+
+70
+
+                                 # Starting phase: build
+71
+
+                                 # Executing command: npm run build
+
+72
+
+2025-10-31T01:55:04.063Z [INFO]: > anna-ecommerce-nextjs@0.1.0 build
+
+73
+
+                                 > next build
+
+74
+
+2025-10-31T01:55:04.952Z [INFO]: ▲ Next.js 15.5.4
+
+75
+
+2025-10-31T01:55:04.952Z [INFO]: 
+
+76
+
+2025-10-31T01:55:05.055Z [INFO]: Creating an optimized production build ...
+
+77
+
+2025-10-31T01:55:27.377Z [INFO]: ✓ Compiled successfully in 19.4s
+
+78
+
+2025-10-31T01:55:27.383Z [INFO]: Linting and checking validity of types ...
+
+79
+
+2025-10-31T01:55:38.961Z [INFO]: Collecting page data ...
+
+80
+
+2025-10-31T01:55:42.354Z [INFO]: Generating static pages (0/44) ...
+
+81
+
+2025-10-31T01:55:43.073Z [WARNING]: ReferenceError: location is not defined
+
+82
+
+                                    at r (.next/server/app/checkout/page.js:2:19297)
+
+83
+
+2025-10-31T01:55:43.353Z [INFO]: Generating static pages (11/44)
+
+84
+
+2025-10-31T01:55:43.354Z [INFO]: Generating static pages (22/44)
+
+85
+
+2025-10-31T01:55:43.634Z [INFO]: Generating static pages (33/44)
+
+86
+
+2025-10-31T01:55:45.043Z [INFO]: ✓ Generating static pages (44/44)
+
+87
+
+2025-10-31T01:55:46.329Z [INFO]: Finalizing page optimization ...
+
+88
+
+2025-10-31T01:55:46.342Z [INFO]: Collecting build traces ...
+
+89
+
+2025-10-31T01:56:07.674Z [INFO]: 
+
+90
+
+2025-10-31T01:56:07.687Z [INFO]: Route (app)                                 Size  First Load JS
+
+91
+
+                                 ┌ ○ /                                    82.9 kB         231 kB
+
+92
+
+                                 ├ ○ /_not-found                            996 B         103 kB
+
+93
+
+                                 ├ ○ /about                                 489 B         108 kB
+
+94
+
+                                 ├ ○ /account                             2.37 kB         111 kB
+
+95
+
+                                 ├ ○ /account/orders                      2.63 kB         113 kB
+
+96
+
+                                 ├ ○ /account/settings                    1.01 kB         110 kB
+
+97
+
+                                 ├ ƒ /admin                               3.22 kB         112 kB
+
+98
+
+                                 ├ ƒ /admin/content                       1.13 kB         110 kB
+
+99
+
+                                 ├ ƒ /admin/customers                     1.26 kB         110 kB
+
+100
+
+                                 ├ ƒ /admin/orders                        3.04 kB         112 kB
+101
+
+                                 ├ ƒ /admin/orders/[id]                    3.4 kB         117 kB
+
+102
+
+                                 ├ ƒ /admin/products                      2.92 kB         117 kB
+
+103
+
+                                 ├ ƒ /admin/products/[slug]               2.54 kB         108 kB
+
+104
+
+                                 ├ ƒ /admin/products/new                  2.11 kB         107 kB
+
+105
+
+                                 ├ ƒ /api/admin/content                     201 B         102 kB
+
+106
+
+                                 ├ ƒ /api/admin/customers                   201 B         102 kB
+
+107
+
+                                 ├ ƒ /api/admin/metrics                     201 B         102 kB
+
+108
+
+                                 ├ ƒ /api/admin/orders                      201 B         102 kB
+
+109
+
+                                 ├ ƒ /api/admin/orders/[id]/notes           201 B         102 kB
+
+110
+
+                                 ├ ƒ /api/admin/orders/export               201 B         102 kB
+
+111
+
+                                 ├ ƒ /api/admin/products                    201 B         102 kB
+
+112
+
+                                 ├ ƒ /api/admin/seed                        201 B         102 kB
+
+113
+
+                                 ├ ƒ /api/auth/[...nextauth]                201 B         102 kB
+
+114
+
+                                 ├ ƒ /api/auth/register                     201 B         102 kB
+
+115
+
+                                 ├ ƒ /api/categories                        201 B         102 kB
+
+116
+
+                                 ├ ƒ /api/health                            201 B         102 kB
+
+117
+
+                                 ├ ƒ /api/orders                            201 B         102 kB
+
+118
+
+                                 ├ ƒ /api/orders/[id]                       201 B         102 kB
+
+119
+
+                                 ├ ƒ /api/payments/stripe/create-session    201 B         102 kB
+
+120
+
+                                 ├ ƒ /api/products                          201 B         102 kB
+
+
+121
+
+                                 ├ ƒ /api/products/[slug]                   201 B         102 kB
+
+122
+
+                                 ├ ƒ /api/uploads/s3/presign                201 B         102 kB
+
+123
+
+                                 ├ ƒ /api/webhooks/stripe                   201 B         102 kB
+
+124
+
+                                 ├ ƒ /api/wishlist                          201 B         102 kB
+
+125
+
+                                 ├ ƒ /api/wishlist/[productId]              201 B         102 kB
+
+126
+
+                                 ├ ○ /auth/error                            970 B         106 kB
+
+127
+
+                                 ├ ○ /auth/forgot-password                1.31 kB         107 kB
+
+128
+
+                                 ├ ○ /auth/login                          2.07 kB         111 kB
+
+129
+
+                                 ├ ○ /auth/register                       2.43 kB         111 kB
+
+130
+
+                                 ├ ○ /cart                                2.71 kB         115 kB
+
+131
+
+                                 ├ ○ /checkout                            4.35 kB         113 kB
+
+132
+
+                                 ├ ○ /checkout/success                    1.47 kB         109 kB
+
+133
+
+                                 ├ ○ /contact                             2.47 kB         104 kB
+
+134
+
+                                 ├ ƒ /products                            4.15 kB         155 kB
+
+135
+
+                                 ├ ƒ /products/[slug]                     9.01 kB         159 kB
+
+136
+
+                                 ├ ○ /robots.txt                            201 B         102 kB
+
+137
+
+                                 ├ ○ /sandbox/collections                 1.59 kB         150 kB
+
+138
+
+                                 ├ ƒ /search                              2.58 kB         153 kB
+
+139
+
+                                 ├ ○ /sitemap.xml                           201 B         102 kB
+
+140
+
+                                 └ ○ /wishlist                            2.32 kB         115 kB
+
+141
+
+                                 + First Load JS shared by all             102 kB
+
+142
+
+                                 ├ chunks/1255-1622f43a1c0ebec5.js      45.7 kB
+
+143
+
+                                 ├ chunks/4bd1b696-f785427dddbba9fb.js  54.2 kB
+
+144
+
+                                 └ other shared chunks (total)          1.93 kB
+
+145
+
+                                 ƒ Middleware                             34.1 kB
+
+146
+
+                                 ○  (Static)   prerendered as static content
+
+147
+
+                                 ƒ  (Dynamic)  server-rendered on demand
+
+148
+
+2025-10-31T01:56:07.726Z [INFO]: # Completed phase: build
+
+149
+
+                                 ## Completed Frontend Build
+
+150
+
+2025-10-31T01:56:07.765Z [INFO]: ## Build completed successfully
+
+151
+
+2025-10-31T01:56:07.766Z [INFO]: # Starting caching...
+
+152
+
+2025-10-31T01:56:07.770Z [INFO]: # Creating cache artifact...
+
+153
+
+2025-10-31T01:56:17.100Z [INFO]: # Created cache artifact
+
+154
+
+2025-10-31T01:56:17.188Z [INFO]: # Uploading cache artifact...
+
+155
+
+2025-10-31T01:56:27.938Z [INFO]: # Uploaded cache artifact
+
+156
+
+2025-10-31T01:56:28.010Z [INFO]: # Caching completed
+
+157
+
+2025-10-31T01:56:58.485Z [INFO]: # Starting environment caching...
+
+158
+
+2025-10-31T01:56:58.596Z [INFO]: # Environment caching completed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
