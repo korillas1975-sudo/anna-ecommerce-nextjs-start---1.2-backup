@@ -3,7 +3,7 @@ import { db } from '@/lib/db'
 
 export async function GET() {
 try {
-await db.$queryRawSELECT 1
+await db.$queryRawUnsafe('SELECT 1')
 return NextResponse.json({ ok: true })
 } catch (e: any) {
 const msg = e?.message || String(e)
