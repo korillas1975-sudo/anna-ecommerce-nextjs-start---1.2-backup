@@ -84,46 +84,69 @@ export async function POST(request: Request) {
       variant: item.variant ?? null,
     }))
 
-    const products = await db.product.findMany({
-      where: {
-        id: { in: cartItems.map((item) => item.productId) },
-        published: true,
-      },
-    })
+    const userId = session?.user?.id ?? (await ensureGuestUser())
+    const orderResult = await db.$transaction(async (tx) => {
+      const products = await tx.product.findMany({
+        where: {
+          id: { in: cartItems.map((item) => item.productId) },
+          published: true,
+        },
+        select: {
+          id: true,
+          name: true,
+          price: true,
+          stock: true,
+          images: true,
+        },
+      })
 
-    if (products.length !== cartItems.length) {
-      return NextResponse.json(
-        { error: 'Some products are unavailable' },
-        { status: 400 }
-      )
-    }
-
-    const itemsById = Object.fromEntries(cartItems.map((item) => [item.productId, item]))
-
-    let subtotal = 0
-
-    for (const product of products) {
-      const cartItem = itemsById[product.id]
-      if (!cartItem) continue
-
-      if (product.stock < cartItem.quantity) {
-        return NextResponse.json(
-          { error: `Insufficient stock for ${product.name}` },
-          { status: 400 }
-        )
+      if (products.length !== cartItems.length) {
+        throw new Error('PRODUCTS_UNAVAILABLE')
       }
 
-      subtotal += product.price * cartItem.quantity
-    }
+      const itemsById = Object.fromEntries(cartItems.map((item) => [item.productId, item]))
 
-    const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : FLAT_SHIPPING_FEE
-    const tax = 0
-    const total = subtotal + shipping + tax
+      let subtotal = 0
+      for (const product of products) {
+        const cartItem = itemsById[product.id]
+        if (!cartItem) {
+          throw new Error('CART_ITEM_MISSING')
+        }
 
-    const userId = session?.user?.id ?? (await ensureGuestUser())
-    const orderNumber = generateOrderNumber()
+        if (product.stock < cartItem.quantity) {
+          throw new Error(`OUT_OF_STOCK:${product.id}`)
+        }
 
-    const order = await db.$transaction(async (tx) => {
+        subtotal += product.price * cartItem.quantity
+      }
+
+      const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : FLAT_SHIPPING_FEE
+      const tax = 0
+      const total = subtotal + shipping + tax
+      const orderNumber = generateOrderNumber()
+
+      for (const product of products) {
+        const cartItem = itemsById[product.id]
+        if (!cartItem) {
+          throw new Error('CART_ITEM_MISSING')
+        }
+        const updated = await tx.product.updateMany({
+          where: {
+            id: product.id,
+            stock: { gte: cartItem.quantity },
+          },
+          data: {
+            stock: {
+              decrement: cartItem.quantity,
+            },
+          },
+        })
+
+        if (updated.count === 0) {
+          throw new Error(`OUT_OF_STOCK:${product.id}`)
+        }
+      }
+
       // Create shipping address record (basic mapping from checkout form)
       let shippingAddressId: string | null = null
       if (shippingAddress && typeof shippingAddress === 'object') {
@@ -160,6 +183,9 @@ export async function POST(request: Request) {
           items: {
             create: products.map((product) => {
               const cartItem = itemsById[product.id]
+              if (!cartItem) {
+                throw new Error('CART_ITEM_MISSING')
+              }
               let productImage: string | null = null
               try {
                 const parsed = JSON.parse(product.images ?? '[]')
@@ -190,27 +216,35 @@ export async function POST(request: Request) {
         },
       })
 
-      for (const product of products) {
-        const cartItem = itemsById[product.id]
-        await tx.product.update({
-          where: { id: product.id },
-          data: {
-            stock: {
-              decrement: cartItem.quantity,
-            },
-          },
-        })
-      }
-
-      return createdOrder
+      return { order: createdOrder, total, orderNumber }
     })
 
     return NextResponse.json({
-      orderNumber: order.orderNumber,
-      orderId: order.id,
-      total: order.total,
+      orderNumber: orderResult.order.orderNumber,
+      orderId: orderResult.order.id,
+      total: orderResult.total,
     })
   } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === 'PRODUCTS_UNAVAILABLE') {
+        return NextResponse.json(
+          { error: 'Some products are unavailable' },
+          { status: 400 }
+        )
+      }
+      if (error.message === 'CART_ITEM_MISSING') {
+        return NextResponse.json(
+          { error: 'Invalid cart items' },
+          { status: 400 }
+        )
+      }
+      if (error.message.startsWith('OUT_OF_STOCK:')) {
+        return NextResponse.json(
+          { error: 'Insufficient stock for one or more items' },
+          { status: 409 }
+        )
+      }
+    }
     console.error('Order creation error:', error)
     return NextResponse.json(
       { error: 'Failed to create order' },

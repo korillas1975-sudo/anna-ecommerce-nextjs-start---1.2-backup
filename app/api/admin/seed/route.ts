@@ -14,25 +14,26 @@ async function handle(request: Request) {
   if (!token || !provided || provided !== token) return unauthorized()
 
   try {
-    const existing = await db.product.count()
-    if (existing > 0) {
-      return NextResponse.json({ ok: true, skipped: true, reason: 'already seeded' })
-    }
-
-    // Users
+    // Always ensure admin/customer are correct (update password + role on every run)
     const adminPassword = await hash('admin123', 12)
     await db.user.upsert({
       where: { email: 'admin@annaparis.com' },
-      update: {},
+      update: { password: adminPassword, role: 'admin', name: 'Admin User' },
       create: { email: 'admin@annaparis.com', name: 'Admin User', password: adminPassword, role: 'admin' },
     })
 
     const customerPassword = await hash('customer123', 12)
     await db.user.upsert({
       where: { email: 'customer@example.com' },
-      update: {},
+      update: { password: customerPassword, role: 'customer', name: 'Anna Customer' },
       create: { email: 'customer@example.com', name: 'Anna Customer', password: customerPassword, role: 'customer' },
     })
+
+    // If products already exist, skip data seeding but report users refreshed
+    const existing = await db.product.count()
+    if (existing > 0) {
+      return NextResponse.json({ ok: true, usersRefreshed: true, skipped: true, reason: 'products already present' })
+    }
 
     // Categories (six)
     const cats = [
