@@ -11,17 +11,15 @@ type ExtendedToken = JWT & {
   role?: string | null
 }
 
-const providers: any[] = []
-
-// Only enable Google if credentials are present to avoid runtime configuration errors
-if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
-  providers.push(GoogleProvider({
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  }))
-}
-
-providers.push(
+const providers = [
+  ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+    ? [
+        GoogleProvider({
+          clientId: process.env.GOOGLE_CLIENT_ID!,
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+        }),
+      ]
+    : []),
   CredentialsProvider({
     name: 'credentials',
     credentials: {
@@ -56,8 +54,8 @@ providers.push(
         role: user.role,
       }
     },
-  })
-)
+  }),
+]
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(db),

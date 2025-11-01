@@ -1,26 +1,18 @@
-0
-
-2025-10-30T14:18:08.130Z [INFO]: # Build environment configured with Standard build compute type: 8GiB Memory, 4vCPUs, 128GB Disk Space
-
-1
-
-2025-10-30T14:18:08.953Z [INFO]: # Cloning repository: git@github.com:korillas1975-sudo/anna-ecommerce-nextjs-start---1.2-backup.git
-
 2
 
-2025-10-30T14:18:11.356Z [INFO]: 
+2025-11-01T07:15:47.273Z [INFO]: 
 
 3
 
-2025-10-30T14:18:11.436Z [INFO]: Cloning into 'anna-ecommerce-nextjs-start---1.2-backup'...
+2025-11-01T07:15:47.359Z [INFO]: Cloning into 'anna-ecommerce-nextjs-start---1.2-backup'...
 
 4
 
-2025-10-30T14:18:11.436Z [INFO]: # Switching to commit: 8bfebbc15dcefab2b5b1a9f1b45e1c56a2524420
+2025-11-01T07:15:47.359Z [INFO]: # Switching to commit: 4fb59b73a9185a758b49b2645d5502c79f6d1ba8
 
 5
 
-2025-10-30T14:18:11.521Z [INFO]: Note: switching to '8bfebbc15dcefab2b5b1a9f1b45e1c56a2524420'.
+2025-11-01T07:15:47.448Z [INFO]: Note: switching to '4fb59b73a9185a758b49b2645d5502c79f6d1ba8'.
 
 6
 
@@ -60,59 +52,59 @@
 
 15
 
-                                 HEAD is now at 8bfebbc update file
+                                 HEAD is now at 4fb59b7 update all file
 
 16
 
-2025-10-30T14:18:11.568Z [INFO]: Successfully cleaned up Git credentials
+2025-11-01T07:15:47.506Z [INFO]: Successfully cleaned up Git credentials
 
 17
 
-2025-10-30T14:18:11.568Z [INFO]: # Checking for Git submodules at: /codebuild/output/src4068410032/src/anna-ecommerce-nextjs-start---1.2-backup/.gitmodules
+2025-11-01T07:15:47.506Z [INFO]: # Checking for Git submodules at: /codebuild/output/src2372589848/src/anna-ecommerce-nextjs-start---1.2-backup/.gitmodules
 
 18
 
-2025-10-30T14:18:11.591Z [INFO]: # Retrieving environment cache...
+2025-11-01T07:15:47.514Z [INFO]: # Retrieving environment cache...
 
 19
 
-2025-10-30T14:18:11.619Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
+2025-11-01T07:15:47.553Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
 
 20
 
-2025-10-30T14:18:11.619Z [INFO]: ---- Setting Up SSM Secrets ----
+2025-11-01T07:15:47.553Z [INFO]: ---- Setting Up SSM Secrets ----
 
 21
 
-2025-10-30T14:18:11.619Z [INFO]: SSM params {"Path":"/amplify/dcoyi3vhn16cz/master/","WithDecryption":true}
+2025-11-01T07:15:47.554Z [INFO]: SSM params {"Path":"/amplify/dcoyi3vhn16cz/master/","WithDecryption":true}
 
 22
 
-2025-10-30T14:18:11.663Z [WARNING]: !Failed to set up process.env.secrets
+2025-11-01T07:15:47.606Z [WARNING]: !Failed to set up process.env.secrets
 
 23
 
-2025-10-30T14:18:12.338Z [INFO]: # No package override configuration found.
+2025-11-01T07:15:48.533Z [INFO]: # No package override configuration found.
 
 24
 
-2025-10-30T14:18:12.341Z [INFO]: # Retrieving cache...
+2025-11-01T07:15:48.537Z [INFO]: # Retrieving cache...
 
 25
 
-2025-10-30T14:18:15.353Z [INFO]: # Extracting cache...
+2025-11-01T07:16:04.129Z [INFO]: # Extracting cache...
 
 26
 
-2025-10-30T14:18:15.676Z [INFO]: # Extraction completed
+2025-11-01T07:16:16.256Z [INFO]: # Extraction completed
 
 27
 
-2025-10-30T14:18:15.703Z [INFO]: # Retrieved cache
+2025-11-01T07:16:16.473Z [INFO]: # Retrieved cache
 
 28
 
-2025-10-30T14:18:20.260Z [INFO]: ## Starting Backend Build
+2025-11-01T07:16:21.633Z [INFO]: ## Starting Backend Build
 
 29
 
@@ -120,15 +112,13 @@
 
 30
 
-                                 ## No backend environment association found, continuing...
-
-31
+                                 ## No backend environment association found, continuing...31
 
                                  ## Completed Backend Build
 
 32
 
-2025-10-30T14:18:20.267Z [INFO]: {"backendDuration": 0}
+2025-11-01T07:16:21.638Z [INFO]: {"backendDuration": 0}
 
 33
 
@@ -136,14 +126,15 @@
 
 34
 
-                                 # Starting phase: prebuild
+                                 # Starting phase: preBuild
+
 35
 
                                  # Executing command: npm ci
 
 36
 
-2025-10-30T14:18:54.273Z [INFO]: > anna-ecommerce-nextjs@0.1.0 postinstall
+2025-11-01T07:16:59.669Z [INFO]: > anna-ecommerce-nextjs@0.1.0 postinstall
 
 37
 
@@ -151,19 +142,19 @@
 
 38
 
-2025-10-30T14:18:55.275Z [WARNING]: Loaded Prisma config from prisma.config.ts.
+2025-11-01T07:17:00.708Z [WARNING]: Loaded Prisma config from prisma.config.ts.
 
 39
 
-2025-10-30T14:18:55.523Z [WARNING]: Prisma config detected, skipping environment variable loading.
+2025-11-01T07:17:00.974Z [WARNING]: Prisma config detected, skipping environment variable loading.
 
 40
 
-2025-10-30T14:18:55.523Z [INFO]: Prisma schema loaded from prisma/schema.postgres.prisma
+2025-11-01T07:17:00.974Z [INFO]: Prisma schema loaded from prisma/schema.postgres.prisma
 
 41
 
-2025-10-30T14:18:55.850Z [INFO]: ✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 130ms
+2025-11-01T07:17:01.323Z [INFO]: ✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 137ms
 
 42
 
@@ -171,15 +162,15 @@
 
 43
 
-                                 Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+                                 Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
 
 44
 
-2025-10-30T14:18:55.873Z [INFO]: added 575 packages, and audited 576 packages in 31s
+2025-11-01T07:17:01.348Z [INFO]: added 575 packages, and audited 576 packages in 34s
 
 45
 
-2025-10-30T14:18:55.874Z [INFO]: 177 packages are looking for funding
+2025-11-01T07:17:01.348Z [INFO]: 177 packages are looking for funding
 
 46
 
@@ -187,7 +178,7 @@
 
 47
 
-2025-10-30T14:18:55.904Z [INFO]: 8 moderate severity vulnerabilities
+2025-11-01T07:17:01.379Z [INFO]: 9 moderate severity vulnerabilities
 
 48
 
@@ -211,23 +202,23 @@
 
 53
 
-2025-10-30T14:18:55.926Z [INFO]: # Executing command: npx prisma generate
+2025-11-01T07:17:01.399Z [INFO]: # Executing command: npx prisma generate
 
 54
 
-2025-10-30T14:18:57.377Z [WARNING]: Loaded Prisma config from prisma.config.ts.
+2025-11-01T07:17:02.936Z [WARNING]: Loaded Prisma config from prisma.config.ts.
 
 55
 
-2025-10-30T14:18:57.628Z [WARNING]: Prisma config detected, skipping environment variable loading.
+2025-11-01T07:17:03.217Z [WARNING]: Prisma config detected, skipping environment variable loading.
 
 56
 
-2025-10-30T14:18:57.628Z [INFO]: Prisma schema loaded from prisma/schema.postgres.prisma
+2025-11-01T07:17:03.217Z [INFO]: Prisma schema loaded from prisma/schema.postgres.prisma
 
 57
 
-2025-10-30T14:18:57.953Z [INFO]: ✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 129ms
+2025-11-01T07:17:03.567Z [INFO]: ✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 134ms
 
 58
 
@@ -235,83 +226,163 @@
 
 59
 
-                                 Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+                                 Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
 
 60
 
-2025-10-30T14:18:57.973Z [INFO]: # Executing command: npx prisma migrate deploy
+2025-11-01T07:17:03.588Z [INFO]: # Executing command: npx prisma migrate deploy63
 
-61
-
-2025-10-30T14:18:59.192Z [WARNING]: Loaded Prisma config from prisma.config.ts.
-
-62
-
-2025-10-30T14:18:59.442Z [WARNING]: Prisma config detected, skipping environment variable loading.
-
-63
-
-2025-10-30T14:18:59.443Z [INFO]: Prisma schema loaded from prisma/schema.postgres.prisma
+2025-11-01T07:17:05.195Z [INFO]: Prisma schema loaded from prisma/schema.postgres.prisma
 
 64
 
-2025-10-30T14:18:59.446Z [WARNING]: Error: Prisma schema validation - (get-config wasm)
+2025-11-01T07:17:05.198Z [INFO]: Datasource "db": PostgreSQL database "neondb", schema "public" at "ep-orange-pond-a4bcqyho-pooler.us-east-1.aws.neon.tech"
 
 65
 
-                                    Error code: P1012
+2025-11-01T07:17:07.519Z [INFO]: No migration found in prisma/migrations
+
 66
 
-                                    error: Error validating datasource `db`: the URL must start with the protocol `postgresql://` or `postgres://`.
+2025-11-01T07:17:07.525Z [INFO]: 
 
 67
 
-                                    -->  prisma/schema.postgres.prisma:7
+2025-11-01T07:17:10.593Z [INFO]: 
 
 68
 
-                                    |
+2025-11-01T07:17:10.593Z [INFO]: No pending migrations to apply.
 
 69
 
-                                    6 |   provider = "postgresql"
+2025-11-01T07:17:10.815Z [INFO]: # Executing command: npx prisma db push
 
 70
 
-                                    7 |   url      = env("DATABASE_URL")
+2025-11-01T07:17:12.086Z [WARNING]: Loaded Prisma config from prisma.config.ts.
 
 71
 
-                                    |
+2025-11-01T07:17:12.411Z [WARNING]: Prisma config detected, skipping environment variable loading.
 
 72
 
-                                    Validation Error Count: 1
+2025-11-01T07:17:12.412Z [INFO]: Prisma schema loaded from prisma/schema.postgres.prisma
 
 73
 
-                                    [Context: getConfig]
+2025-11-01T07:17:12.415Z [INFO]: Datasource "db": PostgreSQL database "neondb", schema "public" at "ep-orange-pond-a4bcqyho-pooler.us-east-1.aws.neon.tech"
 
 74
 
-                                    Prisma CLI Version : 6.18.0
+2025-11-01T07:17:21.645Z [INFO]: The database is already in sync with the Prisma schema.
 
 75
 
-2025-10-30T14:18:59.463Z [ERROR]: !!! Build failed
+2025-11-01T07:17:21.649Z [INFO]: Running generate... (Use --skip-generate to skip the generators)
 
 76
 
-2025-10-30T14:18:59.463Z [INFO]: Please read more about Amplify Hosting's support for SSR frameworks to find if your build failure is related to an unsupported feature: https://docs.aws.amazon.com/amplify/latest/userguide/amplify-ssr-framework-support.html. You may also find this troubleshooting guide useful: https://docs.aws.amazon.com/amplify/latest/userguide/troubleshooting-ssr-deployment.html
+2025-11-01T07:17:21.858Z [INFO]: [2K[1A[2K[GRunning generate... - Prisma Client
 
 77
 
-2025-10-30T14:18:59.463Z [ERROR]: !!! Error: Command failed with exit code 1
+2025-11-01T07:17:22.043Z [INFO]: [2K[1A[2K[G✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 182ms
 
 78
 
-2025-10-30T14:18:59.463Z [INFO]: # Starting environment caching...
+2025-11-01T07:17:22.044Z [INFO]: 
 
 79
 
-2025-10-30T14:18:59.463Z [INFO]: # Environment caching completed
+2025-11-01T07:17:22.068Z [INFO]: # Executing command: printf "DATABASE_URL=%s
+
+80
+
+                                 " "$DATABASE_URL" > .env.production
+
+81
+
+2025-11-01T07:17:22.069Z [INFO]: # Executing command: printf "SEED_TOKEN=%s
+
+82
+
+                                 " "$SEED_TOKEN" >> .env.production
+
+83
+
+                                 # Completed phase: preBuild
+
+84
+
+                                 # Starting phase: build
+
+85
+
+                                 # Executing command: npm run build
+
+86
+
+2025-11-01T07:17:22.171Z [INFO]: > anna-ecommerce-nextjs@0.1.0 build
+
+87
+
+                                 > next build
+
+88
+
+2025-11-01T07:17:23.024Z [INFO]: ▲ Next.js 15.5.4
+
+89
+
+2025-11-01T07:17:23.024Z [INFO]: - Environments: .env.production
+
+90
+
+2025-11-01T07:17:23.126Z [INFO]: Creating an optimized production build ...91
+
+2025-11-01T07:17:44.307Z [INFO]: ✓ Compiled successfully in 18.5s
+
+92
+
+2025-11-01T07:17:44.313Z [INFO]: Linting and checking validity of types ...
+
+93
+
+2025-11-01T07:17:48.700Z [WARNING]: Failed to compile.
+
+94
+
+2025-11-01T07:17:48.706Z [WARNING]: ./lib/auth.ts
+
+95
+
+                                    14:18  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+96
+
+                                    info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+
+97
+
+2025-11-01T07:17:48.787Z [ERROR]: !!! Build failed
+
+98
+
+2025-11-01T07:17:48.787Z [INFO]: Please read more about Amplify Hosting's support for SSR frameworks to find if your build failure is related to an unsupported feature: https://docs.aws.amazon.com/amplify/latest/userguide/amplify-ssr-framework-support.html. You may also find this troubleshooting guide useful: https://docs.aws.amazon.com/amplify/latest/userguide/troubleshooting-ssr-deployment.html
+
+99
+
+2025-11-01T07:17:48.787Z [ERROR]: !!! Error: Command failed with exit code 1
+
+100
+
+2025-11-01T07:17:48.787Z [INFO]: # Starting environment caching...
+
+101
+
+2025-11-01T07:17:48.787Z [INFO]: # Environment caching completed
+
+102
+
