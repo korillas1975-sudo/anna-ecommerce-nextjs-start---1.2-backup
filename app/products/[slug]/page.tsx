@@ -60,6 +60,27 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <BackToResults fallbackCategory={product.category.slug} />
       <ProductDetailClient product={product} />
       {relatedProducts.length > 0 && <RelatedProducts products={relatedProducts} />}
+      {/* JSON-LD Product for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Product',
+            name: product.name,
+            image: Array.isArray(product.images) ? product.images : [],
+            description: typeof product.description === 'string' ? product.description : '',
+            sku: product.sku || undefined,
+            brand: { '@type': 'Brand', name: 'ANNA PARIS' },
+            offers: {
+              '@type': 'Offer',
+              priceCurrency: 'THB',
+              price: product.price,
+              availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+            },
+          }),
+        }}
+      />
     </main>
   )
 }

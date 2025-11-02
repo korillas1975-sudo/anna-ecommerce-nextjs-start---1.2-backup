@@ -41,6 +41,8 @@ export default function ProductDetailClient({ product }: { product: Product }) {
   const images = sourceImages
   const primaryImage = images[currentIndex] ?? images[0]
   const inWishlist = isInWishlist(product.id)
+  const percentOff = hasDiscount ? Math.round(((product.compareAtPrice as number - product.price) / (product.compareAtPrice as number)) * 100) : 0
+  const FREE_SHIPPING_THRESHOLD = 3000
 
   const getHiResUrl = (src: string) => {
     try {
@@ -123,6 +125,9 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           </div>
 
           <div className="space-y-6 lg:pt-2">
+            {percentOff > 0 && (
+              <span className="inline-block text-xs px-2 py-1 bg-champagne/20 text-ink rounded-sm tracking-wider uppercase">Save {percentOff}%</span>
+            )}
             <div className="flex items-center justify-between">
               <p className="text-[0.7rem] uppercase tracking-[0.25em] text-ink-2/50 font-medium">
                 {product.category.name}
@@ -131,6 +136,17 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                 <Share2 className="w-4 h-4 text-ink-2/60" />
               </button>
             </div>
+
+            {product.stock > 0 && product.stock < 5 && (
+              <div className="text-sm text-red-600">เหลือเพียง {product.stock} ชิ้น</div>
+            )}
+
+            {/* Value bullets (แก้ข้อความได้ภายหลัง) */}
+            <ul className="space-y-2 text-ink-2/80 text-sm">
+              <li>• คัดสรรวัสดุคุณภาพ งานประกอบประณีต</li>
+              <li>• รับประกันสินค้า 1 ปี และบริการดูแลพื้นฐาน</li>
+              <li>• ชำระเงินปลอดภัยผ่าน Stripe / บัตรเครดิต</li>
+            </ul>
 
             <h1 className="font-serif text-[1.85rem] md:text-[2.25rem] lg:text-[2.75rem] font-medium text-ink leading-[1.1] -tracking-[0.015em]">
               {product.name}
@@ -252,6 +268,38 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                   <span className="text-xs text-ink-2/65">{item.text}</span>
                 </div>
               ))}
+            </div>
+            {/* Free shipping note */}
+            <div className="text-sm text-ink-2/70">สั่งซื้อเกิน {formatTHB(FREE_SHIPPING_THRESHOLD)} ส่งฟรีทั่วประเทศ</div>
+
+            {/* Trust badges */}
+            <div className="grid grid-cols-3 gap-3 text-center text-xs text-ink-2/70 pt-2">
+              <div className="border border-hairline p-3">
+                <Shield className="w-4 h-4 mx-auto mb-2" /> ชำระเงินปลอดภัย
+              </div>
+              <div className="border border-hairline p-3">
+                <Truck className="w-4 h-4 mx-auto mb-2" /> จัดส่งรวดเร็ว
+              </div>
+              <div className="border border-hairline p-3">
+                <RefreshCw className="w-4 h-4 mx-auto mb-2" /> เปลี่ยนคืนง่าย
+              </div>
+            </div>
+
+            {/* FAQ สั้น */}
+            <div className="pt-4">
+              <h3 className="text-sm font-medium text-ink mb-2">คำถามที่พบบ่อย</h3>
+              <details className="mb-2 border border-hairline p-3 text-sm text-ink-2/80">
+                <summary className="cursor-pointer text-ink">มีการรับประกันอย่างไร?</summary>
+                สินค้ารับประกัน 1 ปี ความเสียหายจากการผลิต บริการทำความสะอาดพื้นฐานฟรี
+              </details>
+              <details className="mb-2 border border-hairline p-3 text-sm text-ink-2/80">
+                <summary className="cursor-pointer text-ink">ใช้เวลาจัดส่งกี่วัน?</summary>
+                กรุงเทพฯ 1-2 วันทำการ ต่างจังหวัด 2-4 วันทำการ
+              </details>
+              <details className="border border-hairline p-3 text-sm text-ink-2/80">
+                <summary className="cursor-pointer text-ink">คืนสินค้าได้หรือไม่?</summary>
+                เปลี่ยนหรือคืนสินค้าได้ภายใน 7 วัน (เงื่อนไขเป็นไปตามที่ร้านกำหนด)
+              </details>
             </div>
           </div>
         </div>
