@@ -28,6 +28,7 @@ model User {
   addresses     Address[]
   wishlistItems WishlistItem[]
   cartItems     CartItem[]
+  reviews       Review[]
 }
 
 model Account {
