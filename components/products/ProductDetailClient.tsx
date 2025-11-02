@@ -104,6 +104,25 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
   const closeFullscreen = () => setIsFullscreen(false)
 
+  // Reviews (read-only preview)
+  const [reviews, setReviews] = useState<{ id: string; authorName: string; rating: number; title?: string | null; body: string; verifiedPurchase: boolean; createdAt: string }[]>([])
+  const [reviewSummary, setReviewSummary] = useState<{ ratingAvg: number; ratingCount: number }>({ ratingAvg: 0, ratingCount: 0 })
+  useEffect(() => {
+    let ignore = false
+    async function loadReviews() {
+      try {
+        const res = await fetch(`/api/reviews?product=${encodeURIComponent(product.slug)}&page=1&pageSize=3`, { cache: 'no-store' as any })
+        if (!res.ok) return
+        const data = await res.json()
+        if (ignore) return
+        setReviews(data.items || [])
+        setReviewSummary({ ratingAvg: data.ratingAvg || 0, ratingCount: data.ratingCount || 0 })
+      } catch {}
+    }
+    loadReviews()
+    return () => { ignore = true }
+  }, [product.slug])
+
   return (
     <>
       <div className="fixed inset-0 -z-10 pointer-events-none">
@@ -300,6 +319,34 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                 <summary className="cursor-pointer text-ink">คืนสินค้าได้หรือไม่?</summary>
                 เปลี่ยนหรือคืนสินค้าได้ภายใน 7 วัน (เงื่อนไขเป็นไปตามที่ร้านกำหนด)
               </details>
+            </div>
+
+            {/* Reviews (read-only) */}
+            <div className="pt-6">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-medium text-ink">รีวิวจากลูกค้า</h3>
+                {reviewSummary.ratingCount > 0 && (
+                  <div className="text-xs text-ink-2/70">⭐ {reviewSummary.ratingAvg.toFixed(1)} / 5 จาก {reviewSummary.ratingCount} รีวิว</div>
+                )}
+              </div>
+              {reviews.length === 0 ? (
+                <div className="text-sm text-ink-2/70">ยังไม่มีรีวิว — เป็นคนแรกที่รีวิว</div>
+              ) : (
+                <div className="space-y-3">
+                  {reviews.map((r) => (
+                    <div key={r.id} className="border border-hairline p-3">
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="text-sm font-medium text-ink">{r.authorName}</div>
+                        <div className="text-xs text-ink-2/70">{new Date(r.createdAt).toLocaleDateString()}</div>
+                      </div>
+                      <div className="text-xs text-champagne mb-1">{'⭐'.repeat(r.rating)}</div>
+                      {r.title && <div className="text-sm text-ink mb-1">{r.title}</div>}
+                      <div className="text-sm text-ink-2/80">{r.body}</div>
+                      {r.verifiedPurchase && <div className="mt-2 text-[11px] text-ink-2/60">ยืนยันการสั่งซื้อ</div>}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

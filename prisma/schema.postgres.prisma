@@ -95,11 +95,14 @@ model Product {
   published     Boolean  @default(true)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  ratingAvg     Float    @default(0)
+  ratingCount   Int      @default(0)
 
   category      Category       @relation(fields: [categoryId], references: [id])
   orderItems    OrderItem[]
   wishlistItems WishlistItem[]
   cartItems     CartItem[]
+  reviews       Review[]
 }
 
 // Cart
@@ -215,3 +218,23 @@ model SiteSettings {
   updatedAt DateTime @updatedAt
 }
 
+// Reviews (Customer feedback)
+model Review {
+  id               String   @id @default(cuid())
+  productId        String
+  userId           String?
+  authorName       String
+  rating           Int
+  title            String?
+  body             String
+  status           String   @default("pending") // pending, approved, rejected
+  verifiedPurchase Boolean  @default(false)
+  helpfulCount     Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user    User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([productId, status, createdAt])
+}
