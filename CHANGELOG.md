@@ -64,3 +64,10 @@ Update .env.example with SMTP settings.
 - UI: Unify THB currency formatting via `formatTHB()` in Wishlist, Orders (account/admin), Admin products/orders pages, Cart sidebar, and Home New Arrivals; fix residual encoding artifacts in price strings.
 - Security: Expand Content-Security-Policy to include Stripe (`js.stripe.com`, `api.stripe.com`) and optional S3/CDN domain from env; add `frame-src` for Stripe.
 - Emails: Begin normalizing email templates to use `formatTHB()` and clean up address/encoding (follow-up to finalize rows/total formatting).
+
+## 2025-11-02
+- Auth/Runtime: required `AUTH_SECRET` (and fallback to `NEXTAUTH_SECRET`), `trustHost: true`, and document Amplify pipeline (`.env.production` writes + `prisma db push`); admin seed endpoint now refreshes passwords even when catalog already exists.
+- Orders: stock decrement inside transaction uses `updateMany` with `stock >= qty`, returning 409 when insufficient (prevents oversell).
+- Product detail “Sale Boost v1”: value bullets, dynamic “Save %”, low-stock badge, free-shipping note, trust badges, FAQ, sticky CTA polish; added Product JSON-LD for SEO.
+- Reviews Phase 1: Prisma schema adds `Review` model + product rating aggregates; new `/api/reviews` (GET/POST pending) with verified purchase check; PDP displays summary + latest reviews (read-only).
+- Deployment docs: `DEPLOYMENT.md` updated for Amplify/Neon flow; added `HANDOFF.md` for future agents.

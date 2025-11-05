@@ -111,7 +111,10 @@ export default function ProductDetailClient({ product }: { product: Product }) {
     let ignore = false
     async function loadReviews() {
       try {
-        const res = await fetch(`/api/reviews?product=${encodeURIComponent(product.slug)}&page=1&pageSize=3`, { cache: 'no-store' as any })
+        const res = await fetch(
+          `/api/reviews?product=${encodeURIComponent(product.slug)}&page=1&pageSize=3`,
+          { cache: 'no-store' satisfies RequestCache }
+        )
         if (!res.ok) return
         const data = await res.json()
         if (ignore) return

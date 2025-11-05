@@ -13,6 +13,7 @@ export default function NewProductPage() {
   const [uploading, setUploading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [manualImageUrl, setManualImageUrl] = useState('')
   const [form, setForm] = useState({
     name: '',
     slug: '',
@@ -46,7 +47,12 @@ export default function NewProductPage() {
         const presignRes = await fetch('/api/uploads/s3/presign', {
           method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ filename: file.name, contentType: file.type })
         })
-        if (!presignRes.ok) throw new Error('Failed to get upload URL')
+        if (!presignRes.ok) {
+          const message = presignRes.status === 500
+            ? 'S3 storage ยังไม่ได้ตั้งค่า โปรดเพิ่ม URL รูปภาพด้วยตนเอง หรือกำหนดค่า AWS ก่อนอัปโหลด'
+            : 'Failed to get upload URL'
+          throw new Error(message)
+        }
         const { uploadUrl, publicUrl } = await presignRes.json()
         const putRes = await fetch(uploadUrl, { method: 'PUT', headers: { 'Content-Type': file.type }, body: file })
         if (!putRes.ok) throw new Error('Upload failed')
@@ -57,6 +63,45 @@ export default function NewProductPage() {
       const message = e instanceof Error ? e.message : 'Upload error'
       setError(message)
     } finally { setUploading(false) }
+  }
+
+  const handleAddManualImage = () => {
+    const value = manualImageUrl.trim()
+    if (!value) return
+    try {
+      const url = new URL(value)
+      setImages((prev) => [...prev, url.toString()])
+      setManualImageUrl('')
+      setError(null)
+    } catch {
+      setError('กรุณาใส่ URL รูปภาพที่ถูกต้อง (เช่น https://cdn.example.com/image.jpg)')
+    }
+  }
+
+  const setPrimaryImage = (index: number) => {
+    setImages((prev) => {
+      if (index <= 0 || index >= prev.length) return prev
+      const next = [...prev]
+      const [img] = next.splice(index, 1)
+      next.unshift(img)
+      return next
+    })
+  }
+
+  const moveImage = (index: number, direction: -1 | 1) => {
+    setImages((prev) => {
+      const newIndex = index + direction
+      if (newIndex < 0 || newIndex >= prev.length) return prev
+      const next = [...prev]
+      const temp = next[newIndex]
+      next[newIndex] = next[index]
+      next[index] = temp
+      return next
+    })
+  }
+
+  const removeImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index))
   }
 
   async function handleSave(e: React.FormEvent) {
@@ -101,6 +146,7 @@ export default function NewProductPage() {
 
       <div className="max-w-[1000px] mx-auto px-5 md:px-10 py-10">
         {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm">{error}</div>}
+        <p className="mb-4 text-sm text-ink-2/60">ภาพแรกในรายการจะใช้เป็นภาพหลักบนหน้า Product Detail คุณสามารถอัปโหลดหลายภาพ จัดลำดับ หรือเพิ่ม URL รูปภาพได้</p>
         <form onSubmit={handleSave} className="bg-white border border-hairline p-8 space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             <div>
@@ -151,12 +197,52 @@ export default function NewProductPage() {
             <label className="block text-sm font-medium text-ink mb-2">Images</label>
             <input type="file" multiple accept="image/*" onChange={(e) => handleUploadFiles(e.target.files)} />
             {uploading && <p className="text-sm text-ink-2/70 mt-2">Uploading...</p>}
-            {images.length > 0 && (
-              <div className="grid grid-cols-3 gap-3 mt-3">
-                {images.map((src) => (
-                  <div key={src} className="relative w-full aspect-[3/4] bg-platinum/20" style={{ backgroundImage: `url(${src})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+            <div className="mt-3 flex gap-3 items-end flex-wrap">
+              <div className="flex-1 min-w-[220px]">
+                <label className="block text-xs text-ink-2/70 mb-1">หรือเพิ่มจาก URL</label>
+                <input
+                  value={manualImageUrl}
+                  onChange={(e) => setManualImageUrl(e.target.value)}
+                  placeholder="https://cdn.example.com/product.jpg"
+                  className="w-full border border-hairline px-3 py-2 text-sm"
+                />
+              </div>
+              <button type="button" onClick={handleAddManualImage} className="border border-hairline px-4 py-2 text-sm hover:border-ink transition-colors">
+                เพิ่ม URL
+              </button>
+            </div>
+            {images.length > 0 ? (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
+                {images.map((src, index) => (
+                  <div key={src} className="relative border border-hairline">
+                    <div
+                      className="w-full aspect-[3/4] bg-platinum/20"
+                      style={{ backgroundImage: `url(${src})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                    />
+                    <div className="absolute top-1 left-1 bg-ink/80 text-white text-[10px] px-2 py-1 uppercase tracking-wider">
+                      {index === 0 ? 'Primary' : `Image ${index + 1}`}
+                    </div>
+                    <div className="flex flex-wrap gap-1 p-2 bg-white/90 text-[11px]">
+                      {index > 0 && (
+                        <button type="button" className="px-2 py-1 border border-hairline hover:border-ink" onClick={() => setPrimaryImage(index)}>
+                          Set primary
+                        </button>
+                      )}
+                      <button type="button" className="px-2 py-1 border border-hairline hover:border-ink" onClick={() => moveImage(index, -1)} disabled={index === 0}>
+                        ↑
+                      </button>
+                      <button type="button" className="px-2 py-1 border border-hairline hover:border-ink" onClick={() => moveImage(index, 1)} disabled={index === images.length - 1}>
+                        ↓
+                      </button>
+                      <button type="button" className="px-2 py-1 border border-hairline hover:border-red-500 text-red-600" onClick={() => removeImage(index)}>
+                        ลบ
+                      </button>
+                    </div>
+                  </div>
                 ))}
               </div>
+            ) : (
+              !uploading && <p className="text-sm text-ink-2/70 mt-2">ยังไม่มีภาพ — อัปโหลดไฟล์หรือใส่ URL เพื่อเพิ่มภาพสินค้า</p>
             )}
           </div>
 
